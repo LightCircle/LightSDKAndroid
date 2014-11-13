@@ -16,9 +16,6 @@
 
 package cn.alphabets.light.qrcode.zxing.view;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -31,6 +28,9 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.google.zxing.ResultPoint;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
@@ -201,7 +201,7 @@ public final class ViewfinderView extends View {
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setAntiAlias(true); // 消除锯齿
 //            paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-            canvas.drawText(getResources().getString(R.string.scan_text), canvas.getWidth()/2, frame.bottom + (float) TEXT_PADDING_TOP * density, paint);
+            canvas.drawText(getResources().getString(R.string.scan_text), canvas.getWidth() / 2, frame.bottom + (float) TEXT_PADDING_TOP * density, paint);
 
 
             Collection<ResultPoint> currentPossible = possibleResultPoints;

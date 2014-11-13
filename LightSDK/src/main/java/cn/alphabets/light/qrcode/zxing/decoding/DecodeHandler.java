@@ -32,7 +32,6 @@ import com.google.zxing.common.HybridBinarizer;
 import java.util.Hashtable;
 
 import cn.alphabets.light.R;
-
 import cn.alphabets.light.qrcode.QRScanActivity;
 import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
 import cn.alphabets.light.qrcode.zxing.camera.PlanarYUVLuminanceSource;

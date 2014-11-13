@@ -8,7 +8,6 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +20,6 @@ public class ImageUtil {
     public static Bitmap ScaleFileBitmapToSize(String pathOfInputImage, int dstWidth, int dstHeight) throws IOException {
         int inWidth;
         int inHeight;
-        Log.d("AAABBB", pathOfInputImage);
         InputStream in = new FileInputStream(pathOfInputImage);
 
         // decode image size (decode metadata only, not the whole image)
@@ -46,16 +44,12 @@ public class ImageUtil {
         // calc exact destination size
         Matrix m = new Matrix();
         RectF inRect = new RectF(0, 0, roughBitmap.getWidth(), roughBitmap.getHeight());
-        Log.d("AAABBB", inRect.toShortString());
         RectF outRect = new RectF(0, 0, dstWidth, dstHeight);
-        Log.d("AAABBB", outRect.toShortString());
         m.setRectToRect(inRect, outRect, Matrix.ScaleToFit.CENTER);
         float[] values = new float[9];
         m.getValues(values);
-        Log.d("AAABBB", values.toString());
         // resize bitmap
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(roughBitmap, (int) (roughBitmap.getWidth() * values[0]), (int) (roughBitmap.getHeight() * values[4]), true);
-        Log.d("AAABBB", resizedBitmap.getWidth() + "," + resizedBitmap.getHeight());
         // save image
 
 //                FileOutputStream out = new FileOutputStream(pathOfOutputImage);

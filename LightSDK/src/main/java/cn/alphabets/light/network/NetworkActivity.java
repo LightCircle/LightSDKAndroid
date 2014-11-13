@@ -3,7 +3,6 @@ package cn.alphabets.light.network;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -118,7 +117,6 @@ public class NetworkActivity extends Activity {
                 if (responseHolder.exception != null) {
                     errorHandler.onError(new VolleyError(responseHolder.exception));
                 } else {
-                    Log.d("AAABBB", responseHolder.json.toString());
                     successHandler.onSuccess(responseHolder.json);
                 }
             }
