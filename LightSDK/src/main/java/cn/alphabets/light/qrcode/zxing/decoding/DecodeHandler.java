@@ -33,7 +33,7 @@ import java.util.Hashtable;
 
 import cn.alphabets.light.R;
 
-import cn.alphabets.light.qrcode.MipcaActivityCapture;
+import cn.alphabets.light.qrcode.QRScanActivity;
 import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
 import cn.alphabets.light.qrcode.zxing.camera.PlanarYUVLuminanceSource;
 
@@ -41,10 +41,10 @@ final class DecodeHandler extends Handler {
 
     private static final String TAG = DecodeHandler.class.getSimpleName();
 
-    private final MipcaActivityCapture activity;
+    private final QRScanActivity activity;
     private final MultiFormatReader multiFormatReader;
 
-    DecodeHandler(MipcaActivityCapture activity, Hashtable<DecodeHintType, Object> hints) {
+    DecodeHandler(QRScanActivity activity, Hashtable<DecodeHintType, Object> hints) {
         multiFormatReader = new MultiFormatReader();
         multiFormatReader.setHints(hints);
         this.activity = activity;

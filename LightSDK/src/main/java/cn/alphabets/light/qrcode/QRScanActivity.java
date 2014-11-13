@@ -30,7 +30,7 @@ import cn.alphabets.light.qrcode.zxing.view.ViewfinderView;
  *
  * @author Ryan.Tang
  */
-public class MipcaActivityCapture extends Activity implements Callback {
+public class QRScanActivity extends Activity implements Callback {
 
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
@@ -95,7 +95,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
         playBeepSoundAndVibrate();
         String resultString = result.getText();
         if (resultString.equals("")) {
-            Toast.makeText(MipcaActivityCapture.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(QRScanActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
         } else {
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
@@ -104,7 +104,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
             resultIntent.putExtras(bundle);
             this.setResult(RESULT_OK, resultIntent);
         }
-        MipcaActivityCapture.this.finish();
+        QRScanActivity.this.finish();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

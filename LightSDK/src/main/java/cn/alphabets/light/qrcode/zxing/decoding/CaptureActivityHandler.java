@@ -31,7 +31,7 @@ import com.google.zxing.Result;
 import java.util.Vector;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.qrcode.MipcaActivityCapture;
+import cn.alphabets.light.qrcode.QRScanActivity;
 import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
 import cn.alphabets.light.qrcode.zxing.view.ViewfinderResultPointCallback;
 
@@ -42,7 +42,7 @@ public final class CaptureActivityHandler extends Handler {
 
     private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
-    private final MipcaActivityCapture activity;
+    private final QRScanActivity activity;
     private final DecodeThread decodeThread;
     private State state;
 
@@ -52,7 +52,7 @@ public final class CaptureActivityHandler extends Handler {
         DONE
     }
 
-    public CaptureActivityHandler(MipcaActivityCapture activity, Vector<BarcodeFormat> decodeFormats,
+    public CaptureActivityHandler(QRScanActivity activity, Vector<BarcodeFormat> decodeFormats,
                                   String characterSet) {
         this.activity = activity;
         decodeThread = new DecodeThread(activity, decodeFormats, characterSet,
