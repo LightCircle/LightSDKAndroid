@@ -1,5 +1,12 @@
 LightSDKAndroid
 ===============
+
+## 已实现功能点
+- http请求的异步封装
+- 异步文件文件上传
+- 二维码扫描
+
+## 使用步骤
 Light平台的Android SDK通过 aar 包这种方式提供，因此使用SDK的步骤主要分为两步
 
 1. 通过代码build aar包
