@@ -12,7 +12,6 @@
     <application>
         <activity
             android:name=".qrcode.QRScanActivity"
-            android:label="@string/title_activity_main"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     </application>
 
