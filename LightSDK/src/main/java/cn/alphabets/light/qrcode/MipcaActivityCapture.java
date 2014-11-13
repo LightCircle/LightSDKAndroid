@@ -109,12 +109,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
         super.onDestroy();
     }
 
-    /**
-     * ����ɨ����
-     *
-     * @param result
-     * @param barcode
-     */
+
     public void handleDecode(Result result, Bitmap barcode) {
         inactivityTimer.onActivity();
         playBeepSoundAndVibrate();
