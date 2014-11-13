@@ -70,7 +70,7 @@ public final class ViewfinderView extends View {
     /**
      * 中间那条线每次刷新移动的距离
      */
-    private static final int SPEEN_DISTANCE = 5;
+    private static final int SPEEN_DISTANCE = 3;
 
     /**
      * 手机的屏幕密度
@@ -197,8 +197,11 @@ public final class ViewfinderView extends View {
             paint.setColor(Color.WHITE);
             paint.setTextSize(TEXT_SIZE * density);
             paint.setAlpha(0x40);
-            paint.setTypeface(Typeface.create("System", Typeface.BOLD));
-            canvas.drawText(getResources().getString(R.string.scan_text), frame.left, (float) (frame.bottom + (float) TEXT_PADDING_TOP * density), paint);
+            paint.setTypeface(Typeface.create("System", Typeface.NORMAL));
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setAntiAlias(true); // 消除锯齿
+//            paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+            canvas.drawText(getResources().getString(R.string.scan_text), canvas.getWidth()/2, frame.bottom + (float) TEXT_PADDING_TOP * density, paint);
 
 
             Collection<ResultPoint> currentPossible = possibleResultPoints;

@@ -2,9 +2,7 @@ package cn.alphabets.light.qrcode;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
@@ -40,9 +38,6 @@ public class MipcaActivityCapture extends Activity implements Callback {
     private Vector<BarcodeFormat> decodeFormats;
     private String characterSet;
     private InactivityTimer inactivityTimer;
-    private MediaPlayer mediaPlayer;
-    private boolean playBeep;
-    private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
 
     /**
@@ -55,16 +50,6 @@ public class MipcaActivityCapture extends Activity implements Callback {
         //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
         CameraManager.init(getApplication());
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
-
-//		Button mButtonBack = (Button) findViewById(R.id.button_back);
-//		mButtonBack.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				MipcaActivityCapture.this.finish();
-//
-//			}
-//		});
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
     }
@@ -83,11 +68,6 @@ public class MipcaActivityCapture extends Activity implements Callback {
         decodeFormats = null;
         characterSet = null;
 
-        playBeep = true;
-        AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
-        if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-            playBeep = false;
-        }
         //initBeepSound();
         vibrate = true;
 
@@ -202,9 +182,6 @@ public class MipcaActivityCapture extends Activity implements Callback {
     private static final long VIBRATE_DURATION = 200L;
 
     private void playBeepSoundAndVibrate() {
-        if (playBeep && mediaPlayer != null) {
-            mediaPlayer.start();
-        }
         if (vibrate) {
             Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
             vibrator.vibrate(VIBRATE_DURATION);
