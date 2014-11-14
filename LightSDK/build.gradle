@@ -23,4 +23,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.mcxiaoke.volley:library:1.0.+'
     compile 'com.google.zxing:core:3.0.+'
+    compile 'de.mindpipe.android:android-logging-log4j:1.0.+'
+    compile 'log4j:log4j:1.2.+'
 }
