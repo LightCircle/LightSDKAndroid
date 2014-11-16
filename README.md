@@ -5,6 +5,8 @@ LightSDKAndroid
 - http请求的异步封装
 - 异步文件文件上传
 - 二维码扫描
+- 输出log到文件
+- zip压缩解压
 
 ## 使用步骤
 Light平台的Android SDK通过 aar 包这种方式提供，因此使用SDK的步骤主要分为两步
