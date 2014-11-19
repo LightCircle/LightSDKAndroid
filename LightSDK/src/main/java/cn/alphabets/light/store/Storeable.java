@@ -61,7 +61,7 @@ public class Storeable {
 
     private static void storeToFile(Context ctx, String key, Serializable data) throws IOException, NoSuchAlgorithmException {
 
-        File dir = new File(ctx.getFilesDir() + File.separator + "store");
+        File dir = new File(ctx.getExternalFilesDir(null) + File.separator + "store");
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -101,7 +101,7 @@ public class Storeable {
         ObjectInputStream ois = null;
         T result = null;
         try {
-            File dir = new File(ctx.getFilesDir() + File.separator + "store");
+            File dir = new File(ctx.getExternalFilesDir(null) + File.separator + "store");
             File path = new File(dir.toString() + File.separator + Util.md5(key) + ".dat");
             in = new FileInputStream(path);
             ois = new ObjectInputStream(in);
