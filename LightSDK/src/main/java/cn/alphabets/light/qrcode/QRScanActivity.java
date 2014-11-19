@@ -3,8 +3,6 @@ package cn.alphabets.light.qrcode;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -164,7 +162,6 @@ public class QRScanActivity extends Activity implements Callback {
             vibrator.vibrate(VIBRATE_DURATION);
         }
     }
-
 
 
 }

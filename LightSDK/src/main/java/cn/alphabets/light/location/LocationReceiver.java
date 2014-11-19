@@ -13,7 +13,7 @@ public class LocationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Location loc = (Location)intent.getParcelableExtra(LocationManager.KEY_LOCATION_CHANGED);
+        Location loc = (Location) intent.getParcelableExtra(LocationManager.KEY_LOCATION_CHANGED);
         if (loc != null) {
             onLocationReceived(context, loc);
             return;
@@ -24,11 +24,11 @@ public class LocationReceiver extends BroadcastReceiver {
             onProviderEnabledChanged(enabled);
         }
     }
-    
+
     protected void onLocationReceived(Context context, Location loc) {
         Log.d(TAG, this + " Got location from " + loc.getProvider() + ": " + loc.getLatitude() + ", " + loc.getLongitude());
     }
-    
+
     protected void onProviderEnabledChanged(boolean enabled) {
         Log.d(TAG, "Provider " + (enabled ? "enabled" : "disabled"));
     }
