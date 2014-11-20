@@ -1,6 +1,7 @@
 package cn.alphabets.light.network;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -27,11 +28,26 @@ import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.Map;
 
+import cn.alphabets.light.UI.MaskFragment;
+
 /**
  * Created by 罗浩 on 14/11/7.
  */
 public class NetworkActivity extends Activity {
     private RequestQueue queue;
+    private MaskFragment shownMask;
+
+    public void loading(boolean show) {
+        if (show && shownMask == null) {
+            shownMask = new MaskFragment();
+            shownMask.show(getFragmentManager(), MaskFragment.TAG);
+        }
+        if (!show && shownMask != null) {
+            shownMask.dismiss();
+            shownMask = null;
+        }
+
+    }
 
     public Request DoRequest(int method,
                              String url,
