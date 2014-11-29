@@ -38,15 +38,15 @@ public class NetworkActivity extends Activity {
     private MaskFragment shownMask;
 
     public void loading(boolean show) {
-        if (show && shownMask == null) {
+        if (shownMask == null) {
             shownMask = new MaskFragment();
+        }
+        if (show && (shownMask.getDialog() == null || !shownMask.getDialog().isShowing())) {
             shownMask.show(getFragmentManager(), MaskFragment.TAG);
         }
-        if (!show && shownMask != null) {
+        if (!show && shownMask.getDialog().isShowing()) {
             shownMask.dismiss();
-            shownMask = null;
         }
-
     }
 
     public Request DoRequest(int method,
