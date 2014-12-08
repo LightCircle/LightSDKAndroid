@@ -1,4 +1,4 @@
-package cn.alphabets.light.UI;
+package cn.alphabets.light.ui;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
