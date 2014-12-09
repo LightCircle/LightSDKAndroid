@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.alphabets.light.qrcode.zxing.decoding;
+package cn.alphabets.thirdparty.qrcode.zxing.decoding;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,9 +32,9 @@ import com.google.zxing.common.HybridBinarizer;
 import java.util.Hashtable;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.qrcode.QRScanActivity;
-import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
-import cn.alphabets.light.qrcode.zxing.camera.PlanarYUVLuminanceSource;
+import cn.alphabets.thirdparty.qrcode.QRScanActivity;
+import cn.alphabets.thirdparty.qrcode.zxing.camera.CameraManager;
+import cn.alphabets.thirdparty.qrcode.zxing.camera.PlanarYUVLuminanceSource;
 
 final class DecodeHandler extends Handler {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.alphabets.light.qrcode.zxing.decoding;
+package cn.alphabets.thirdparty.qrcode.zxing.decoding;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,9 +31,9 @@ import com.google.zxing.Result;
 import java.util.Vector;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.qrcode.QRScanActivity;
-import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
-import cn.alphabets.light.qrcode.zxing.view.ViewfinderResultPointCallback;
+import cn.alphabets.thirdparty.qrcode.QRScanActivity;
+import cn.alphabets.thirdparty.qrcode.zxing.camera.CameraManager;
+import cn.alphabets.thirdparty.qrcode.zxing.view.ViewfinderResultPointCallback;
 
 /**
  * This class handles all the messaging which comprises the state machine for capture.

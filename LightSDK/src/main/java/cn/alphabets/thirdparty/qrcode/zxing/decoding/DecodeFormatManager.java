@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.alphabets.light.qrcode.zxing.decoding;
+package cn.alphabets.thirdparty.qrcode.zxing.decoding;
 
 import android.content.Intent;
 import android.net.Uri;

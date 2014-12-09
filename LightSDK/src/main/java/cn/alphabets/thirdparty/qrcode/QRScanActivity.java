@@ -1,4 +1,4 @@
-package cn.alphabets.light.qrcode;
+package cn.alphabets.thirdparty.qrcode;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,10 +18,10 @@ import java.io.IOException;
 import java.util.Vector;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
-import cn.alphabets.light.qrcode.zxing.decoding.CaptureActivityHandler;
-import cn.alphabets.light.qrcode.zxing.decoding.InactivityTimer;
-import cn.alphabets.light.qrcode.zxing.view.ViewfinderView;
+import cn.alphabets.thirdparty.qrcode.zxing.camera.CameraManager;
+import cn.alphabets.thirdparty.qrcode.zxing.decoding.CaptureActivityHandler;
+import cn.alphabets.thirdparty.qrcode.zxing.decoding.InactivityTimer;
+import cn.alphabets.thirdparty.qrcode.zxing.view.ViewfinderView;
 
 /**
  * Initial the camera

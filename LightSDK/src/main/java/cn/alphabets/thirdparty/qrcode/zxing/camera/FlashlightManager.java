@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.alphabets.light.qrcode.zxing.camera;
+package cn.alphabets.thirdparty.qrcode.zxing.camera;
 
 import android.os.IBinder;
 import android.util.Log;

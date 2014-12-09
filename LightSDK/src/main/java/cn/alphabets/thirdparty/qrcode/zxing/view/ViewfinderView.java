@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.alphabets.light.qrcode.zxing.view;
+package cn.alphabets.thirdparty.qrcode.zxing.view;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.qrcode.zxing.camera.CameraManager;
+import cn.alphabets.thirdparty.qrcode.zxing.camera.CameraManager;
 
 /**
  * This view is overlaid on top of the camera preview. It adds the viewfinder

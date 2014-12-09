@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.alphabets.light.qrcode.zxing.decoding;
+package cn.alphabets.thirdparty.qrcode.zxing.decoding;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -27,7 +27,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 
-import cn.alphabets.light.qrcode.QRScanActivity;
+import cn.alphabets.thirdparty.qrcode.QRScanActivity;
 
 /**
  * This thread does all the heavy lifting of decoding the images.
