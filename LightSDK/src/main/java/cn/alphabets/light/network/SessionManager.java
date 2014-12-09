@@ -1,66 +1,84 @@
 package cn.alphabets.light.network;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cn.alphabets.light.model.ModelUser;
+import cn.alphabets.light.model.ResponseParser;
+import cn.alphabets.light.setting.Default;
+import cn.alphabets.light.util.SharedData;
 
 /**
- * Created by 罗浩 on 14/11/7.
+ * Session管理
+ * Created by luohao on 14/10/17.
  */
 public class SessionManager {
 
-    public static String Scheme;
-    public static String Host;
-    public static String Port;
+    public static final String USER_INFO = "UserInfo";
 
-    private static final String StorePrefix = "cn.alphabets.light.network";
-    private static final String CookieStoreKey = "cn.alphabets.light.network.cookie";
-    private static final String CSRFStoreKey = "cn.alphabets.light.network.csrf";
-    private static String CookieString;
-    private static String CSRFString;
+    private static String cookie;
+    private static String csrf;
 
-    public static String getCookieString(Context ctx) {
-        if (CookieString != null) {
-            return CookieString;
-        } else {
-            SharedPreferences sp = ctx.getApplicationContext().getSharedPreferences(StorePrefix, Context.MODE_PRIVATE);
-            CookieString = sp.getString(CookieStoreKey, null);
-            return CookieString;
+    public static String getCookie() {
+        if (cookie != null) {
+            return cookie;
         }
+
+        return SharedData.getInstance().get(Default.CookieName);
     }
 
-    public static void setCookieString(Context ctx, String newStr) {
-        if (newStr == null) {
+    public static void setCookie(String cookie) {
+        if (cookie == null) {
             return;
         }
-        if (CookieString == null || !CookieString.equals(newStr)) {
-            CookieString = newStr;
-            SharedPreferences sp = ctx.getApplicationContext().getSharedPreferences(StorePrefix, Context.MODE_PRIVATE);
-            SharedPreferences.Editor e = sp.edit();
-            e.putString(CookieStoreKey, newStr);
-            e.commit();
+
+        if (SessionManager.cookie == null || !SessionManager.cookie.equals(cookie)) {
+            SessionManager.cookie = cookie;
+            SharedData.getInstance().push(Default.CookieName, cookie);
         }
     }
 
-    public static String getCSRFString(Context ctx) {
-        if (CSRFString != null) {
-            return CSRFString;
-        } else {
-            SharedPreferences sp = ctx.getApplicationContext().getSharedPreferences(StorePrefix, Context.MODE_PRIVATE);
-            CSRFString = sp.getString(CSRFStoreKey, null);
-            return CSRFString;
+    public static String getCsrf() {
+        if (csrf != null) {
+            return csrf;
         }
+        return SharedData.getInstance().get(Default.CsrfName);
     }
 
-    public static void setCSRFString(Context ctx, String newStr) {
-        if (newStr == null) {
+    public static void setCsrf(String csrf) {
+        if (csrf == null) {
             return;
         }
-        if (CSRFString == null || !CSRFString.equals(newStr)) {
-            CSRFString = newStr;
-            SharedPreferences sp = ctx.getApplicationContext().getSharedPreferences(StorePrefix, Context.MODE_PRIVATE);
-            SharedPreferences.Editor e = sp.edit();
-            e.putString(CSRFStoreKey, newStr);
-            e.commit();
+
+        if (SessionManager.csrf == null || !SessionManager.csrf.equals(csrf)) {
+            SessionManager.csrf = csrf;
+            SharedData.getInstance().push(Default.CsrfName, csrf);
         }
+    }
+
+    /**
+     * 获取用户对象，从SharedPreferences里获取登陆时保存的用户数据
+     * 转换出错，或未能获取用户数据会返回空的ModUser对象
+     * @return 用户对象
+     */
+    public static ModelUser getUser() {
+
+        JSONObject user;
+        try {
+            user = new JSONObject(SharedData.getInstance().get(USER_INFO));
+        } catch (JSONException e) {
+            return new ModelUser();
+        }
+
+        ResponseParser<ModelUser> modUser = ResponseParser.fromJson(user, ModelUser.getTypeToken());
+        return modUser.getDetail();
+    }
+
+    /**
+     * 保存登陆用户信息
+     * @param response
+     */
+    public static void saveUser(JSONObject response) {
+        SharedData.getInstance().push(USER_INFO, response.toString());
     }
 }

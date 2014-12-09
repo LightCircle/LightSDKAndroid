@@ -1,4 +1,4 @@
-package cn.alphabets.light.file;
+package cn.alphabets.light.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

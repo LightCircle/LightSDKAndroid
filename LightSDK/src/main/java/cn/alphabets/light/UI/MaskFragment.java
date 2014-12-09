@@ -1,40 +1,52 @@
 package cn.alphabets.light.ui;
 
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-
-import cn.alphabets.light.R;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 /**
- * Created by 罗浩 on 14/11/20.
+ * Mask
+ * Created by luo on 14/12/2.
  */
 public class MaskFragment extends DialogFragment {
-    public static String TAG = "LOADING_MASK";
-    private static int layout = -1;
 
-    public static int getLayout() {
+    public static final String TAG = "LOADING_MASK";
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // 设定背景为透明
+        this.getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        // 设定状态
+        this.setCancelable(false);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // 添加进度框
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout layout = new LinearLayout(getActivity());
+        ProgressBar progress = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyle);
+
+        layout.setLayoutParams(params);
+        layout.addView(progress);
+
         return layout;
     }
 
-    public static void setLayout(int layout) {
-        MaskFragment.layout = layout;
+    public void show(FragmentManager manager) {
+        this.show(manager, TAG);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        this.setCancelable(false);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (layout == -1) {
-            return inflater.inflate(R.layout.fragment_mask, container, false);
-        } else {
-
-            return inflater.inflate(layout, container, false);
-        }
+    public void hide() {
+        this.dismiss();
     }
-
 }

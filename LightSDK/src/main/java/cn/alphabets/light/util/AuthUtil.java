@@ -1,4 +1,4 @@
-package cn.alphabets.light;
+package cn.alphabets.light.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by 罗浩 on 14/11/19.
  */
-public class Util {
+public class AuthUtil {
     public static String md5(String string) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         byte[] hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
 
