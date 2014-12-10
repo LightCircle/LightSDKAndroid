@@ -14,7 +14,7 @@
 
     <application>
         <activity
-            android:name=".qrcode.QRScanActivity"
+            android:name="cn.alphabets.thirdparty.qrcode.QRScanActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
         <!--<service-->
             <!--android:name="cn.alphabets.light.location.LocationTrackService"-->

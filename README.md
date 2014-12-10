@@ -22,4 +22,5 @@ Light平台的Android SDK通过 aar 包这种方式提供，因此使用SDK的�
 
 ### 再你的 Android 工程中使用 arr包的步骤:
 
-（有空再写）
+ - 菜单 File -> Import Module -> Source directory -> 选择LightAndroidSDK目录
+ - 创建LightSDK/libs，LightSDK/src, LightSDK/build.gradle 的链接到LightAndroidSDK目录

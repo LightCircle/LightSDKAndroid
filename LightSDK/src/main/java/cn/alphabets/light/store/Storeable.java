@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 
-import cn.alphabets.light.Util;
+import cn.alphabets.light.util.AuthUtil;
 
 /**
  * Created by 罗浩 on 14/11/19.
@@ -43,7 +43,7 @@ public class Storeable {
             return;
         }
         try {
-            File path = new File(ctx.getExternalFilesDir(null) + File.separator + "store" + File.separator + Util.md5(key) + ".dat");
+            File path = new File(ctx.getExternalFilesDir(null) + File.separator + "store" + File.separator + AuthUtil.md5(key) + ".dat");
             if (path.exists()) {
                 path.delete();
             }
@@ -86,7 +86,7 @@ public class Storeable {
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        File path = new File(dir.toString() + File.separator + Util.md5(key) + ".dat");
+        File path = new File(dir.toString() + File.separator + AuthUtil.md5(key) + ".dat");
         if (path.exists()) {
             path.delete();
         }
@@ -128,7 +128,7 @@ public class Storeable {
         ObjectInputStream ois = null;
         try {
             File dir = new File(ctx.getExternalFilesDir(null) + File.separator + "store");
-            File path = new File(dir.toString() + File.separator + Util.md5(key) + ".dat");
+            File path = new File(dir.toString() + File.separator + AuthUtil.md5(key) + ".dat");
             if (!path.exists()) {
                 return result;
             }
