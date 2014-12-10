@@ -53,12 +53,12 @@ public class ABFragment extends Fragment {
      * @param params
      * @param listener
      */
-    public void GET(String url, Parameter params, Success listener) {
-        this.request(Request.Method.GET, url, params, listener);
+    public AuthJsonRequest GET(String url, Parameter params, Success listener) {
+        return this.request(Request.Method.GET, url, params, listener);
     }
 
-    public void POST(String url, Parameter params, Success listener) {
-        this.request(Request.Method.POST, url, params, listener);
+    public AuthJsonRequest POST(String url, Parameter params, Success listener) {
+        return this.request(Request.Method.POST, url, params, listener);
     }
 
     public void PUT(String url, Parameter params, Success listener) {
@@ -138,7 +138,7 @@ public class ABFragment extends Fragment {
      * @param params 请求参数
      * @param listener 请求成功
      */
-    private void request(int method, String url, Parameter params, final Success listener) {
+    private AuthJsonRequest request(int method, String url, Parameter params, final Success listener) {
 
         this.showWaiting();
         AuthJsonRequest request = VolleyManager.getJsonRequest(method, url, params, new Response.Listener<JSONObject>() {
@@ -151,6 +151,7 @@ public class ABFragment extends Fragment {
 
         // 设定tag
         request.setTag(this);
+        return request;
     }
 
     /**

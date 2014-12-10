@@ -18,7 +18,7 @@ import cn.alphabets.light.setting.Default;
  */
 public class AuthJsonRequest extends JsonObjectRequest {
 
-    public Map<String, String> headers;
+    private Map<String, String> headers;
 
     public AuthJsonRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         super(method, url, jsonRequest, listener, errorListener);

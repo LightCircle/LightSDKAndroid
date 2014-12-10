@@ -1,8 +1,13 @@
 package cn.alphabets.light.network;
 
+import com.android.volley.AuthFailureError;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
+import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.model.ModelUser;
 import cn.alphabets.light.model.ResponseParser;
 import cn.alphabets.light.setting.Default;
@@ -18,6 +23,12 @@ public class SessionManager {
 
     private static String cookie;
     private static String csrf;
+
+    public static void initialize(AuthJsonRequest request) {
+        Map<String, String> handlers = request.getResponseHeaders();
+        setCookie(handlers.get(Default.ServerCookieName).split(";")[0]);
+        setCsrf(handlers.get(Default.ServerCsrfName));
+    }
 
     public static String getCookie() {
         if (cookie != null) {
@@ -63,11 +74,17 @@ public class SessionManager {
      */
     public static ModelUser getUser() {
 
+        // 获取保存的用户数据
+        String json = SharedData.getInstance().get(USER_INFO);
+        if (json == null) {
+            return null;
+        }
+
         JSONObject user;
         try {
-            user = new JSONObject(SharedData.getInstance().get(USER_INFO));
+            user = new JSONObject(json);
         } catch (JSONException e) {
-            return new ModelUser();
+            return null;
         }
 
         ResponseParser<ModelUser> modUser = ResponseParser.fromJson(user, ModelUser.getTypeToken());
