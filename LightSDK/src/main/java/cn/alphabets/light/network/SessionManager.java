@@ -98,4 +98,11 @@ public class SessionManager {
     public static void saveUser(JSONObject response) {
         SharedData.getInstance().push(USER_INFO, response.toString());
     }
+
+    /**
+     * 清除用户数据
+     */
+    public static void clearUser() {
+        SharedData.getInstance().pop(USER_INFO);
+    }
 }

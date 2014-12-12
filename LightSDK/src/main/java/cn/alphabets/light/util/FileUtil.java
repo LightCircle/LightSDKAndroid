@@ -1,7 +1,11 @@
 package cn.alphabets.light.util;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,12 +35,20 @@ public class FileUtil {
      */
     public static String saveBitmap(Bitmap bitmap) throws IOException {
 
-        File file = new File(getCacheDir(), UUID.randomUUID().toString());
+        File file = getTemporaryFile();
         FileOutputStream stream = new FileOutputStream(file);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
         stream.close();
 
         return file.getAbsolutePath();
+    }
+
+    /**
+     * 获取临时文件
+     * @return 临时文件路径
+     */
+    public static File getTemporaryFile() {
+        return new File(getCacheDir(), UUID.randomUUID().toString());
     }
 
     /**
@@ -82,5 +94,23 @@ public class FileUtil {
             Logger.e(e);
             throw new NetworkException(e.getMessage());
         }
+    }
+
+    /**
+     * 获取图片库路径
+     * @param uri url
+     * @param context context
+     * @return 路径
+     */
+    public static String getPhotoLibraryPath(Uri uri, Context context) {
+
+        String[] projection = { MediaStore.Images.Media.DATA };
+
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
     }
 }

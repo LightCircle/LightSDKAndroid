@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  * Mod的父类，处理共通字段
  * Created by luohao on 14/10/17.
@@ -13,9 +15,9 @@ public class BasicModel {
 
     protected String _id;
     protected String valid;
-    protected String createAt;
+    protected Date createAt;
     protected String createBy;
-    protected String updateAt;
+    protected Date updateAt;
     protected String updateBy;
 
     public String get_id() {
@@ -34,11 +36,11 @@ public class BasicModel {
         this.valid = valid;
     }
 
-    public String getCreateAt() {
+    public Date getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(String createAt) {
+    public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 
@@ -50,11 +52,11 @@ public class BasicModel {
         this.createBy = createBy;
     }
 
-    public String getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(String updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 

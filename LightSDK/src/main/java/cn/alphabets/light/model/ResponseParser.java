@@ -1,12 +1,15 @@
 package cn.alphabets.light.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import cn.alphabets.light.setting.Default;
 
 /**
  * 后台请求的结果对象，处理JSON与数据的转换
@@ -44,7 +47,7 @@ public class ResponseParser<T> {
      */
     public static <C> ResponseParser<C> fromJson(JSONObject json, TypeToken type) {
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat(Default.TimestampFormat).create();
 
         try {
             ResponseParser<C> result = new ResponseParser<C>();

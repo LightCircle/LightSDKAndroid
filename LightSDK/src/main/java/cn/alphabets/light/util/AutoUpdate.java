@@ -75,8 +75,7 @@ public class AutoUpdate {
     public static void downloadAPK(String url, UpdateListener listener) {
         DownloadTask task = new DownloadTask();
         task.listener = listener;
-        File file = new File(FileUtil.getCacheDir(), UUID.randomUUID().toString());
-        task.execute(url, file.getAbsolutePath());
+        task.execute(url, FileUtil.getTemporaryFile().getAbsolutePath());
     }
 
     /**
