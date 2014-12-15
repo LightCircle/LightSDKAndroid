@@ -36,12 +36,15 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     /** 是否有右向指示器 */
     private boolean showIndicator = true;
 
+    /** 列表行的资源ID */
+    private int resource;
+
 
     /**
      * 选择行
      */
     public interface Click {
-        public void onItemClick(View view, int position);
+        public void done(View view, int position);
     }
 
 
@@ -115,10 +118,26 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
      * 内容类
      */
     public static class Pair {
-        String title;
-        String value;
-        boolean indicator;
-        int icon;
+        private String title;
+        private String value;
+        private boolean indicator;
+        private int icon;
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
 
         public Pair(String title, String value) {
             this(title, value, false, 0);
@@ -138,6 +157,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
     public SimpleList(Context context, int resource) {
         super(context, resource);
+        this.resource = resource;
     }
 
     @Override
@@ -148,25 +168,24 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
     /**
      * 绑定视图，设定点击事件
-     * @param resListView
      * @param onClick
      */
-    public void bindListView(int resListView, final Click onClick) {
+    public void bindListView(final Click onClick) {
 
-        ListView view = (ListView) ((Activity) getContext()).findViewById(resListView);
+        ListView view = (ListView) ((Activity) getContext()).findViewById(this.resource);
         view.setAdapter(this);
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (onClick != null) {
-                    onClick.onItemClick(view, position);
+                    onClick.done(view, position);
                 }
             }
         });
     }
 
-    public void bindListView(int resListView) {
-        bindListView(resListView, null);
+    public void bindListView() {
+        bindListView(null);
     }
 
     public void hideIndicator() {

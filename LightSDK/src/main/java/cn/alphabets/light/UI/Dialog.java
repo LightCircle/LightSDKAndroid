@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -26,8 +27,14 @@ public class Dialog {
 
     private static Toast toast;
 
-    public static final int REQUEST_TAKE_PHOTO = 100;
-    public static final int REQUEST_CHOOSE_PHOTO = 101;
+    public static final int REQUEST_TAKE_PHOTO = 1000;
+
+    /**
+     * 选择行
+     */
+    public interface Click {
+        public void done(int which);
+    }
 
     /**
      * 显示Toast信息
@@ -52,17 +59,22 @@ public class Dialog {
      * @param context activity
      * @param msg 信息内容
      */
-    public static void confirm(Activity context, int msg, DialogInterface.OnClickListener listener) {
-        confirm(context, ContextManager.getInstance().getResources().getString(msg), listener);
+    public static void confirm(Activity context, Click listener, int msg) {
+        confirm(context, listener, ContextManager.getInstance().getResources().getString(msg));
     }
-    public static void confirm(Activity context, String msg, DialogInterface.OnClickListener listener) {
+    public static void confirm(Activity context, final Click listener, String msg) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder.setMessage(msg);
-        builder.setPositiveButton("Yes", listener);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.done(which);
+            }
+        });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
@@ -72,12 +84,53 @@ public class Dialog {
         dialog.show();
     }
 
+
+    /**
+     * 选择
+     * @param context
+     * @param listener
+     * @param positive
+     * @param neutral
+     */
+    public static void choose(final Object context, final Click listener, String title, String positive, String neutral) {
+
+        Activity activity = context instanceof Fragment ? ((Fragment) context).getActivity() : (Activity) context;
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        builder.setMessage(title);
+        builder.setPositiveButton(positive, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.done(which);
+            }
+        });
+
+        builder.setNeutralButton(neutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.done(which);
+            }
+        });
+
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.done(which);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.show();
+    }
+
+
     /**
      * 拍摄或选择照片，调用端需要使用onActivityResult来获取图片
      * @param context Activity或Fragment
      * @param msg 对话框消息
      */
-    public static void takePhoto(final Object context, String msg) {
+    public static void takePhoto(final Object context, String msg, final int requestCode) {
 
         Activity activity = context instanceof Fragment ? ((Fragment) context).getActivity() : (Activity) context;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -93,10 +146,10 @@ public class Dialog {
                 // intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
 
                 if (context instanceof  Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+                    ((Fragment) context).startActivityForResult(intent, requestCode);
                 }
                 if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+                    ((Activity) context).startActivityForResult(intent, requestCode);
                 }
                 dialog.dismiss();
             }
@@ -109,10 +162,10 @@ public class Dialog {
                 intent.setType("image/*");
 
                 if (context instanceof  Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
+                    ((Fragment) context).startActivityForResult(intent, requestCode);
                 }
                 if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
+                    ((Activity) context).startActivityForResult(intent, requestCode);
                 }
                 dialog.dismiss();
             }
@@ -128,6 +181,9 @@ public class Dialog {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.show();
     }
+    public static void takePhoto(final Object context, String msg) {
+        takePhoto(context, msg, Dialog.REQUEST_TAKE_PHOTO);
+    }
 
     /**
      * 解析图片，与takePhoto方法配合使用
@@ -138,7 +194,9 @@ public class Dialog {
      */
     public static String parsePhoto(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == Dialog.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+        if (data.getData() == null) {
+
+            // 拍摄的照片
             Bitmap bitmap = (Bitmap)data.getExtras().get("data");
             try {
                 return FileUtil.saveBitmap(bitmap);
@@ -146,12 +204,10 @@ public class Dialog {
                 Logger.e(e);
                 throw new ApplicationException(e);
             }
-        }
+        } else {
 
-        if (requestCode == Dialog.REQUEST_CHOOSE_PHOTO && resultCode == Activity.RESULT_OK) {
+            // 从图库选择
             return FileUtil.getPhotoLibraryPath(data.getData(), ContextManager.getInstance());
         }
-
-        return "";
     }
 }

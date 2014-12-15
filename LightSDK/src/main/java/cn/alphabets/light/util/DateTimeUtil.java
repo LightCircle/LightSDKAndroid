@@ -1,7 +1,27 @@
 package cn.alphabets.light.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
- * Created by lilin on 14/12/4.
+ * 日期操作
+ * Created by lin on 14/12/4.
  */
 public class DateTimeUtil {
+
+    /**
+     * 格式化日期
+     * @param date 日期
+     * @param format 格式
+     * @return
+     */
+    public static String format(Date date, String format) {
+        DateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+    public static String format(Date date) {
+        return format(date, "yyyy-MM-dd HH:mm");
+    }
+
 }
