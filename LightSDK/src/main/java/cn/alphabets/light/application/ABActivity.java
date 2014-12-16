@@ -1,9 +1,9 @@
 package cn.alphabets.light.application;
 
 import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -12,11 +12,13 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import cn.alphabets.light.R;
 import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.network.AuthJsonRequest;
 import cn.alphabets.light.network.AuthMultipartRequest;
 import cn.alphabets.light.network.Parameter;
 import cn.alphabets.light.network.VolleyManager;
+import cn.alphabets.light.ui.Dialog;
 import cn.alphabets.light.ui.MaskFragment;
 
 /**
@@ -39,13 +41,6 @@ public class ABActivity extends Activity {
      */
     public interface Success {
         public void onResponse(JSONObject response);
-    }
-
-    public void setBackActionBar(String title) {
-        this.setTitle(title);
-        this.getActionBar().setHomeButtonEnabled(true);
-        this.getActionBar().setDisplayHomeAsUpEnabled(true);
-        this.getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
     /**
@@ -166,6 +161,15 @@ public class ABActivity extends Activity {
         if (this.mask.isVisible()) {
             this.mask.hide();
         }
+
+        // 无法连接服务器
+        if (error instanceof NoConnectionError) {
+            Dialog.toast(R.string.network_error);
+            return;
+        }
+
+        // 其他错误
+        Dialog.toast(R.string.network_error_unknown);
     }
 
     @Override
