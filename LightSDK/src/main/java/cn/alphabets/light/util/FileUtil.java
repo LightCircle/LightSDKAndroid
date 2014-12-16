@@ -3,11 +3,14 @@ package cn.alphabets.light.util;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +44,26 @@ public class FileUtil {
         stream.close();
 
         return file.getAbsolutePath();
+    }
+
+    public static Bitmap loadBitmap(String path) {
+        try {
+            return BitmapFactory.decodeStream(new FileInputStream(new File(path)));
+        } catch (FileNotFoundException e) {
+            Logger.e(e);
+        }
+
+        return null;
+    }
+
+    public static Bitmap loadScaledBitmap(String path, int width) {
+        Bitmap bitmap = loadBitmap(path);
+        int height = width * bitmap.getHeight() / bitmap.getWidth();
+        return Bitmap.createScaledBitmap(bitmap, width, height, false);
+    }
+
+    public static Bitmap loadBitmap(int resource) {
+        return BitmapFactory.decodeResource(ContextManager.getInstance().getResources(), resource);
     }
 
     /**

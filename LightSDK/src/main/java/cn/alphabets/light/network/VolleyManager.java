@@ -180,8 +180,12 @@ public class VolleyManager {
     private static String getURL(String url, int method, JSONObject params) {
         Uri.Builder builder = new Uri.Builder();
 
-        // make server address
-        builder.scheme(Default.Protocol).encodedAuthority(Default.Server + ":" + Default.Port).appendEncodedPath(url);
+        // make server address (Support to specify the full URL)
+        if (url.toLowerCase().contains(Default.Protocol)) {
+            builder.encodedPath(url);
+        } else {
+            builder.scheme(Default.Protocol).encodedAuthority(Default.Server + ":" + Default.Port).appendEncodedPath(url);
+        }
 
         // add csrf token
         if (method == Request.Method.POST || method == Request.Method.PUT || method == Request.Method.DELETE) {

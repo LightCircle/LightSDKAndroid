@@ -2,6 +2,7 @@ package cn.alphabets.light.application;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -31,7 +32,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     private static final int DEFAULT_PADDING = 10;
 
     /** 左边宽 dp单位 */
-    private static final int DEFAULT_LEFT_WIDTH = 100;
+    private static final int DEFAULT_LEFT_WIDTH = 125;
 
     /** 是否有右向指示器 */
     private boolean showIndicator = true;
@@ -51,7 +52,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     /**
      * 视图类，Programatically set view
      */
-    public static class ListRowView extends LinearLayout {
+    public class ListRowView extends LinearLayout {
 
         /**
          * 构筑函数
@@ -68,6 +69,8 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             setPadding(padding, padding, 0, padding);
             setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
             setGravity(Gravity.CENTER);
+            setVerticalScrollBarEnabled(false);
+            setHorizontalScrollBarEnabled(false);
 
             // Icon
             if (pair.icon > 0) {
@@ -97,6 +100,17 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             valueView.setText(pair.value);
             addView(valueView);
 
+            // Right image view
+            if (pair.image != null) {
+                ImageView image = new ImageView(context);
+                LayoutParams imageParams = new LayoutParams(pixel(50), pixel(50));
+                image.setLayoutParams(imageParams);
+                image.setImageResource(R.drawable.ic_launcher);
+                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                image.setImageBitmap(pair.image);
+                addView(image);
+            }
+
             // Indicator
             ImageView indicator = new ImageView(context);
             int width = showIndicator ? pixel(15) : pixel(5);
@@ -120,38 +134,40 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     public static class Pair {
         private String title;
         private String value;
+        private Bitmap image;
         private boolean indicator;
         private int icon;
 
-        public String getValue() {
-            return value;
-        }
-
         public void setValue(String value) {
             this.value = value;
-        }
-
-        public String getTitle() {
-            return title;
         }
 
         public void setTitle(String title) {
             this.title = title;
         }
 
-        public Pair(String title, String value) {
-            this(title, value, false, 0);
+        public void setBitmap(Bitmap image) {
+            this.image = image;
         }
 
-        public Pair(String title, String value, boolean indicator) {
-            this(title, value, indicator, 0);
-        }
-
-        public Pair(String title, String value, boolean indicator, int icon) {
+        public Pair(String title, String value, boolean indicator, int icon, Bitmap image) {
             this.title = title;
             this.value = value;
             this.indicator = indicator;
             this.icon = icon;
+            this.image = image;
+        }
+
+        public Pair(String title, String value) {
+            this(title, value, false, 0, null);
+        }
+
+        public Pair(String title, String value, boolean indicator) {
+            this(title, value, indicator, 0, null);
+        }
+
+        public Pair(String title, String value, boolean indicator, int icon) {
+            this(title, value, indicator, icon, null);
         }
     }
 

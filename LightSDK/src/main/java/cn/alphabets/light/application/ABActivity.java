@@ -1,6 +1,7 @@
 package cn.alphabets.light.application;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -38,6 +39,13 @@ public class ABActivity extends Activity {
      */
     public interface Success {
         public void onResponse(JSONObject response);
+    }
+
+    public void setBackActionBar(String title) {
+        this.setTitle(title);
+        this.getActionBar().setHomeButtonEnabled(true);
+        this.getActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
     /**
