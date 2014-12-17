@@ -1,8 +1,10 @@
 package cn.alphabets.light.application;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,11 +21,17 @@ import cn.alphabets.light.network.AuthJsonRequest;
 import cn.alphabets.light.network.AuthMultipartRequest;
 import cn.alphabets.light.network.Parameter;
 import cn.alphabets.light.network.VolleyManager;
+import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.ui.Dialog;
 import cn.alphabets.light.ui.MaskFragment;
 
 /**
  * Activity父类
+ *
+ * 说明
+ *  1. Session超时时，会调用Default.BroadcastLogout，通常该broadcast应该实现注销任务，并跳转到登陆页面
+ *  2. Action包含所有Fragment的网络请求，当Action的onStop被调用时，会尝试停止说有网络请求
+ *
  * Created by lin on 14/12/2.
  */
 public class ABActivity extends Activity {
@@ -164,15 +172,21 @@ public class ABActivity extends Activity {
             this.mask.hide();
         }
 
+        // Session timeout
+        if (error instanceof AuthFailureError) {
+            sendBroadcast(new Intent(Default.BroadcastLogout));
+            return;
+        }
+
         // 无法连接服务器
         if (error instanceof NoConnectionError) {
-            Dialog.toast(R.string.server_error);
+            Dialog.toast(R.string.network_error);
             return;
         }
 
         // 服务器错误
         if (error instanceof ServerError) {
-            Dialog.toast(R.string.network_error);
+            Dialog.toast(R.string.server_error);
             return;
         }
 

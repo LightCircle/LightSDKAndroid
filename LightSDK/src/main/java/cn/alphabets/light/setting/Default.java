@@ -46,4 +46,9 @@ public class Default {
 
     public static final String TimestampFormat      = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
+
+    /**
+     * Broadcast names
+     */
+    public static final String BroadcastLogout      = "cn.alphabets.light.logout";
 }

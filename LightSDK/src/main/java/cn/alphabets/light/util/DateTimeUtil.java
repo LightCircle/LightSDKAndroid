@@ -24,4 +24,15 @@ public class DateTimeUtil {
         return format(date, "yyyy-MM-dd HH:mm");
     }
 
+    public static String shortDate(Date date) {
+        return format(date, "MM-dd");
+    }
+
+    public static String date(Date date) {
+        return format(date, "yyyy-MM-dd");
+    }
+
+    public static String time(Date date) {
+        return format(date, "HH:mm");
+    }
 }

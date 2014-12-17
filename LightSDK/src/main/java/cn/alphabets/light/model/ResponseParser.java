@@ -7,7 +7,10 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import cn.alphabets.light.setting.Default;
 
@@ -143,16 +146,57 @@ public class ResponseParser<T> {
         this.options = options;
     }
 
-    public JSONObject getOptionsUser() throws JSONException {
-        return this.getOptions().getJSONObject("user");
+    public Map<String, ModelUser> getOptionsUser() {
+
+        Map<String, ModelUser> result = new HashMap<>();
+        try {
+            JSONObject users = this.getOptions().getJSONObject("user");
+
+            Iterator<String> keys = users.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                JSONObject user = users.getJSONObject(key);
+                result.put(key, (ModelUser) ModelUser.parse(user, ModelUser.getTypeToken()));
+            }
+        } catch (JSONException e) {
+        }
+
+        return result;
     }
 
-    public JSONObject getOptionsGroup() throws JSONException {
-        return this.getOptions().getJSONObject("group");
+    public Map<String, ModelGroup> getOptionsGroup() {
+
+        Map<String, ModelGroup> result = new HashMap<>();
+        try {
+            JSONObject groups = this.getOptions().getJSONObject("group");
+
+            Iterator<String> keys = groups.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                JSONObject group = groups.getJSONObject(key);
+                result.put(key, (ModelGroup) ModelGroup.parse(group, ModelGroup.getTypeToken()));
+            }
+        } catch (JSONException e) {
+        }
+
+        return result;
     }
 
-    public JSONObject getOptionsCategory() throws JSONException {
-        return this.getOptions().getJSONObject("category");
+    public Map<String, ModelCategory> getOptionsCategory() {
+        Map<String, ModelCategory> result = new HashMap<>();
+        try {
+            JSONObject categories = this.getOptions().getJSONObject("category");
+
+            Iterator<String> keys = categories.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                JSONObject category = categories.getJSONObject(key);
+                result.put(key, (ModelCategory) ModelCategory.parse(category, ModelCategory.getTypeToken()));
+            }
+        } catch (JSONException e) {
+        }
+
+        return result;
     }
 
     public T getDetail() {

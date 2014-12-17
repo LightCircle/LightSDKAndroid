@@ -1,11 +1,15 @@
 package cn.alphabets.light.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+
+import cn.alphabets.light.setting.Default;
 
 /**
  * Mod的父类，处理共通字段
@@ -69,10 +73,19 @@ public class BasicModel {
     }
 
     public JSONObject toJSON() {
+        return toJSON(this);
+    }
+
+    public static JSONObject toJSON(BasicModel model) {
         try {
-            return new JSONObject(new Gson().toJson(this));
+            return new JSONObject(new Gson().toJson(model));
         } catch (JSONException e) {
             throw new RuntimeException("Converting object failed.");
         }
+    }
+
+    public static BasicModel parse(JSONObject json, TypeToken typeToken) {
+        Gson gson = new GsonBuilder().setDateFormat(Default.TimestampFormat).create();
+        return gson.fromJson(json.toString(), typeToken.getType());
     }
 }
