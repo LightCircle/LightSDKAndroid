@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
@@ -45,9 +46,9 @@ public class ABActivity extends Activity {
 
     /**
      * Get请求
-     * @param url
-     * @param params
-     * @param listener
+     * @param url url
+     * @param params params
+     * @param listener success callback function
      */
     public AuthJsonRequest GET(String url, Parameter params, Success listener) {
         return this.request(Request.Method.GET, url, params, listener);
@@ -57,25 +58,25 @@ public class ABActivity extends Activity {
         return this.request(Request.Method.POST, url, params, listener);
     }
 
-    public void PUT(String url, Parameter params, Success listener) {
-        this.request(Request.Method.PUT, url, params, listener);
+    public AuthJsonRequest PUT(String url, Parameter params, Success listener) {
+        return this.request(Request.Method.PUT, url, params, listener);
     }
 
-    public void DELETE(String url, Parameter params, Success listener) {
-        this.request(Request.Method.DELETE, url, params, listener);
+    public AuthJsonRequest DELETE(String url, Parameter params, Success listener) {
+        return this.request(Request.Method.DELETE, url, params, listener);
     }
 
-    public void UPLOAD(String url, Parameter params, final Success listener) {
-        this.request(url, params.toHash(), listener);
+    public AuthMultipartRequest UPLOAD(String url, Parameter params, final Success listener) {
+        return this.request(url, params.toHash(), listener);
     }
 
     /**
      * 禁止，启用Mask屏的显示
-     * @param isShowWaiting
+     * @param isShowWaiting 是否显示Mask
      */
     public void showWaiting(boolean isShowWaiting) {
         this.isShowWaiting = isShowWaiting;
-    };
+    }
 
     /**
      * 显示Mask屏
@@ -89,7 +90,7 @@ public class ABActivity extends Activity {
             return;
         }
         this.mask.show(getFragmentManager());
-    };
+    }
 
     /**
      * 隐藏Mask屏
@@ -107,11 +108,11 @@ public class ABActivity extends Activity {
 
     /**
      * 文件上传
-     * @param url
-     * @param params
-     * @param listener
+     * @param url url
+     * @param params params
+     * @param listener listener
      */
-    private void request(String url, Map<String, Object> params, final Success listener) {
+    private AuthMultipartRequest request(String url, Map<String, Object> params, final Success listener) {
 
         this.showWaiting();
         AuthMultipartRequest request = VolleyManager.getMultipartRequest(url, params, new Response.Listener<String>() {
@@ -124,6 +125,7 @@ public class ABActivity extends Activity {
 
         // 设定tag
         request.setTag(this);
+        return request;
     }
 
     /**
@@ -153,7 +155,7 @@ public class ABActivity extends Activity {
     /**
      * 网路请求错误处理
      */
-    protected void onRequestError(VolleyError error) {
+    public void onRequestError(VolleyError error) {
 
         Logger.e(error);
 
@@ -164,12 +166,18 @@ public class ABActivity extends Activity {
 
         // 无法连接服务器
         if (error instanceof NoConnectionError) {
+            Dialog.toast(R.string.server_error);
+            return;
+        }
+
+        // 服务器错误
+        if (error instanceof ServerError) {
             Dialog.toast(R.string.network_error);
             return;
         }
 
         // 其他错误
-        Dialog.toast(R.string.network_error_unknown);
+        Dialog.toast(R.string.unknown_error);
     }
 
     @Override
