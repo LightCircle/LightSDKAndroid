@@ -142,6 +142,10 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             this.value = value;
         }
 
+        public String getValue() {
+            return this.value;
+        }
+
         public void setTitle(String title) {
             this.title = title;
         }
