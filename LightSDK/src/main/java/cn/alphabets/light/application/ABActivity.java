@@ -87,6 +87,14 @@ public class ABActivity extends Activity {
     }
 
     /**
+     * 返回mask实例
+     * @return mask
+     */
+    public MaskFragment getMask() {
+        return this.mask;
+    }
+
+    /**
      * 显示Mask屏
      */
     private void showWaiting() {
@@ -104,10 +112,6 @@ public class ABActivity extends Activity {
      * 隐藏Mask屏
      */
     private void hideWaiting() {
-        if (!this.isShowWaiting) {
-            return;
-        }
-
         if (!this.mask.isVisible()) {
             return;
         }
@@ -167,10 +171,8 @@ public class ABActivity extends Activity {
 
         Logger.e(error);
 
-        // 隐藏Mask屏，这里不判断isShowWaiting，如果自定义的Fragment代码里使用了mask，则出错时全部关闭
-        if (this.mask.isVisible()) {
-            this.mask.hide();
-        }
+        // 隐藏Mask屏
+        hideWaiting();
 
         // Session timeout
         if (error instanceof AuthFailureError) {

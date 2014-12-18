@@ -20,6 +20,7 @@ public class DateTimeUtil {
         DateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
     }
+
     public static String format(Date date) {
         return format(date, "yyyy-MM-dd HH:mm");
     }
@@ -35,4 +36,6 @@ public class DateTimeUtil {
     public static String time(Date date) {
         return format(date, "HH:mm");
     }
+
+
 }

@@ -62,7 +62,7 @@ public class ABFragment extends Fragment {
      * 禁止，启用Mask屏的显示
      * @param isShowWaiting showWaiting
      */
-    public void showWaiting(boolean isShowWaiting) {
+    public void setShowWaiting(boolean isShowWaiting) {
         activity.showWaiting(isShowWaiting);
     };
 

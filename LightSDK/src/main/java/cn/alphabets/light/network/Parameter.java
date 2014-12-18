@@ -24,6 +24,11 @@ public class Parameter extends JSONObject {
         this.add(params);
     }
 
+    public Parameter(String name, Object value) {
+        super();
+        this.put(name, value);
+    }
+
     public Parameter put(String... params) {
         this.add(params);
         return this;
