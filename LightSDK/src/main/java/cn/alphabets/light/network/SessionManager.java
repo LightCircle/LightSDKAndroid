@@ -1,15 +1,12 @@
 package cn.alphabets.light.network;
 
-import com.android.volley.AuthFailureError;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
 
-import cn.alphabets.light.log.Logger;
+import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelUser;
-import cn.alphabets.light.model.ResponseParser;
 import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.util.SharedData;
 
@@ -87,7 +84,7 @@ public class SessionManager {
             return null;
         }
 
-        ResponseParser<ModelUser> modUser = ResponseParser.fromJson(user, ModelUser.getTypeToken());
+        GsonParser<ModelUser> modUser = GsonParser.fromJson(user, ModelUser.getTypeToken());
         return modUser.getDetail();
     }
 

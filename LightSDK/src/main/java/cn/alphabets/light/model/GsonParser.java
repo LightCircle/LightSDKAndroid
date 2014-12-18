@@ -18,7 +18,7 @@ import cn.alphabets.light.setting.Default;
  * 后台请求的结果对象，处理JSON与数据的转换
  * Created by luohao on 14/10/17.
  */
-public class ResponseParser<T> {
+public class GsonParser<T> {
 
     /** API版本 */
     private String apiVersion;
@@ -48,12 +48,12 @@ public class ResponseParser<T> {
      * @param <C> Mod类型
      * @return 转换后的类
      */
-    public static <C> ResponseParser<C> fromJson(JSONObject json, TypeToken type) {
+    public static <C> GsonParser<C> fromJson(JSONObject json, TypeToken type) {
 
         Gson gson = new GsonBuilder().setDateFormat(Default.TimestampFormat).create();
 
         try {
-            ResponseParser<C> result = new ResponseParser<C>();
+            GsonParser<C> result = new GsonParser<C>();
             if (json.has("apiVersion")) {
                 result.setApiVersion(json.getString("apiVersion"));
             }
@@ -146,7 +146,7 @@ public class ResponseParser<T> {
         this.options = options;
     }
 
-    public Map<String, ModelUser> getOptionsUser() {
+    public Map<String, ModelUser> getOptionsUser(TypeToken token) {
 
         Map<String, ModelUser> result = new HashMap<>();
         try {
@@ -156,15 +156,18 @@ public class ResponseParser<T> {
             while (keys.hasNext()) {
                 String key = keys.next();
                 JSONObject user = users.getJSONObject(key);
-                result.put(key, (ModelUser) ModelUser.parse(user, ModelUser.getTypeToken()));
+                result.put(key, (ModelUser) ModelUser.parse(user, token));
             }
         } catch (JSONException e) {
         }
 
         return result;
     }
+    public Map<String, ModelUser> getOptionsUser() {
+        return getOptionsUser(ModelUser.getTypeToken());
+    }
 
-    public Map<String, ModelGroup> getOptionsGroup() {
+    public Map<String, ModelGroup> getOptionsGroup(TypeToken token) {
 
         Map<String, ModelGroup> result = new HashMap<>();
         try {
@@ -174,15 +177,18 @@ public class ResponseParser<T> {
             while (keys.hasNext()) {
                 String key = keys.next();
                 JSONObject group = groups.getJSONObject(key);
-                result.put(key, (ModelGroup) ModelGroup.parse(group, ModelGroup.getTypeToken()));
+                result.put(key, (ModelGroup) ModelGroup.parse(group, token));
             }
         } catch (JSONException e) {
         }
 
         return result;
     }
+    public Map<String, ModelGroup> getOptionsGroup() {
+        return getOptionsGroup(ModelGroup.getTypeToken());
+    }
 
-    public Map<String, ModelCategory> getOptionsCategory() {
+    public Map<String, ModelCategory> getOptionsCategory(TypeToken token) {
         Map<String, ModelCategory> result = new HashMap<>();
         try {
             JSONObject categories = this.getOptions().getJSONObject("category");
@@ -191,12 +197,15 @@ public class ResponseParser<T> {
             while (keys.hasNext()) {
                 String key = keys.next();
                 JSONObject category = categories.getJSONObject(key);
-                result.put(key, (ModelCategory) ModelCategory.parse(category, ModelCategory.getTypeToken()));
+                result.put(key, (ModelCategory) ModelCategory.parse(category, token));
             }
         } catch (JSONException e) {
         }
 
         return result;
+    }
+    public Map<String, ModelCategory> getOptionsCategory() {
+        return getOptionsCategory(ModelCategory.getTypeToken());
     }
 
     public T getDetail() {

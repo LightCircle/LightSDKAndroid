@@ -15,12 +15,11 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.UUID;
 
 import cn.alphabets.light.exception.NetworkException;
 import cn.alphabets.light.log.Logger;
+import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelVersion;
-import cn.alphabets.light.model.ResponseParser;
 import cn.alphabets.light.network.ContextManager;
 import cn.alphabets.light.network.Parameter;
 import cn.alphabets.light.network.VolleyManager;
@@ -124,7 +123,7 @@ public class AutoUpdate {
             @Override
             public void onResponse(JSONObject response) {
 
-                ResponseParser<ModelVersion> result = ResponseParser.fromJson(response, ModelVersion.getTypeToken());
+                GsonParser<ModelVersion> result = GsonParser.fromJson(response, ModelVersion.getTypeToken());
                 ModelVersion remote = result.getDetail();
                 ModelVersion current = getCurrentVersion();
 
