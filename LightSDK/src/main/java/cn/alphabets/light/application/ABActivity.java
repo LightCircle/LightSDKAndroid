@@ -9,6 +9,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
@@ -189,6 +190,12 @@ public class ABActivity extends Activity {
         // 服务器错误
         if (error instanceof ServerError) {
             Dialog.toast(R.string.server_error);
+            return;
+        }
+
+        // 超时错误
+        if (error instanceof TimeoutError) {
+            Dialog.toast(R.string.timeout_error);
             return;
         }
 

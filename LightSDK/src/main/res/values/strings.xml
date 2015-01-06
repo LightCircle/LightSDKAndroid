@@ -5,6 +5,7 @@
 
     <string name="network_error">无法访问网络，请检查网络设置！</string>
     <string name="server_error">服务器错误，请稍后重试！</string>
+    <string name="timeout_error">服务器连接超时，请稍后重试！</string>
     <string name="unknown_error">未知网络错误，请稍后重试！</string>
 
 </resources>

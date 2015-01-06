@@ -1,18 +1,11 @@
 package cn.alphabets.light.util;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.RectF;
-import android.net.Uri;
-import android.provider.MediaStore;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import cn.alphabets.light.log.Logger;
 
@@ -28,8 +21,10 @@ public class ImageUtil {
 
     public static String scale(String image, int width, int height) {
 
+        FileInputStream fs = null;
         try {
-            Bitmap o = BitmapFactory.decodeStream(new FileInputStream(new File(image)));
+            fs = new FileInputStream(new File(image));
+            Bitmap o = BitmapFactory.decodeStream(fs);
 
             if (height <= 0) {
                 height = width * o.getHeight() / o.getWidth();
@@ -41,6 +36,12 @@ public class ImageUtil {
 
             Logger.e(e);
             throw new RuntimeException(e);
+        } finally {
+            try {
+                if (fs != null) fs.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

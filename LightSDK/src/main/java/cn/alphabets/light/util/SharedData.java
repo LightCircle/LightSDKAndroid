@@ -69,6 +69,12 @@ public class SharedData {
         return result;
     }
 
+    public void remove(String key) {
+        SharedPreferences.Editor editor = this.preferences.edit();
+        editor.remove(key);
+        editor.commit();
+    }
+
     /**
      * 获取一个值
      * @param key 标识

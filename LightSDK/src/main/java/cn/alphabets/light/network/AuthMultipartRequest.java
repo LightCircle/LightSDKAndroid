@@ -18,6 +18,7 @@ import java.util.Map;
 
 import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.setting.Default;
+import cn.alphabets.light.util.FileUtil;
 
 /**
  * 文件上传支持
@@ -65,7 +66,7 @@ public class AuthMultipartRequest extends Request<String> {
             if (entry.getValue() instanceof File) {
                 File file = (File) entry.getValue();
                 String name = file.getName();
-                String contentType = URLConnection.getFileNameMap().getContentTypeFor(entry.getKey());
+                String contentType = FileUtil.getMimeTypeOfFile(file.getAbsolutePath());
                 builder.addBinaryBody(MULTIPART_BODY_NAME, file, ContentType.create(contentType), name);
             }
 

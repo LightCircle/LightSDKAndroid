@@ -136,4 +136,17 @@ public class FileUtil {
 
         return path;
     }
+
+    /**
+     * 从文件里获取Mime类型
+     * @param file 文件路径
+     * @return mime类型
+     */
+    public static String getMimeTypeOfFile(String file) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file, options);
+        return options.outMimeType;
+    }
+
 }

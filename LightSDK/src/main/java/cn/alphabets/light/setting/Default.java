@@ -36,7 +36,7 @@ public class Default {
     /**
      *
      */
-    public static final String UrlLoadFile          = "file/";
+    public static final String UrlLoadFile          = "file/download/";
 
 
     /**
