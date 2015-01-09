@@ -114,7 +114,12 @@ public class SharedData {
      */
     public Object getObject(String key) {
 
-        byte[] base64 = Base64.decodeBase64(this.preferences.getString(key, null).getBytes());
+        String string = this.preferences.getString(key, null);
+        if (string == null) {
+            return null;
+        }
+
+        byte[] base64 = Base64.decodeBase64(string.getBytes());
 
         try {
             return new ObjectInputStream(new ByteArrayInputStream(base64)).readObject();
