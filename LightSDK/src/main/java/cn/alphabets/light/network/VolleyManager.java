@@ -7,6 +7,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
@@ -97,16 +98,33 @@ public class VolleyManager {
      * @param file image path
      * @param success Callback
      */
-    public static void loadImage(String file, AuthImageLoader.Success success) {
+    public static void loadImage(String file, final AuthImageLoader.Success success) {
 
-        ImageLoader.ImageListener listener = ImageLoader.getImageListener(
-                new ImageView(ContextManager.getInstance()),
-                android.R.drawable.progress_indeterminate_horizontal,
-                android.R.drawable.stat_notify_error
-        );
+        final ImageView view = new ImageView(ContextManager.getInstance());
+        final int errorImageResId = android.R.drawable.stat_notify_error;
+        final int defaultImageResId = android.R.drawable.progress_indeterminate_horizontal;
+
+        ImageLoader.ImageListener listener = new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (errorImageResId != 0) {
+                    view.setImageResource(errorImageResId);
+                }
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                if (response.getBitmap() != null) {
+                    view.setImageBitmap(response.getBitmap());
+                } else if (defaultImageResId != 0) {
+                    view.setImageResource(defaultImageResId);
+                }
+
+                success.onResponse(response.getBitmap());
+            }
+        };
 
         String uri = getURL(Default.UrlLoadFile + file, Request.Method.GET, null);
-        getImageLoader().addListener(success);
         getImageLoader().get(uri, listener);
     }
 

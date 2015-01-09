@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import cn.alphabets.light.setting.Default;
@@ -15,7 +16,7 @@ import cn.alphabets.light.setting.Default;
  * Mod的父类，处理共通字段
  * Created by luohao on 14/10/17.
  */
-public class BasicModel {
+public class BasicModel implements Serializable {
 
     protected String _id;
     protected String valid;

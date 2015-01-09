@@ -14,26 +14,8 @@ import com.android.volley.toolbox.ImageLoader;
  */
 public class AuthImageLoader extends ImageLoader {
 
-    /** image success callback when loaded. Need to get Bitmap, you can use the callback */
-    private Success success;
-
     public interface Success {
         public void onResponse(Bitmap bitmap);
-    }
-
-    /**
-     * add callback
-     * @param success callback instance
-     */
-    public void addListener(Success success) {
-        this.success = success;
-    }
-
-    /**
-     * clear callback
-     */
-    public void clearListener() {
-        this.success = null;
     }
 
     /**
@@ -53,16 +35,11 @@ public class AuthImageLoader extends ImageLoader {
             @Override
             public void onResponse(Bitmap response) {
                 onGetImageSuccess(cacheKey, response);
-                if (success != null) {
-                    success.onResponse(response);
-                    clearListener();
-                }
             }
         }, maxWidth, maxHeight, Bitmap.Config.RGB_565, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 onGetImageError(cacheKey, error);
-                clearListener();
             }
         });
     }

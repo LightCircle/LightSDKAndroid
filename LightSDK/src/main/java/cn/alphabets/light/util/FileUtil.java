@@ -46,6 +46,11 @@ public class FileUtil {
         return file.getAbsolutePath();
     }
 
+    /**
+     * 图像文件生成Bitmap实例
+     * @param path 图像所在位置
+     * @return Bitmap实例
+     */
     public static Bitmap loadBitmap(String path) {
         try {
             return BitmapFactory.decodeStream(new FileInputStream(new File(path)));
@@ -55,15 +60,40 @@ public class FileUtil {
 
         return null;
     }
+    public static Bitmap loadBitmap(int resource) {
+        return BitmapFactory.decodeResource(ContextManager.getInstance().getResources(), resource);
+    }
 
+    /**
+     * 获取调整大小后的图像
+     * @param path 图像所在位置
+     * @param width 图像的宽度
+     * @return
+     */
     public static Bitmap loadScaledBitmap(String path, int width) {
         Bitmap bitmap = loadBitmap(path);
+        if (bitmap == null) {
+            return null;
+        }
+
         int height = width * bitmap.getHeight() / bitmap.getWidth();
         return Bitmap.createScaledBitmap(bitmap, width, height, false);
     }
 
-    public static Bitmap loadBitmap(int resource) {
-        return BitmapFactory.decodeResource(ContextManager.getInstance().getResources(), resource);
+    public static String scaledBitmap(String path, int width) {
+        Bitmap bitmap = loadBitmap(path);
+        if (bitmap == null) {
+            return null;
+        }
+
+        int height = width * bitmap.getHeight() / bitmap.getWidth();
+        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        try {
+            return saveBitmap(bitmap);
+        } catch (IOException e) {
+        }
+
+        return null;
     }
 
     /**
