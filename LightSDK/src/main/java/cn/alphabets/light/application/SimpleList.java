@@ -105,7 +105,6 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
                 ImageView image = new ImageView(context);
                 LayoutParams imageParams = new LayoutParams(pixel(50), pixel(50));
                 image.setLayoutParams(imageParams);
-                image.setImageResource(R.drawable.ic_launcher);
                 image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 image.setImageBitmap(pair.image);
                 addView(image);
