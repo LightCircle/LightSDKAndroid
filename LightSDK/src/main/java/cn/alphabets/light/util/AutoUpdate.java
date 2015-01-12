@@ -92,7 +92,7 @@ public class AutoUpdate {
      * 获取当前版本
      * @return 当前版本信息
      */
-    private static ModelVersion getCurrentVersion() {
+    public static ModelVersion getCurrentVersion() {
 
         Application context = ContextManager.getInstance();
         PackageManager manager = context.getPackageManager();

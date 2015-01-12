@@ -16,12 +16,15 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import cn.alphabets.light.setting.Default;
+import cn.alphabets.light.util.SharedData;
 
 /**
  * 单例RequestQueue管理器
  * Created by lin on 14/12/1.
  */
 public class VolleyManager {
+
+    public static final String SHARED_DATA_SERVER_ADDRESS = "cn.alphabets.light.network.VolleyManager.Server";
 
     /** Internal instance variable. */
     private static VolleyManager sInstance;
@@ -202,7 +205,13 @@ public class VolleyManager {
         if (url.toLowerCase().contains(Default.Protocol)) {
             builder.encodedPath(url);
         } else {
-            builder.scheme(Default.Protocol).encodedAuthority(Default.Server + ":" + Default.Port).appendEncodedPath(url);
+
+            // Try to get address from SharedData
+            String authority = SharedData.getInstance().get(SHARED_DATA_SERVER_ADDRESS);
+            if (authority == null) {
+                authority = Default.Server + ":" + Default.Port;
+            }
+            builder.scheme(Default.Protocol).encodedAuthority(authority).appendEncodedPath(url);
         }
 
         // add csrf token
