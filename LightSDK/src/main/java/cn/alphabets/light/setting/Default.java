@@ -39,6 +39,7 @@ public class Default {
     public static final String UrlLoadFile          = "file/download/";
     public static final String UrlSendFile          = "file/create";
     public static final String UrlCategoryList      = "category/list";
+    public static final String UrlSettingList       = "setting/list";
 
 
     /**
