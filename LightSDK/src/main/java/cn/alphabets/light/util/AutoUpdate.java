@@ -127,7 +127,7 @@ public class AutoUpdate {
                 ModelVersion remote = result.getDetail();
                 ModelVersion current = getCurrentVersion();
 
-                boolean isVersionChanged = current.getVersion().equals(remote.getVersion());
+                boolean isVersionChanged = !current.getVersion().equals(remote.getVersion());
                 listener.onResult(isVersionChanged, current.getVersion(), remote.getVersion());
             }
         };
