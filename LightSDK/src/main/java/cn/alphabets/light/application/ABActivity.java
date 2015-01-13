@@ -223,4 +223,11 @@ public class ABActivity extends Activity {
         super.onStop();
         VolleyManager.getRequestQueue().cancelAll(this);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        hideWaiting();
+    }
 }
