@@ -40,6 +40,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     /** 列表行的资源ID */
     private int resource;
 
+    /** 是否只读 */
+    private boolean enable = true;
+
 
     /**
      * 选择行
@@ -58,8 +61,10 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
          * 构筑函数
          * @param context context
          * @param pair 标题
+         * @param showIndicator indicator
+         * @param enable enable
          */
-        public ListRowView(Context context, Pair pair, boolean showIndicator) {
+        public ListRowView(Context context, Pair pair, boolean showIndicator, boolean enable) {
 
             super(context);
 
@@ -88,6 +93,11 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             titleView.setLayoutParams(new LayoutParams(pixel(DEFAULT_LEFT_WIDTH), LayoutParams.WRAP_CONTENT));
             titleView.setSingleLine(true);
             titleView.setText(pair.title);
+            if (enable && pair.enable) {
+                titleView.setTextColor(Color.BLACK);
+            } else {
+                titleView.setTextColor(Color.LTGRAY);
+            }
             addView(titleView);
 
             // Right value text view
@@ -103,7 +113,8 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             // Right image view
             if (pair.image != null) {
                 ImageView image = new ImageView(context);
-                LayoutParams imageParams = new LayoutParams(pixel(50), pixel(50));
+                int height = pair.imageHeight > 0 ? pair.imageHeight : 50;
+                LayoutParams imageParams = new LayoutParams(pixel(height), pixel(height));
                 image.setLayoutParams(imageParams);
                 image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 image.setImageBitmap(pair.image);
@@ -131,11 +142,25 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
      * 内容类
      */
     public static class Pair {
-        private String title;
-        private String value;
-        private Bitmap image;
-        private boolean indicator;
-        private int icon;
+        private String title;           // 标题（左）
+        private int icon;               // 图标（左）
+        private String value;           // 值（右）
+        private Bitmap image;           // 图（右）
+        private int imageHeight;        // 图大小
+        private boolean enable = true;  // 可编辑
+        private boolean indicator;      // 右向剪头
+
+        public void setImageHeight(int imageHeight) {
+            this.imageHeight = imageHeight;
+        }
+
+        public void setEnable(boolean enable) {
+            this.enable = enable;
+        }
+
+        public void setIndicator(boolean indicator) {
+            this.indicator = indicator;
+        }
 
         public void setValue(String value) {
             this.value = value;
@@ -182,12 +207,12 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Pair pair = getItem(position);
-        return new ListRowView(getContext(), pair, this.showIndicator);
+        return new ListRowView(getContext(), pair, this.showIndicator, this.enable);
     }
 
     /**
      * 绑定视图，设定点击事件
-     * @param onClick
+     * @param onClick click event
      */
     public void bindListView(final Click onClick) {
 
@@ -196,7 +221,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (onClick != null) {
+                if (onClick != null && getItem(position).enable) {
                     onClick.done(view, position);
                 }
             }
@@ -210,4 +235,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     public void hideIndicator() {
         this.showIndicator = false;
     }
+
+    public void setEnable(boolean isEnable) {
+        this.enable = isEnable;
+    }
+
 }
