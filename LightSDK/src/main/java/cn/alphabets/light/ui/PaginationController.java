@@ -46,7 +46,6 @@ public class PaginationController {
         this.isLoading = false;
 
         this.listAdapter.clear();
-        this.loader.load();
     }
 
     /**
@@ -142,6 +141,7 @@ public class PaginationController {
         @Override
         public void onRefresh() {
             reset();
+            loader.load();
         }
     };
 
