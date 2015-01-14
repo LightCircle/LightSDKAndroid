@@ -155,4 +155,13 @@ public class SharedData {
         Application context = ContextManager.getInstance();
         instance.preferences = context.getSharedPreferences(PREFERENCES_NAME, PREFERENCES_MODE);
     }
+
+    /**
+     * 销毁
+     */
+    public void destroy() {
+        SharedPreferences.Editor editor = this.preferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 }
