@@ -2,6 +2,8 @@ package cn.alphabets.light.setting;
 
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
+
 /**
  * 缺省值
  * Created by lin on 14/11/30.
@@ -15,7 +17,9 @@ public class Default {
     public static final String Port                 = "5003";
     public static final String Protocol             = "http";
 
-    public static final int RequestTimeout          = 10 * 1000; // 十秒
+    public static final int RequestTimeout          = 15 * 1000;// 超时15秒
+    public static final int MaxReTries              = 0;        // 重试次数
+    public static final int BackOffMultiplier       = 0;
 
     /**
      * Log相关
