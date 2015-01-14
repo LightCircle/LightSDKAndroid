@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 
 import cn.alphabets.light.R;
@@ -34,6 +37,7 @@ public class Dialog {
     private static Toast toast;
 
     public static final int REQUEST_TAKE_PHOTO = 1000;
+    private static final String PHOTO_NAME = "temp.jpg";
 
     /**
      * 选择行
@@ -195,9 +199,9 @@ public class Dialog {
     /**
      * 拍摄或选择照片，调用端需要使用onActivityResult来获取图片
      * @param context Activity或Fragment
-     * @param requestCode 请求码
      */
-    public static void takePhoto(final Object context, final int requestCode) {
+    public static void takePhoto(final Object context) {
+
         Activity activity = context instanceof Fragment ? ((Fragment) context).getActivity() : (Activity) context;
 
         View popupWindowView = activity.getLayoutInflater().inflate(R.layout.dialog_photo_selector, null);
@@ -209,12 +213,12 @@ public class Dialog {
         popupWindow.showAtLocation(activity.getWindow().getDecorView().getRootView(), Gravity.BOTTOM, 0, 0);
 
         // 绑定拍照，从相册中选等按钮的事件
-        initPopupWindow(popupWindowView, popupWindow, activity, requestCode);
+        initPopupWindow(popupWindowView, popupWindow, activity);
     }
 
 
     public static void initPopupWindow(View popupWindowView, final PopupWindow popupWindow,
-                                final Object context, final int requestCode) {
+                                final Object context) {
         FrameLayout popupWindowArea = (FrameLayout) popupWindowView.findViewById(R.id.selector_area);
         TextView takePhoto = (TextView) popupWindowView.findViewById(R.id.take_photo);
         TextView choosePhoto = (TextView) popupWindowView.findViewById(R.id.choose_photo);
@@ -234,14 +238,19 @@ public class Dialog {
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                if (!outDir.exists()) {
+                    outDir.mkdirs();
+                }
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(outDir, PHOTO_NAME)));
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 
                 if (context instanceof Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, requestCode);
+                    ((Fragment) context).startActivityForResult(intent, ImageActivity.TAKE_PHOTO);
                 }
                 if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, requestCode);
+                    ((Activity) context).startActivityForResult(intent, ImageActivity.TAKE_PHOTO);
                 }
                 popupWindow.dismiss();
             }
@@ -255,10 +264,10 @@ public class Dialog {
                 intent.setType("image/*");
 
                 if (context instanceof  Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, requestCode);
+                    ((Fragment) context).startActivityForResult(intent, ImageActivity.CHOOSE_PHOTO);
                 }
                 if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, requestCode);
+                    ((Activity) context).startActivityForResult(intent, ImageActivity.CHOOSE_PHOTO);
                 }
                 popupWindow.dismiss();
             }
@@ -274,18 +283,11 @@ public class Dialog {
      */
     public static String parsePhoto(int requestCode, int resultCode, Intent data) {
 
-        if (data.getData() == null) {
-
+        if (requestCode == ImageActivity.TAKE_PHOTO) {
             // 拍摄的照片
-            Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-            try {
-                return FileUtil.saveBitmap(bitmap);
-            } catch (IOException e) {
-                Logger.e(e);
-                throw new ApplicationException(e);
-            }
+            File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            return new File(outDir, PHOTO_NAME).getAbsolutePath();
         } else {
-
             // 从图库选择
             return FileUtil.getPhotoLibraryPath(data.getData(), ContextManager.getInstance());
         }
