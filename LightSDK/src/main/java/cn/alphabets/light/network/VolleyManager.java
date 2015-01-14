@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import cn.alphabets.light.R;
 import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.util.SharedData;
 
@@ -88,7 +89,7 @@ public class VolleyManager {
     public static void loadImage(String file, ImageView view) {
 
         ImageLoader.ImageListener listener = ImageLoader.getImageListener(view,
-                android.R.drawable.progress_indeterminate_horizontal,
+                R.drawable.progress_loading,
                 android.R.drawable.stat_notify_error
         );
 
