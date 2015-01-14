@@ -40,7 +40,7 @@ public class FileUtil {
 
         File file = getTemporaryFile();
         FileOutputStream stream = new FileOutputStream(file);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, Default.CompressQuality, stream);
         stream.close();
 
         return file.getAbsolutePath();

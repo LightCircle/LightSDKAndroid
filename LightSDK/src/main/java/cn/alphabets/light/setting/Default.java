@@ -54,4 +54,10 @@ public class Default {
      * Broadcast names
      */
     public static final String BroadcastLogout      = "cn.alphabets.light.logout";
+
+    /**
+     * 图片压缩的宽度
+     */
+    public static final int ScaledWidth             = 960;
+    public static final int CompressQuality         = 60;
 }
