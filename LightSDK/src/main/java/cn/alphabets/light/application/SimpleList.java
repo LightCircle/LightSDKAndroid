@@ -2,6 +2,7 @@ package cn.alphabets.light.application;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.TypedValue;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import cn.alphabets.light.R;
+import cn.alphabets.light.log.Logger;
 
 /**
  * 通用List
@@ -119,6 +121,13 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
                 image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 image.setImageBitmap(pair.image);
                 addView(image);
+
+                image.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // show thumbnail
+                    }
+                });
             }
 
             // Indicator
