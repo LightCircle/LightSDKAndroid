@@ -1,0 +1,66 @@
+package cn.alphabets.light.ui;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+
+import cn.alphabets.light.R;
+import cn.alphabets.light.network.VolleyManager;
+
+/**
+ * Image
+ * Created by lin on 14/12/28.
+ */
+public class ImageAdapter extends ArrayAdapter<ImageAdapter.ImageItem> {
+
+    public static class ImageItem {
+        Bitmap image;
+        String imageUrl;
+        public ImageItem(Bitmap image) {
+            this.image = image;
+        }
+        public ImageItem(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+        public boolean isUrl() {
+            return image == null;
+        }
+    }
+
+    public ImageAdapter(Context context, int resource) {
+        super(context, resource);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        if (convertView == null) {
+            convertView = View.inflate(getContext(), R.layout.activity_image_item, null);
+        }
+
+        ImageItem item = getItem(position);
+        final ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+        if (item.isUrl()) {
+            VolleyManager.loadImage(item.imageUrl, imageView);
+        } else {
+            imageView.setImageBitmap(item.image);
+        }
+
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x / 3;
+        int height = width;
+        convertView.setLayoutParams(new ListView.LayoutParams(width, height));
+
+        return convertView;
+    }
+}

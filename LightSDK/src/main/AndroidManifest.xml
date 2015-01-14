@@ -22,6 +22,23 @@
             <!--android:name="cn.alphabets.light.location.LocationTrackService"-->
             <!--android:process=":remote"></service>-->
 
+        <activity
+            android:name="cn.alphabets.light.ui.EditActivity"
+            android:label="@string/title_activity_edit" >
+        </activity>
+        <activity
+            android:name="cn.alphabets.light.ui.SelectActivity"
+            android:label="@string/title_activity_select" >
+        </activity>
+        <activity
+            android:name="cn.alphabets.light.ui.ImageActivity"
+            android:label="@string/title_activity_image" >
+        </activity>
+        <activity
+            android:name="cn.alphabets.light.ui.PreviewActivity"
+            android:label="@string/title_activity_preview" >
+        </activity>
+
         <receiver
             android:name="cn.alphabets.light.location.LocationReceiver"
             android:exported="false">

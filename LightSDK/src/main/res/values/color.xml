@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-     <color name="result_view">#b0000000</color>
-      <color name="viewfinder_mask">#60000000</color>
-      <color name="possible_result_points">#00000000</color>
+    <!-- 标准颜色 -->
+    <color name="white">#ffffff</color>
+    <color name="gray">#f3f3f3</color>
+    <color name="light_gray">#f8f8f8</color>
+    <color name="dark_gray">#dadada</color>
+    <color name="double_dark_gray">#ffbdbdbd</color>
+    <color name="light_blue">#9edaef</color>
+    <color name="green">#60b044</color>
+    <color name="blue">#4183c4</color>
+    <color name="black">#333333</color>
+    <color name="red">#f30826</color>
+
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#00000000</color>
 </resources>

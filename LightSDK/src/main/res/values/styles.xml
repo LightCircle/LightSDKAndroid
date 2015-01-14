@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="PopupAnimation" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_window_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_window_exit</item>
+    </style>
 </resources>
