@@ -17,6 +17,10 @@ public class DateTimeUtil {
      * @return
      */
     public static String format(Date date, String format) {
+        if (date == null || format == null) {
+            return "";
+        }
+
         DateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
     }
