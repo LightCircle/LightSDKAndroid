@@ -38,8 +38,7 @@ public class ImageActivity extends ABActivity {
     public static final String TITLE = "title";
     public static final String SCALED_WIDTH = "scaled_width";
 
-    public static final int TAKE_PHOTO = 1;
-    public static final int CHOOSE_PHOTO = 2;
+    public static final int PICK_PHOTO = 1;
 
     private int mScaledWidth;
 
@@ -179,7 +178,7 @@ public class ImageActivity extends ABActivity {
 
         // 添加
         if (id == android.R.id.edit) {
-            Dialog.takePhoto(this);
+            Dialog.takePhoto(this, PICK_PHOTO);
             return true;
         }
 

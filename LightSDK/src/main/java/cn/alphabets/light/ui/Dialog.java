@@ -200,7 +200,7 @@ public class Dialog {
      * 拍摄或选择照片，调用端需要使用onActivityResult来获取图片
      * @param context Activity或Fragment
      */
-    public static void takePhoto(final Object context) {
+    public static void takePhoto(final Object context, final int requestCode) {
 
         Activity activity = context instanceof Fragment ? ((Fragment) context).getActivity() : (Activity) context;
 
@@ -213,12 +213,12 @@ public class Dialog {
         popupWindow.showAtLocation(activity.getWindow().getDecorView().getRootView(), Gravity.BOTTOM, 0, 0);
 
         // 绑定拍照，从相册中选等按钮的事件
-        initPopupWindow(popupWindowView, popupWindow, activity);
+        initPopupWindow(popupWindowView, popupWindow, activity, requestCode);
     }
 
 
     public static void initPopupWindow(View popupWindowView, final PopupWindow popupWindow,
-                                final Object context) {
+                                final Object context, final int requestCode) {
         FrameLayout popupWindowArea = (FrameLayout) popupWindowView.findViewById(R.id.selector_area);
         TextView takePhoto = (TextView) popupWindowView.findViewById(R.id.take_photo);
         TextView choosePhoto = (TextView) popupWindowView.findViewById(R.id.choose_photo);
@@ -247,10 +247,10 @@ public class Dialog {
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 
                 if (context instanceof Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, ImageActivity.TAKE_PHOTO);
+                    ((Fragment) context).startActivityForResult(intent, requestCode);
                 }
                 if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, ImageActivity.TAKE_PHOTO);
+                    ((Activity) context).startActivityForResult(intent, requestCode);
                 }
                 popupWindow.dismiss();
             }
@@ -264,10 +264,10 @@ public class Dialog {
                 intent.setType("image/*");
 
                 if (context instanceof  Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, ImageActivity.CHOOSE_PHOTO);
+                    ((Fragment) context).startActivityForResult(intent, requestCode);
                 }
                 if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, ImageActivity.CHOOSE_PHOTO);
+                    ((Activity) context).startActivityForResult(intent, requestCode);
                 }
                 popupWindow.dismiss();
             }
@@ -283,7 +283,7 @@ public class Dialog {
      */
     public static String parsePhoto(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == ImageActivity.TAKE_PHOTO) {
+        if (data == null) {
             // 拍摄的照片
             File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             return new File(outDir, PHOTO_NAME).getAbsolutePath();
