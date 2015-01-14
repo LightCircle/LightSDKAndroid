@@ -116,13 +116,23 @@ public class ImageActivity extends ABActivity {
                     MenuItem addItem = menu.findItem(android.R.id.edit);
                     addItem.setVisible(false);
 
-                    MenuItem removeItem = menu.add(Menu.NONE, android.R.id.empty, 1, "Delete");
-                    removeItem.setTitle(getResources().getString(R.string.remove));
-                    removeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    MenuItem removeItem = menu.findItem(android.R.id.empty);
+                    if (removeItem == null) {
+                        removeItem = menu.add(Menu.NONE, android.R.id.empty, 1, "Delete");
+                        removeItem.setTitle(getResources().getString(R.string.remove));
+                        removeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    } else {
+                        removeItem.setVisible(true);
+                    }
 
-                    MenuItem cancelItem = menu.add(Menu.NONE, android.R.id.closeButton, 1, "Cancel");
-                    cancelItem.setTitle(getResources().getString(R.string.cancel));
-                    cancelItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    MenuItem cancelItem = menu.findItem(android.R.id.closeButton);
+                    if (cancelItem == null) {
+                        cancelItem = menu.add(Menu.NONE, android.R.id.closeButton, 1, "Cancel");
+                        cancelItem.setTitle(getResources().getString(R.string.cancel));
+                        cancelItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    } else {
+                        cancelItem.setVisible(true);
+                    }
                 }
                 return false;
             }
@@ -166,19 +176,11 @@ public class ImageActivity extends ABActivity {
 
         // 添加
         if (id == android.R.id.edit) {
-            View popupWindowView = getLayoutInflater().inflate(R.layout.dialog_photo_selector, null);
-            PopupWindow popupWindow = new PopupWindow(popupWindowView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            // 绑定拍照，从相册中选等按钮的事件
-            initPopupWindow(popupWindowView, popupWindow, this, 0);
-
-            popupWindow.setFocusable(true);
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.setAnimationStyle(R.style.PopupAnimation);
-            popupWindow.showAtLocation(findViewById(R.id.gridView), Gravity.BOTTOM, 0, 0);
-
+            Dialog.takePhoto(this, 0);
             return true;
         }
 
+        // 删除
         if (id == android.R.id.empty) {
             List<ImageAdapter.ImageItem> removeItems = new ArrayList<ImageAdapter.ImageItem>();
             for (int j = 0, count = mAdapter.getCount(); j < count; j++) {
@@ -201,6 +203,7 @@ public class ImageActivity extends ABActivity {
             item.setVisible(false);
         }
 
+        // 取消删除模式
         if (id == android.R.id.closeButton) {
             for (int j = 0, count = mAdapter.getCount(); j < count; j++) {
                 View v = gridView.getChildAt(j);
@@ -219,58 +222,6 @@ public class ImageActivity extends ABActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void initPopupWindow(View popupWindowView, final PopupWindow popupWindow,
-                                final Object context, final int requestCode) {
-        FrameLayout popupWindowArea = (FrameLayout) popupWindowView.findViewById(R.id.selector_area);
-        TextView takePhoto = (TextView) popupWindowView.findViewById(R.id.take_photo);
-        TextView choosePhoto = (TextView) popupWindowView.findViewById(R.id.choose_photo);
-        TextView cancel = (TextView) popupWindowView.findViewById(R.id.take_photo);
-
-        View.OnClickListener cancelListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-            }
-        };
-        // 点击空白区域或者点击取消则将窗口关闭
-        popupWindowArea.setOnClickListener(cancelListener);
-        cancel.setOnClickListener(cancelListener);
-
-        // 拍照
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-
-                if (context instanceof Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, requestCode);
-                }
-                if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, requestCode);
-                }
-                popupWindow.dismiss();
-            }
-        });
-
-        // 从相册中选
-        choosePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-
-                if (context instanceof  Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, requestCode);
-                }
-                if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, requestCode);
-                }
-                popupWindow.dismiss();
-            }
-        });
     }
 
     @Override
