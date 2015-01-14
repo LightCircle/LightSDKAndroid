@@ -17,8 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import cn.alphabets.light.R;
 import cn.alphabets.light.log.Logger;
+import cn.alphabets.light.ui.PreviewActivity;
 
 /**
  * 通用List
@@ -66,7 +69,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
          * @param showIndicator indicator
          * @param enable enable
          */
-        public ListRowView(Context context, Pair pair, boolean showIndicator, boolean enable) {
+        public ListRowView(final Context context, final Pair pair, boolean showIndicator, boolean enable) {
 
             super(context);
 
@@ -125,7 +128,12 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
                 image.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // show thumbnail
+                        ArrayList<String> imageIdList = new ArrayList<String>(){{
+                            add(pair.getImageId());
+                        }};
+                        Intent intent = new Intent(context, PreviewActivity.class);
+                        intent.putStringArrayListExtra(PreviewActivity.IMAGES, imageIdList);
+                        context.startActivity(intent);
                     }
                 });
             }
@@ -155,6 +163,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         private int icon;               // 图标（左）
         private String value;           // 值（右）
         private Bitmap image;           // 图（右）
+        private String imageId;         // 图的id
         private int imageHeight;        // 图大小
         private boolean enable = true;  // 可编辑
         private boolean indicator;      // 右向剪头
@@ -185,6 +194,14 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
         public void setBitmap(Bitmap image) {
             this.image = image;
+        }
+
+        public String getImageId() {
+            return imageId;
+        }
+
+        public void setImageId(String imageId) {
+            this.imageId = imageId;
         }
 
         public Pair(String title, String value, boolean indicator, int icon, Bitmap image) {
