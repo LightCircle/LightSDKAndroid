@@ -221,7 +221,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (onClick != null && getItem(position).enable) {
+
+                boolean canEdit = enable && getItem(position).enable;
+                if (onClick != null && canEdit) {
                     onClick.done(view, position);
                 }
             }
