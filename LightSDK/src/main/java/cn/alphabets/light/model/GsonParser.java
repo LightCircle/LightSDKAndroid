@@ -7,12 +7,11 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import cn.alphabets.light.setting.Default;
 
 /**
  * 后台请求的结果对象，处理JSON与数据的转换
@@ -50,7 +49,7 @@ public class GsonParser<T> {
      */
     public static <C> GsonParser<C> fromJson(JSONObject json, TypeToken type) {
 
-        Gson gson = new GsonBuilder().setDateFormat(Default.TimestampFormat).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateConverter()).create();
 
         try {
             GsonParser<C> result = new GsonParser<C>();
