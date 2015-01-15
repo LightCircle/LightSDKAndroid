@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,13 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.exception.ApplicationException;
-import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.network.ContextManager;
 import cn.alphabets.light.util.FileUtil;
 
@@ -43,7 +37,8 @@ public class Dialog {
     private static Toast toast;
 
     public static final int REQUEST_TAKE_PHOTO = 1000;
-    private static final String PHOTO_NAME = "temp.jpg";
+    // 用于拍照时保存
+    public static Uri photoUri;
 
     /**
      * 选择行
@@ -278,7 +273,9 @@ public class Dialog {
                     outDir.mkdirs();
                 }
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(outDir, PHOTO_NAME)));
+                ContentValues values = new ContentValues();
+                photoUri = ContextManager.getInstance().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, photoUri);
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 
                 if (context instanceof Fragment) {
@@ -320,8 +317,7 @@ public class Dialog {
 
         if (data == null) {
             // 拍摄的照片
-            File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            return new File(outDir, PHOTO_NAME).getAbsolutePath();
+            return FileUtil.getPhotoPath(photoUri, ContextManager.getInstance());
         } else {
             // 从图库选择
             return FileUtil.getPhotoLibraryPath(data.getData(), ContextManager.getInstance());

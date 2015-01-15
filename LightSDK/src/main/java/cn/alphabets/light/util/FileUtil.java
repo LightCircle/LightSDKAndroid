@@ -160,6 +160,20 @@ public class FileUtil {
     }
 
     /**
+     * 获取拍照所得图片的路径
+     * @param uri
+     * @param context
+     * @return
+     */
+    public static String getPhotoPath(Uri uri, Context context) {
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(1);
+        cursor.close();
+        return path;
+    }
+
+    /**
      * 获取图片库路径
      * @param uri url
      * @param context context
