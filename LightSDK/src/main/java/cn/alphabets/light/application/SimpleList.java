@@ -20,7 +20,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.ui.PreviewActivity;
 
 /**
