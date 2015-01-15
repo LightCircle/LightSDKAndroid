@@ -86,7 +86,7 @@ public class BasicModel implements Serializable {
     }
 
     public static BasicModel parse(JSONObject json, TypeToken typeToken) {
-        Gson gson = new GsonBuilder().setDateFormat(Default.TimestampFormat).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateConverter()).create();
         return gson.fromJson(json.toString(), typeToken.getType());
     }
 }

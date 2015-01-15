@@ -51,8 +51,6 @@ public class Default {
      */
     public static final String URL_VERSION_CHECK    = "system/versioncheck";
 
-    public static final String TimestampFormat      = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-
 
     /**
      * Broadcast names
