@@ -80,8 +80,15 @@ public class FileUtil {
         return Bitmap.createScaledBitmap(bitmap, width, height, false);
     }
 
-    public static String scaledBitmap(String path, int width) {
+    public static String scaledBitmap(String path, int width, boolean isFromCamera) {
         Bitmap bitmap = loadBitmap(path);
+        // 如果是拍照获得的图片则删除原照
+        if (isFromCamera) {
+            File originalFile = new File(path);
+            if (originalFile.isFile()) {
+                originalFile.delete();
+            }
+        }
         if (bitmap == null) {
             return null;
         }

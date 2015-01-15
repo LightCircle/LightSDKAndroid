@@ -233,8 +233,9 @@ public class ImageActivity extends ABActivity {
         if (resultCode == Activity.RESULT_OK) {
             String photo = Dialog.parsePhoto(requestCode, resultCode, data);
 
+            boolean isFromCamera = (data == null);
             int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
-            String bitmap = FileUtil.scaledBitmap(photo, scaledWidth);
+            String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
             UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new Success() {
                 @Override
                 public void onResponse(JSONObject response) {
