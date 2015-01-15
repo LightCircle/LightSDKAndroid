@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.alphabets.light.R;
+import cn.alphabets.light.network.ContextManager;
 import cn.alphabets.light.ui.PreviewActivity;
 
 /**
@@ -97,11 +98,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             titleView.setLayoutParams(new LayoutParams(pixel(DEFAULT_LEFT_WIDTH), LayoutParams.WRAP_CONTENT));
             titleView.setSingleLine(true);
             titleView.setText(pair.title);
-            if (enable && pair.enable) {
-                titleView.setTextColor(Color.BLACK);
-            } else {
-                titleView.setTextColor(Color.LTGRAY);
-            }
+            titleView.setTextColor(enable && pair.enable ? Color.BLACK : Color.LTGRAY);
             addView(titleView);
 
             // Right value text view
@@ -175,12 +172,11 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             this.enable = enable;
         }
 
-        public void setIndicator(boolean indicator) {
-            this.indicator = indicator;
-        }
-
         public void setValue(String value) {
             this.value = value;
+        }
+        public void setValue(int valueRes) {
+            setValue(r(valueRes));
         }
 
         public String getValue() {
@@ -189,6 +185,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
         public void setTitle(String title) {
             this.title = title;
+        }
+        public void setTitle(int titleRes) {
+            setTitle(r(titleRes));
         }
 
         public void setBitmap(Bitmap image) {
@@ -210,17 +209,27 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             this.icon = icon;
             this.image = image;
         }
+        public Pair(int titleRes, String value, boolean indicator, int icon, Bitmap image) {
+            this(r(titleRes), value, indicator, icon, image);
+        }
 
         public Pair(String title, String value) {
             this(title, value, false, 0, null);
+        }
+        public Pair(int titleRes, String value) {
+            this(r(titleRes), value, false, 0, null);
         }
 
         public Pair(String title, String value, boolean indicator) {
             this(title, value, indicator, 0, null);
         }
+        public Pair(int titleRes, String value, boolean indicator) {
+            this(r(titleRes), value, indicator, 0, null);
+        }
 
-        public Pair(String title, String value, boolean indicator, int icon) {
-            this(title, value, indicator, icon, null);
+        // resource to string
+        private static String r (int resource) {
+            return ContextManager.getInstance().getResources().getString(resource);
         }
     }
 
