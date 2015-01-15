@@ -86,8 +86,18 @@ public class FileUtil {
             return null;
         }
 
-        int height = width * bitmap.getHeight() / bitmap.getWidth();
-        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        float originalWidth = bitmap.getWidth();
+        float originalHeight = bitmap.getHeight();
+        float ratio = originalHeight / originalWidth;
+        // 不管横屏竖屏，width都作为最小边
+        int height = (int) (width * ratio);
+        if (ratio < 1) {
+            height = width;
+            width = (int) (height / ratio);
+        }
+        if (originalHeight > width || originalWidth > width) {
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        }
         try {
             return saveBitmap(bitmap);
         } catch (IOException e) {
