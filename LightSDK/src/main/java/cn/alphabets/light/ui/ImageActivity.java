@@ -58,6 +58,7 @@ public class ImageActivity extends ABActivity {
 
         Bundle extras = getIntent().getExtras();
         List<ImageAdapter.ImageItem> images = new ArrayList<>();
+        boolean isReadOnly = false;
         if (extras != null) {
             // 设置自定义标题
             String title = extras.getString(TITLE);
@@ -75,6 +76,8 @@ public class ImageActivity extends ABActivity {
 
             // 获取图片缩放宽度大小
             mScaledWidth = extras.getInt(SCALED_WIDTH);
+
+            isReadOnly = extras.getBoolean(READONLY);
         }
 
         mAdapter = new ImageAdapter(getApplicationContext(), android.R.layout.simple_list_item_1);
@@ -86,7 +89,7 @@ public class ImageActivity extends ABActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (menu.findItem(android.R.id.edit).isVisible()) {
+                if (menu.findItem(android.R.id.empty) == null || !menu.findItem(android.R.id.empty).isVisible()) {
                     ArrayList<String> photoUriList = new ArrayList<String>();
                     for (int i = 0; i < mAdapter.getCount(); i++) {
                         ImageAdapter.ImageItem item = mAdapter.getItem(i);
@@ -107,41 +110,43 @@ public class ImageActivity extends ABActivity {
                 }
             }
         });
-        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (menu.findItem(android.R.id.edit).isVisible()) {
-                    for (int j = 0; j < mAdapter.getCount(); j++) {
-                        View v = gridView.getChildAt(j);
-                        CheckBox cb = (CheckBox) v.findViewById(R.id.check);
-                        cb.setVisibility(View.VISIBLE);
-                    }
-                    MenuItem addItem = menu.findItem(android.R.id.edit);
-                    addItem.setVisible(false);
+        if (!isReadOnly) {
+            gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (menu.findItem(android.R.id.edit).isVisible()) {
+                        for (int j = 0; j < mAdapter.getCount(); j++) {
+                            View v = gridView.getChildAt(j);
+                            CheckBox cb = (CheckBox) v.findViewById(R.id.check);
+                            cb.setVisibility(View.VISIBLE);
+                        }
+                        MenuItem addItem = menu.findItem(android.R.id.edit);
+                        addItem.setVisible(false);
 
-                    MenuItem removeItem = menu.findItem(android.R.id.empty);
-                    if (removeItem == null) {
-                        removeItem = menu.add(Menu.NONE, android.R.id.empty, 1, "Delete");
-                        removeItem.setTitle(getResources().getString(R.string.remove));
-                        removeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-                    } else {
-                        removeItem.setVisible(true);
-                    }
+                        MenuItem removeItem = menu.findItem(android.R.id.empty);
+                        if (removeItem == null) {
+                            removeItem = menu.add(Menu.NONE, android.R.id.empty, 1, "Delete");
+                            removeItem.setTitle(getResources().getString(R.string.remove));
+                            removeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        } else {
+                            removeItem.setVisible(true);
+                        }
 
-                    MenuItem cancelItem = menu.findItem(android.R.id.closeButton);
-                    if (cancelItem == null) {
-                        cancelItem = menu.add(Menu.NONE, android.R.id.closeButton, 1, "Cancel");
-                        cancelItem.setTitle(getResources().getString(R.string.cancel));
-                        cancelItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-                    } else {
-                        cancelItem.setVisible(true);
+                        MenuItem cancelItem = menu.findItem(android.R.id.closeButton);
+                        if (cancelItem == null) {
+                            cancelItem = menu.add(Menu.NONE, android.R.id.closeButton, 1, "Cancel");
+                            cancelItem.setTitle(getResources().getString(R.string.cancel));
+                            cancelItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        } else {
+                            cancelItem.setVisible(true);
+                        }
                     }
+                    return true;
                 }
-                return false;
-            }
-        });
-
-        // TODO: 一次选择多张图片
+            });
+        } else {
+            gridView.setOnLongClickListener(null);
+        }
     }
 
     @Override
@@ -149,12 +154,11 @@ public class ImageActivity extends ABActivity {
 
         boolean isReadOnly = getIntent().getExtras().getBoolean(READONLY);
         if (!isReadOnly) {
-
             MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Add");
             item.setIcon(R.drawable.tool_plus);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            this.menu = menu;
         }
+        this.menu = menu;
 
         return true;
     }
