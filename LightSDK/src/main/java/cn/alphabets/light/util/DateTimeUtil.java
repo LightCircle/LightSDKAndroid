@@ -1,6 +1,7 @@
 package cn.alphabets.light.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,4 +43,16 @@ public class DateTimeUtil {
     }
 
 
+    public static Date parse(String date, String format) {
+        DateFormat sdf = new SimpleDateFormat(format);
+        try {
+            return sdf.parse(date);
+        } catch (ParseException e) {
+        }
+
+        return null;
+    }
+    public static Date parse(String date) {
+        return parse(date, "yyyy-MM-dd");
+    }
 }

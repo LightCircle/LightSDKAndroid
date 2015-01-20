@@ -101,7 +101,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             titleView.setLayoutParams(new LayoutParams(pixel(DEFAULT_LEFT_WIDTH), LayoutParams.WRAP_CONTENT));
             titleView.setSingleLine(true);
             titleView.setText(pair.title);
-            titleView.setTextColor(enable && pair.enable ? Color.BLACK : Color.LTGRAY);
+            titleView.setTextColor(enable && pair.enable ? Color.BLACK : Color.parseColor(DEFAULT_VALUE_COLOR));
             addView(titleView);
 
             // Right value text view
