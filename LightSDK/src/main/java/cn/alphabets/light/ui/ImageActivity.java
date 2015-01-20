@@ -33,10 +33,11 @@ import cn.alphabets.light.util.FileUtil;
 
 public class ImageActivity extends ABActivity {
 
-    public static final String INTENT_IMAGES = "images";
-    public static final String VALUE = "value";
-    public static final String TITLE = "title";
-    public static final String SCALED_WIDTH = "scaled_width";
+    public static final String INTENT_IMAGES    = "images";
+    public static final String VALUE            = "value";
+    public static final String TITLE            = "title";
+    public static final String READONLY         = "readonly";
+    public static final String SCALED_WIDTH     = "scaled_width";
 
     public static final int PICK_PHOTO = 1;
 
@@ -146,10 +147,14 @@ public class ImageActivity extends ABActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Add");
-        item.setIcon(R.drawable.tool_plus);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        this.menu = menu;
+        boolean isReadOnly = getIntent().getExtras().getBoolean(READONLY);
+        if (!isReadOnly) {
+
+            MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Add");
+            item.setIcon(R.drawable.tool_plus);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            this.menu = menu;
+        }
 
         return true;
     }

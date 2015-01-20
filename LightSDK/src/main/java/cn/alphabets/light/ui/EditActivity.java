@@ -12,11 +12,12 @@ import cn.alphabets.light.application.ABActivity;
 
 public class EditActivity extends ABActivity {
 
-    public static final String VALUE = "value";
-    public static final String TITLE = "title";
-    public static final String DEFAULT = "defaults";
-    public static final String INPUT_TYPE = "inputType";
-    public static final String LINE_TYPE = "lineType";
+    public static final String VALUE        = "value";
+    public static final String TITLE        = "title";
+    public static final String DEFAULT      = "defaults";
+    public static final String INPUT_TYPE   = "inputType";
+    public static final String LINE_TYPE    = "lineType";
+    public static final String READONLY     = "readonly";
 
     public static final String SINGLE_LINE = "single";
     public static final String MULTI_LINE = "multi";
@@ -58,9 +59,13 @@ public class EditActivity extends ABActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Save");
-        item.setIcon(R.drawable.tool_diskette);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        boolean isReadOnly = getIntent().getExtras().getBoolean(READONLY);
+        if (!isReadOnly) {
+
+            MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Save");
+            item.setIcon(R.drawable.tool_diskette);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
 
         return true;
     }
