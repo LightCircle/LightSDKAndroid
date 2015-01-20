@@ -48,6 +48,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     /** 是否只读 */
     private boolean enable = true;
 
+    /** 值的文字颜色 */
+    private static final String DEFAULT_VALUE_COLOR = "#727272";
+
 
     /**
      * 选择行
@@ -106,7 +109,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             valueView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1));
             valueView.setGravity(Gravity.RIGHT);
             valueView.setSingleLine(false);
-            valueView.setTextColor(Color.LTGRAY);
+            valueView.setTextColor(Color.parseColor(DEFAULT_VALUE_COLOR));
             valueView.setTextSize(DEFAULT_FONT);
             valueView.setText(pair.value);
             addView(valueView);
