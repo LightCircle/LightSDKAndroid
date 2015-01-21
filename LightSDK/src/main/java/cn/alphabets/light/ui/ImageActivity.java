@@ -175,11 +175,9 @@ public class ImageActivity extends ABActivity {
                 images.add(mAdapter.getItem(i).imageUrl);
             }
 
-            if (images.size() > 0) {
-                Intent data = new Intent();
-                data.putStringArrayListExtra(VALUE, images);
-                setResult(RESULT_OK, data);
-            }
+            Intent data = new Intent();
+            data.putStringArrayListExtra(VALUE, images);
+            setResult(RESULT_OK, data);
 
             onBackPressed();
             return true;
