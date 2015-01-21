@@ -19,6 +19,8 @@ public class MaskFragment extends DialogFragment {
 
     public static final String TAG = "LOADING_MASK";
 
+    private boolean isAdded = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -43,10 +45,16 @@ public class MaskFragment extends DialogFragment {
     }
 
     public void show(FragmentManager manager) {
+        if (isAdded) {
+            return;
+        }
+
+        isAdded = true;
         this.show(manager, TAG);
     }
 
     public void hide() {
+        isAdded = false;
         this.dismiss();
     }
 }
