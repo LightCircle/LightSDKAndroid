@@ -11,12 +11,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import java.util.Map;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.setting.Default;
+import cn.alphabets.light.store.Eternal;
 import cn.alphabets.light.util.SharedData;
 
 /**
@@ -25,7 +27,7 @@ import cn.alphabets.light.util.SharedData;
  */
 public class VolleyManager {
 
-    public static final String SHARED_DATA_SERVER_ADDRESS = "cn.alphabets.light.network.VolleyManager.Server";
+    public static final String DATA_SERVER_ADDRESS = "cn_alphabets_light_network_VolleyManager_Server";
 
     /** Internal instance variable. */
     private static VolleyManager sInstance;
@@ -206,13 +208,7 @@ public class VolleyManager {
         if (url.toLowerCase().contains(Default.Protocol)) {
             builder.encodedPath(url);
         } else {
-
-            // Try to get address from SharedData
-            String authority = SharedData.getInstance().get(SHARED_DATA_SERVER_ADDRESS);
-            if (authority == null) {
-                authority = Default.Server + ":" + Default.Port;
-            }
-            builder.scheme(Default.Protocol).encodedAuthority(authority).appendEncodedPath(url);
+            builder.scheme(Default.Protocol).encodedAuthority(getAddress()).appendEncodedPath(url);
         }
 
         // add csrf token
@@ -226,5 +222,26 @@ public class VolleyManager {
         }
 
         return builder.build().toString();
+    }
+
+    /**
+     * 获取服务器地址
+     * @return 地址
+     */
+    public static String getAddress() {
+
+        // Try to get address from obbDir
+        String authority = Eternal.getString(DATA_SERVER_ADDRESS);
+        if (authority != null && !StringUtils.isEmpty(authority)) {
+            return authority;
+        }
+
+        // Try to get address from SharedData
+        authority = SharedData.getInstance().get(DATA_SERVER_ADDRESS);
+        if (authority != null && !StringUtils.isEmpty(authority)) {
+
+        }
+
+        return Default.Server + ":" + Default.Port;
     }
 }

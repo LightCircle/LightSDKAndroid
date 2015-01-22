@@ -13,7 +13,7 @@ public class Default {
     /**
      * 服务器地址
      */
-    public static final String Server               = "necdb.alphabets.cn";
+    public static final String Server               = "124.193.141.162";
     public static final String Port                 = "5003";
     public static final String Protocol             = "http";
 
