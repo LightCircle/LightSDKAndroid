@@ -30,6 +30,7 @@
                 android:gravity="center"
                 android:text="拍照"
                 android:textColor="@color/blue"
+                android:textSize="16dp"
                 android:background="@drawable/n_bt_corner"
                 />
 
@@ -41,6 +42,7 @@
                 android:gravity="center"
                 android:text="从相册中选"
                 android:textColor="@color/blue"
+                android:textSize="16dp"
                 android:background="@drawable/n_bt_corner"
                 />
 
@@ -52,6 +54,7 @@
                 android:gravity="center"
                 android:text="取消"
                 android:textColor="@color/double_dark_gray"
+                android:textSize="16dp"
                 android:background="@drawable/n_bt_corner"/>
         </LinearLayout>
     </LinearLayout>

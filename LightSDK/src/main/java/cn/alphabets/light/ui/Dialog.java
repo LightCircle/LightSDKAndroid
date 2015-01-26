@@ -174,6 +174,7 @@ public class Dialog {
             button.setLayoutParams(params);
             button.setGravity(Gravity.CENTER);
             button.setText(buttons[i]);
+            button.setTextSize(16);
             button.setBackgroundResource(R.drawable.n_bt_corner);
             button.setTextColor(activity.getResources().getColor(R.color.blue));
 
@@ -199,6 +200,7 @@ public class Dialog {
             button.setLayoutParams(params);
             button.setGravity(Gravity.CENTER);
             button.setText(cancel);
+            button.setTextSize(16);
             button.setBackgroundResource(R.drawable.n_bt_corner);
             button.setTextColor(Color.GRAY);
 

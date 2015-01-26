@@ -38,6 +38,7 @@ public class ImageActivity extends ABActivity {
     public static final String TITLE            = "title";
     public static final String READONLY         = "readonly";
     public static final String SCALED_WIDTH     = "scaled_width";
+    public static final String THEME            = "theme";
 
     public static final int PICK_PHOTO = 1;
 
@@ -53,10 +54,18 @@ public class ImageActivity extends ABActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // 设定Theme，需要在setContentView之前调用
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int resourceId = extras.getInt(THEME, 0);
+            if (resourceId != 0) {
+                setTheme(resourceId);
+            }
+        }
+
         Helper.setNoIconBackActionBar(this, "ImageList");
         setContentView(R.layout.activity_image);
 
-        Bundle extras = getIntent().getExtras();
         List<ImageAdapter.ImageItem> images = new ArrayList<>();
         boolean isReadOnly = false;
         if (extras != null) {

@@ -27,14 +27,15 @@ import cn.alphabets.light.setting.Default;
 public class SelectActivity extends ABActivity {
 
 
-    public static final String VALUE = "value";
-    public static final String VALUE_TEXT = "value_text";
+    public static final String VALUE            = "value";
+    public static final String VALUE_TEXT       = "value_text";
 
-    public static final String TITLE = "title";
-    public static final String LIST = "list";
-    public static final String DEFAULT = "default";
-    public static final String MULTIPLE = "multiple";   //
-    public static final String MODEL = "model";         // 传递数据的方式
+    public static final String TITLE            = "title";
+    public static final String LIST             = "list";
+    public static final String DEFAULT          = "default";
+    public static final String MULTIPLE         = "multiple";   //
+    public static final String MODEL            = "model";         // 传递数据的方式
+    public static final String THEME            = "theme";
 
     private boolean isMultiple = true;
 
@@ -48,11 +49,20 @@ public class SelectActivity extends ABActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 设定Theme，需要在setContentView之前调用
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int resourceId = extras.getInt(THEME, 0);
+            if (resourceId != 0) {
+                setTheme(resourceId);
+            }
+        }
+
         Helper.setNoIconBackActionBar(this, "Select");
         setContentView(R.layout.activity_select);
 
         // 设定标题
-        Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String title = extras.getString(TITLE);
             if (title != null) {

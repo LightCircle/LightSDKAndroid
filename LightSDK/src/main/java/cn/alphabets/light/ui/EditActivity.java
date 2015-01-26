@@ -19,18 +19,28 @@ public class EditActivity extends ABActivity {
     public static final String LINE_TYPE    = "lineType";
     public static final String READONLY     = "readonly";
 
-    public static final String SINGLE_LINE = "single";
-    public static final String MULTI_LINE = "multi";
+    public static final String SINGLE_LINE  = "single";
+    public static final String MULTI_LINE   = "multi";
+
+    public static final String THEME        = "theme";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // 设定Theme，需要在setContentView之前调用
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int resourceId = extras.getInt(THEME, 0);
+            if (resourceId != 0) {
+                setTheme(resourceId);
+            }
+        }
+
         Helper.setShowSoftKeyboard(this);
         Helper.setNoIconBackActionBar(this, "Edit");
         setContentView(R.layout.activity_edit);
 
-        Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String title = extras.getString(TITLE);
             setTitle(title);
@@ -53,6 +63,7 @@ public class EditActivity extends ABActivity {
                 edit.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             }
         }
+
     }
 
 
