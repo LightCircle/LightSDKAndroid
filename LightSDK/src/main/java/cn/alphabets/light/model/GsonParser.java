@@ -40,6 +40,9 @@ public class GsonParser<T> {
     /** 错误信息 */
     private Error error;
 
+    /** gson */
+   private static Gson gson;
+
     /**
      * JSON转对象
      * @param json 待转换的JSON对象
@@ -49,7 +52,9 @@ public class GsonParser<T> {
      */
     public static <C> GsonParser<C> fromJson(JSONObject json, TypeToken type) {
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateConverter()).create();
+        if (gson == null) {
+            gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateConverter()).create();
+        }
 
         try {
             GsonParser<C> result = new GsonParser<C>();
@@ -135,6 +140,14 @@ public class GsonParser<T> {
 
     public void setData(Data<T> data) {
         this.data = data;
+    }
+
+    public static Gson getGson() {
+        return gson;
+    }
+
+    public static void setGson(Gson gson) {
+        GsonParser.gson = gson;
     }
 
     public JSONObject getOptions() {
