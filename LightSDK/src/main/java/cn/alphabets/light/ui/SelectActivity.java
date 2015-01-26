@@ -111,7 +111,7 @@ public class SelectActivity extends ABActivity {
 
         if (isMultiple) {
             MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Save");
-            item.setIcon(R.drawable.tool_diskette);
+            item.setIcon(R.drawable.tool_diskette_white);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
 

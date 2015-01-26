@@ -164,7 +164,7 @@ public class ImageActivity extends ABActivity {
         boolean isReadOnly = getIntent().getExtras().getBoolean(READONLY);
         if (!isReadOnly) {
             MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Add");
-            item.setIcon(R.drawable.tool_plus);
+            item.setIcon(R.drawable.tool_plus_white);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         this.menu = menu;
