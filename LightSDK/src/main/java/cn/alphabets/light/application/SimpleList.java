@@ -31,7 +31,7 @@ import cn.alphabets.light.ui.PreviewActivity;
 public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
     /** 字体 */
-    private static final int DEFAULT_FONT = 12;
+    private static final int DEFAULT_FONT = 16;
 
     /** 无头像时的行距离调整 dp单位 */
     private static final int DEFAULT_PADDING = 10;
@@ -100,6 +100,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             TextView titleView = new TextView(context);
             titleView.setLayoutParams(new LayoutParams(pixel(DEFAULT_LEFT_WIDTH), LayoutParams.WRAP_CONTENT));
             titleView.setSingleLine(true);
+            titleView.setTextSize(DEFAULT_FONT);
             titleView.setText(pair.title);
             titleView.setTextColor(enable && pair.enable ? Color.BLACK : Color.parseColor(DEFAULT_VALUE_COLOR));
             addView(titleView);
