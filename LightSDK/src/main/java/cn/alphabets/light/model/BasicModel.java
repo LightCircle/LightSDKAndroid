@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import cn.alphabets.light.setting.Default;
 
@@ -88,5 +89,15 @@ public class BasicModel implements Serializable {
     public static BasicModel parse(JSONObject json, TypeToken typeToken) {
         Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateConverter()).create();
         return gson.fromJson(json.toString(), typeToken.getType());
+    }
+
+    public static TypeToken getTypeToken() {
+        return new TypeToken<BasicModel>() {
+        };
+    }
+
+    public static TypeToken getListTypeToken() {
+        return new TypeToken<List<BasicModel>>() {
+        };
     }
 }

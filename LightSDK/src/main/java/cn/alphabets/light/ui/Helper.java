@@ -23,6 +23,15 @@ public class Helper {
     }
 
     /**
+     * 隐藏软键盘
+     * @param activity activity
+     */
+    public static void setHideSoftKeyboard(Activity activity) {
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
+
+    /**
      * 设定无图标，显示回退按键的ActionBar
      * @param activity
      * @param title
