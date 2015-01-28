@@ -8,6 +8,7 @@ import java.util.Map;
 import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelUser;
 import cn.alphabets.light.setting.Default;
+import cn.alphabets.light.store.Eternal;
 import cn.alphabets.light.util.SharedData;
 
 /**
@@ -32,7 +33,16 @@ public class SessionManager {
             return cookie;
         }
 
-        return SharedData.getInstance().get(Default.CookieName);
+        // load cookie from SharedData
+        cookie = SharedData.getInstance().get(Default.CookieName);
+        if (cookie != null) {
+            return cookie;
+        }
+
+        // Try to load a cookie from a file (SharedData data, sometimes lost?)
+        cookie = Eternal.getString(Default.CookieName);
+
+        return cookie;
     }
 
     public static void setCookie(String cookie) {
@@ -43,6 +53,7 @@ public class SessionManager {
         if (SessionManager.cookie == null || !SessionManager.cookie.equals(cookie)) {
             SessionManager.cookie = cookie;
             SharedData.getInstance().push(Default.CookieName, cookie);
+            Eternal.saveString(Default.CookieName, cookie);
         }
     }
 
