@@ -27,7 +27,7 @@ public class Default {
     public static final int LogLevel                =  Log.DEBUG;
     public static final String LogTag               = "ABTag";
     public static final String DebugModel           = "DebugModel";
-
+    public static final String LastError            = "LastError";
 
     /**
      *

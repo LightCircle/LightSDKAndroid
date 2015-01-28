@@ -7,6 +7,8 @@ import java.io.StringWriter;
 
 import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.network.VolleyManager;
+import cn.alphabets.light.setting.Default;
+import cn.alphabets.light.store.Eternal;
 import cn.alphabets.light.util.SharedData;
 
 /**
@@ -18,6 +20,7 @@ public class ABApplication extends Application implements Thread.UncaughtExcepti
     @Override
     public void onCreate() {
         super.onCreate();
+        Thread.setDefaultUncaughtExceptionHandler(this);
 
         // 初始化网络连接
         VolleyManager.init();
@@ -34,9 +37,9 @@ public class ABApplication extends Application implements Thread.UncaughtExcepti
         Logger.e(stackTrace);
 
         // 保存最后的异常信息
-        SharedData.getInstance().push("LastError", stackTrace);
+        Eternal.saveString(Default.LastError, stackTrace);
 
         // 执行缺省Handler，并强行结束
-        thread.getDefaultUncaughtExceptionHandler().uncaughtException(thread, throwable);
+        System.exit(1);
     }
 }
