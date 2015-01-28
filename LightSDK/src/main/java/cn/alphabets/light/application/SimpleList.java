@@ -48,6 +48,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     /** 是否只读 */
     private boolean enable = true;
 
+    /** 父类View */
+    private View containerView;
+
     /** 值的文字颜色 */
     private static final String DEFAULT_VALUE_COLOR = "#727272";
 
@@ -230,6 +233,15 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         public Pair(int titleRes, String value, boolean indicator) {
             this(r(titleRes), value, indicator, 0, null);
         }
+        public Pair(int titleRes, String value, boolean indicator, int icon) {
+            this(r(titleRes), value, indicator, icon, null);
+        }
+        public Pair(int titleRes, int valueRes, boolean indicator, int icon) {
+            this(r(titleRes), r(valueRes), indicator, icon, null);
+        }
+        public Pair(String title, int valueRes, boolean indicator, int icon) {
+            this(title, r(valueRes), indicator, icon, null);
+        }
 
         // resource to string
         private static String r (int resource) {
@@ -239,6 +251,12 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
     public SimpleList(Context context, int resource) {
         super(context, resource);
+        this.resource = resource;
+    }
+
+    public SimpleList(Context context, View containerView, int resource) {
+        super(context, resource);
+        this.containerView = containerView;
         this.resource = resource;
     }
 
@@ -255,6 +273,10 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     public void bindListView(final Click onClick) {
 
         ListView view = (ListView) ((Activity) getContext()).findViewById(this.resource);
+        if (this.containerView != null) {
+            view = (ListView) this.containerView.findViewById(this.resource);
+        }
+
         view.setAdapter(this);
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
