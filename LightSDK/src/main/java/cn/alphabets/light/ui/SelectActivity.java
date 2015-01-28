@@ -99,7 +99,7 @@ public class SelectActivity extends ABActivity {
 
             String model = extras.getString(MODEL);
             if (model != null && model.equals("data")) {
-                setData(extras.getStringArray(LIST));
+                setData(extras.get(LIST));
             } else {
                 fetchListData();
             }
@@ -171,7 +171,7 @@ public class SelectActivity extends ABActivity {
      * 显示给定的数据显示
      * @param lists
      */
-    private void setData(String[] lists) {
+    private void setData(Object lists) {
         if (lists != null) {
             // TODO:
         }

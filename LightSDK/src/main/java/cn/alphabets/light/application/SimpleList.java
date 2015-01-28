@@ -236,6 +236,12 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         public Pair(int titleRes, String value, boolean indicator, int icon) {
             this(r(titleRes), value, indicator, icon, null);
         }
+        public Pair(int titleRes, int valueRes, boolean indicator, int icon) {
+            this(r(titleRes), r(valueRes), indicator, icon, null);
+        }
+        public Pair(String title, int valueRes, boolean indicator, int icon) {
+            this(title, r(valueRes), indicator, icon, null);
+        }
 
         // resource to string
         private static String r (int resource) {
