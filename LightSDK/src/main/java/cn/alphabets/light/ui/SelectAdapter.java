@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 import cn.alphabets.light.R;
 
 
@@ -15,7 +17,7 @@ import cn.alphabets.light.R;
  */
 public class SelectAdapter extends ArrayAdapter<SelectAdapter.SelectItem> {
 
-    public static class SelectItem {
+    public static class SelectItem implements Serializable {
         String title;
         String value;
         boolean isChecked;
