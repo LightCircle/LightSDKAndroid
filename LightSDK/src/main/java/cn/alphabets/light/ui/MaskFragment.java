@@ -55,6 +55,11 @@ public class MaskFragment extends DialogFragment {
 
     public void hide() {
         isAdded = false;
-        this.dismiss();
+
+        try {
+            this.dismiss();
+        } catch (IllegalStateException e) {
+            // 忽略该异常，发生的条件尚不明
+        }
     }
 }
