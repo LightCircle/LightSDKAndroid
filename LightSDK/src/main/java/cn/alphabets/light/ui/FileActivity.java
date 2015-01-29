@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -38,32 +39,33 @@ public class FileActivity extends ABActivity {
             }
         }
 
-        Helper.setShowSoftKeyboard(this);
         Helper.setNoIconBackActionBar(this, "Edit");
         setContentView(R.layout.activity_file);
 
+        ArrayList<FileAdapter.FileItem> values = new ArrayList<FileAdapter.FileItem>();
         if (extras != null) {
             String title = extras.getString(TITLE);
             setTitle(title);
 
-            ArrayList<FileAdapter.FileItem> values = (ArrayList<FileAdapter.FileItem>)extras.get(LIST);
-
-            ListView fileList = (ListView) findViewById(R.id.file_list);
-            final FileAdapter mAdapter = new FileAdapter(getApplicationContext(), android.R.layout.simple_list_item_1);
-            mAdapter.addAll(values);
-            fileList.setAdapter(mAdapter);
-
-            fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    FileAdapter.FileItem item = mAdapter.getItem(i);
-                    if (item.file != null) {
-                        FileUtil.openFile(FileActivity.this, item.file);
-                    }
-                }
-            });
+            if (extras.get(LIST) != null) {
+                values.addAll((ArrayList<FileAdapter.FileItem>)extras.get(LIST));
+            }
         }
 
+        ListView fileList = (ListView) findViewById(R.id.file_list);
+        final FileAdapter mAdapter = new FileAdapter(getApplicationContext(), android.R.layout.simple_list_item_1);
+        mAdapter.addAll(values);
+        fileList.setAdapter(mAdapter);
+
+        fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FileAdapter.FileItem item = mAdapter.getItem(i);
+                if (item.file != null) {
+                    FileUtil.openFile(FileActivity.this, item.file);
+                }
+            }
+        });
     }
 
 
