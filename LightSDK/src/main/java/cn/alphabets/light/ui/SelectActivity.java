@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -36,8 +37,10 @@ public class SelectActivity extends ABActivity {
     public static final String MULTIPLE         = "multiple";   //
     public static final String MODEL            = "model";         // 传递数据的方式
     public static final String THEME            = "theme";
+    public static final String READONLY         = "readonly";
 
     private boolean isMultiple = true;
+    private boolean isReadOnly = true;
 
     private SelectAdapter mAdapter;
 
@@ -68,19 +71,23 @@ public class SelectActivity extends ABActivity {
             if (title != null) {
                 setTitle(title);
             }
+
+            // 单选，多选模式
+            isMultiple = extras.getBoolean(MULTIPLE);
+            // 只读，可编辑模式
+            isReadOnly = extras.getBoolean(READONLY);
         }
 
         // 初始化Adapter
-        mAdapter = new SelectAdapter(this, R.layout.activity_select);
+        mAdapter = new SelectAdapter(this, R.layout.activity_select, isMultiple, isReadOnly);
         ListView listView = (ListView) findViewById(R.id.select_list);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 SelectAdapter.SelectItem item = mAdapter.getItem(position);
                 if (isMultiple) {
-                    // TODO: 多行模式
+                    ((CheckBox) view.findViewById(R.id.checked)).performClick();
                 } else {
                     Intent data = new Intent();
                     data.putExtra(VALUE, item.value);
@@ -93,10 +100,6 @@ public class SelectActivity extends ABActivity {
 
         // 一览数据
         if (extras != null) {
-
-            // 单选，多选模式
-            isMultiple = extras.getBoolean(MULTIPLE);
-
             String model = extras.getString(MODEL);
             if (model != null && model.equals("data")) {
                 setData((ArrayList<SelectAdapter.SelectItem>)extras.get(LIST));
@@ -129,14 +132,21 @@ public class SelectActivity extends ABActivity {
             return true;
         }
 
-        // TODO: 保存
+        // 保存(只需要保存多选的)
         if (id == android.R.id.edit) {
-
-            EditText edit = (EditText) findViewById(R.id.edit_text);
             Intent data = new Intent();
-//            data.putExtra(VALUE, edit.getText().toString());
+            ArrayList<String> values = new ArrayList<String>();
+            ArrayList<String> titles = new ArrayList<String>();
+            for (int i = 0; i < mAdapter.getCount(); i++) {
+                SelectAdapter.SelectItem select = mAdapter.getItem(i);
+                if (select.isChecked) {
+                    values.add(select.value);
+                    titles.add(select.title);
+                }
+            }
+            data.putStringArrayListExtra(VALUE, values);
+            data.putStringArrayListExtra(VALUE_TEXT, titles);
             setResult(RESULT_OK, data);
-
             onBackPressed();
             return true;
         }

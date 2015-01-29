@@ -85,7 +85,9 @@ public class GsonParser<T> {
                 List<C> items = gson.fromJson(jsonData.getString("items"), type.getType());
                 Data<C> data = new Data<C>();
                 data.setItems(items);
-                data.setTotalItems(jsonData.getInt("totalItems"));
+                if (jsonData.has("totalItems")) {
+                    data.setTotalItems(jsonData.getInt("totalItems"));
+                }
                 result.setData(data);
 
                 if (jsonData.has("options")) {
