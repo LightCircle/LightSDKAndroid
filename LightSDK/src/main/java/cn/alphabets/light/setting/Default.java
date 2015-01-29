@@ -24,9 +24,10 @@ public class Default {
     /**
      * Log相关
      */
-    public static int LogLevel                =  Log.DEBUG;
-    public static String LogTag               = "ABTag";
-
+    public static final int LogLevel          =  Log.DEBUG;
+    public static final String LogTag         = "ABTag";
+    public static final String DebugModel     = "DebugModel";
+    public static final String LastError      = "LastError";
 
     /**
      *

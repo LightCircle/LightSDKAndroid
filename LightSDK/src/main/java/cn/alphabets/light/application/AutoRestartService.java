@@ -18,6 +18,12 @@ public class AutoRestartService extends Service {
     /** 服务被杀掉后，自动重启的时间间隔 */
     protected int autoRestartTime = 1000;
 
+    /** 手动停止服务 */
+    protected static boolean isCorrectStop = false;
+    public static void setCorrectStop(boolean isCorrectStopped) {
+        isCorrectStop = isCorrectStopped;
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -29,7 +35,9 @@ public class AutoRestartService extends Service {
     @Override
     public void onDestroy() {
         Logger.d("Service be destroyed. Try to restart the service.");
-        this.scheduleNextTime();
+        if (!isCorrectStop) {
+            this.scheduleNextTime();
+        }
         super.onDestroy();
     }
 

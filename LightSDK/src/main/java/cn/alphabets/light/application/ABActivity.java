@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import cn.alphabets.light.R;
@@ -25,6 +26,7 @@ import cn.alphabets.light.network.VolleyManager;
 import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.ui.Dialog;
 import cn.alphabets.light.ui.MaskFragment;
+import cn.alphabets.light.util.SharedData;
 
 /**
  * Activity父类
@@ -183,7 +185,18 @@ public class ABActivity extends Activity {
 
         // 无法连接服务器
         if (error instanceof NoConnectionError) {
-            Dialog.toast(R.string.network_error);
+
+            // 旧版的Android，不支持401错误，都是NoConnectionError，只能判断消息体的内容
+            if (error.getMessage().contains("authentication challenge")) {
+                sendBroadcast(new Intent(Default.BroadcastLogout));
+                return;
+            }
+
+            if (isDebug() && error.getMessage() != null) {
+                Dialog.toast(error.getMessage());
+            } else {
+                Dialog.toast(R.string.network_error);
+            }
             return;
         }
 
@@ -200,7 +213,11 @@ public class ABActivity extends Activity {
         }
 
         // 其他错误
-        Dialog.toast(R.string.unknown_error);
+        if (isDebug() && error.getMessage() != null) {
+            Dialog.toast(error.getMessage());
+        } else {
+            Dialog.toast(R.string.unknown_error);
+        }
     }
 
     @Override
@@ -229,5 +246,13 @@ public class ABActivity extends Activity {
         super.onResume();
 
         hideWaiting();
+    }
+
+    /**
+     * 是否是调试模式
+     * @return debug: true
+     */
+    private boolean isDebug() {
+        return SharedData.getInstance().get(Default.DebugModel) != null;
     }
 }

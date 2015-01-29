@@ -68,7 +68,12 @@ public class PaginationController {
      * 清除等待动画，通常在出错处理里使用
      */
     public void clearWait() {
-        this.listView.removeFooterView(this.footerView);
+        try {
+            this.listView.removeFooterView(this.footerView);
+        } catch (ClassCastException e) {
+            // android4.4以前的设备，会报错误，忽略错误
+        }
+
         if (this.refresh != null) {
             this.refresh.setRefreshing(false);
         }

@@ -55,9 +55,12 @@ public class Dialog {
         toast(ContextManager.getInstance().getResources().getString(msg));
     }
     public static void toast(String msg) {
+        toast(msg, android.widget.Toast.LENGTH_SHORT);
+    }
+    public static void toast(String msg, int length) {
         if (toast == null) {
             Application context = ContextManager.getInstance();
-            toast = Toast.makeText(context, msg, android.widget.Toast.LENGTH_SHORT);
+            toast = Toast.makeText(context, msg, length);
         } else {
             toast.setText(msg);
         }
@@ -270,12 +273,10 @@ public class Dialog {
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                if (!outDir.exists()) {
-                    outDir.mkdirs();
-                }
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
                 ContentValues values = new ContentValues();
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 photoUri = ContextManager.getInstance().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, photoUri);
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
