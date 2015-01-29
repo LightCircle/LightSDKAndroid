@@ -2,26 +2,21 @@ package cn.alphabets.light.application;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.network.ContextManager;
-import cn.alphabets.light.ui.PreviewActivity;
 
 /**
  * 通用List
@@ -55,6 +50,8 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
     private static final String DEFAULT_VALUE_COLOR = "#727272";
 
 
+    private int itemRes = R.layout.simple_list_item;
+
     /**
      * 选择行
      */
@@ -62,101 +59,102 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         public void done(View view, int position);
     }
 
-
-    /**
-     * 视图类，Programatically set view
-     */
-    public class ListRowView extends LinearLayout {
-
-        /**
-         * 构筑函数
-         * @param context context
-         * @param pair 标题
-         * @param showIndicator indicator
-         * @param enable enable
-         */
-        public ListRowView(final Context context, final Pair pair, boolean showIndicator, boolean enable) {
-
-            super(context);
-
-            // LinearLayout properties
-            int padding = (pair.icon == 0) ? pixel(DEFAULT_PADDING) : 0;
-            setOrientation(LinearLayout.HORIZONTAL);
-            setPadding(padding, padding, 0, padding);
-            setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
-            setGravity(Gravity.CENTER);
-            setVerticalScrollBarEnabled(false);
-            setHorizontalScrollBarEnabled(false);
-
-            // Icon
-            if (pair.icon > 0) {
-                ImageView icon = new ImageView(context);
-                LayoutParams iconParams = new LayoutParams(pixel(20), pixel(20));
-                iconParams.setMargins(pixel(5), pixel(10), pixel(5), pixel(10));
-                icon.setLayoutParams(iconParams);
-                icon.setImageResource(pair.icon);
-                icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                addView(icon);
-            }
-
-            // Left title text view
-            TextView titleView = new TextView(context);
-            titleView.setLayoutParams(new LayoutParams(pixel(DEFAULT_LEFT_WIDTH), LayoutParams.WRAP_CONTENT));
-            titleView.setSingleLine(true);
-            titleView.setTextSize(DEFAULT_FONT);
-            titleView.setText(pair.title);
-            titleView.setTextColor(enable && pair.enable ? Color.BLACK : Color.parseColor(DEFAULT_VALUE_COLOR));
-            addView(titleView);
-
-            // Right value text view
-            TextView valueView = new TextView(context);
-            valueView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1));
-            valueView.setGravity(Gravity.RIGHT);
-            valueView.setSingleLine(false);
-            valueView.setTextColor(Color.parseColor(DEFAULT_VALUE_COLOR));
-            valueView.setTextSize(DEFAULT_FONT);
-            valueView.setText(pair.value);
-            addView(valueView);
-
-            // Right image view
-            if (pair.image != null) {
-                ImageView image = new ImageView(context);
-                int height = pair.imageHeight > 0 ? pair.imageHeight : 50;
-                LayoutParams imageParams = new LayoutParams(pixel(height), pixel(height));
-                image.setLayoutParams(imageParams);
-                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                image.setImageBitmap(pair.image);
-                addView(image);
-
-                image.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ArrayList<String> imageIdList = new ArrayList<String>(){{
-                            add(pair.getImageId());
-                        }};
-                        Intent intent = new Intent(context, PreviewActivity.class);
-                        intent.putStringArrayListExtra(PreviewActivity.IMAGES, imageIdList);
-                        context.startActivity(intent);
-                    }
-                });
-            }
-
-            // Indicator
-            ImageView indicator = new ImageView(context);
-            int width = showIndicator ? pixel(15) : pixel(5);
-            LayoutParams indicatorParams = new LayoutParams(width, pixel(15));
-            int margins = pixel(2);
-            indicatorParams.setMargins(margins, margins, margins, margins);
-            indicator.setLayoutParams(indicatorParams);
-            indicator.setImageResource(showIndicator && pair.indicator ? R.drawable.indicator_right : R.drawable.indicator_empty);
-            indicator.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            addView(indicator);
-        }
-
-        private int pixel(int dip){
-            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
-        }
-    }
+//
+//    /**
+//     * 视图类，Programatically set view
+//     */
+//    public class ListRowView extends LinearLayout {
+//
+//        /**
+//         * 构筑函数
+//         *
+//         * @param context       context
+//         * @param pair          标题
+//         * @param showIndicator indicator
+//         * @param enable        enable
+//         */
+//        public ListRowView(final Context context, final Pair pair, boolean showIndicator, boolean enable) {
+//
+//            super(context);
+//
+//            // LinearLayout properties
+//            int padding = (pair.icon == 0) ? pixel(DEFAULT_PADDING) : 0;
+//            setOrientation(LinearLayout.HORIZONTAL);
+//            setPadding(padding, padding, 0, padding);
+//            setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
+//            setGravity(Gravity.CENTER);
+//            setVerticalScrollBarEnabled(false);
+//            setHorizontalScrollBarEnabled(false);
+//
+//            // Icon
+//            if (pair.icon > 0) {
+//                ImageView icon = new ImageView(context);
+//                LayoutParams iconParams = new LayoutParams(pixel(20), pixel(20));
+//                iconParams.setMargins(pixel(5), pixel(10), pixel(5), pixel(10));
+//                icon.setLayoutParams(iconParams);
+//                icon.setImageResource(pair.icon);
+//                icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                addView(icon);
+//            }
+//
+//            // Left title text view
+//            TextView titleView = new TextView(context);
+//            titleView.setLayoutParams(new LayoutParams(pixel(DEFAULT_LEFT_WIDTH), LayoutParams.WRAP_CONTENT));
+//            titleView.setSingleLine(true);
+//            titleView.setTextSize(DEFAULT_FONT);
+//            titleView.setText(pair.title);
+//            titleView.setTextColor(enable && pair.enable ? Color.BLACK : Color.parseColor(DEFAULT_VALUE_COLOR));
+//            addView(titleView);
+//
+//            // Right value text view
+//            TextView valueView = new TextView(context);
+//            valueView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1));
+//            valueView.setGravity(Gravity.RIGHT);
+//            valueView.setSingleLine(false);
+//            valueView.setTextColor(Color.parseColor(DEFAULT_VALUE_COLOR));
+//            valueView.setTextSize(DEFAULT_FONT);
+//            valueView.setText(pair.value);
+//            addView(valueView);
+//
+//            // Right image view
+//            if (pair.image != null) {
+//                ImageView image = new ImageView(context);
+//                int height = pair.imageHeight > 0 ? pair.imageHeight : 50;
+//                LayoutParams imageParams = new LayoutParams(pixel(height), pixel(height));
+//                image.setLayoutParams(imageParams);
+//                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                image.setImageBitmap(pair.image);
+//                addView(image);
+//
+//                image.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        ArrayList<String> imageIdList = new ArrayList<String>() {{
+//                            add(pair.getImageId());
+//                        }};
+//                        Intent intent = new Intent(context, PreviewActivity.class);
+//                        intent.putStringArrayListExtra(PreviewActivity.IMAGES, imageIdList);
+//                        context.startActivity(intent);
+//                    }
+//                });
+//            }
+//
+//            // Indicator
+//            ImageView indicator = new ImageView(context);
+//            int width = showIndicator ? pixel(15) : pixel(5);
+//            LayoutParams indicatorParams = new LayoutParams(width, pixel(15));
+//            int margins = pixel(2);
+//            indicatorParams.setMargins(margins, margins, margins, margins);
+//            indicator.setLayoutParams(indicatorParams);
+//            indicator.setImageResource(showIndicator && pair.indicator ? R.drawable.indicator_right : R.drawable.indicator_empty);
+//            indicator.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//            addView(indicator);
+//        }
+//
+//        private int pixel(int dip) {
+//            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
+//        }
+//    }
 
     /**
      * 内容类
@@ -167,13 +165,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         private String value;           // 值（右）
         private Bitmap image;           // 图（右）
         private String imageId;         // 图的id
-        private int imageHeight;        // 图大小
         private boolean enable = true;  // 可编辑
         private boolean indicator;      // 右向剪头
-
-        public void setImageHeight(int imageHeight) {
-            this.imageHeight = imageHeight;
-        }
+        private int badge;              //图片角标
 
         public void setEnable(boolean enable) {
             this.enable = enable;
@@ -207,6 +201,14 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
         public void setImageId(String imageId) {
             this.imageId = imageId;
+        }
+
+        public int getBadge() {
+            return badge;
+        }
+
+        public void setBadge(int badge) {
+            this.badge = badge;
         }
 
         public Pair(String title, String value, boolean indicator, int icon, Bitmap image) {
@@ -254,20 +256,96 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         this.resource = resource;
     }
 
+    public SimpleList(Context context, int resource, int itemRes) {
+        super(context, resource);
+        this.resource = resource;
+        this.itemRes = itemRes;
+    }
+
     public SimpleList(Context context, View containerView, int resource) {
         super(context, resource);
         this.containerView = containerView;
         this.resource = resource;
     }
 
+    public SimpleList(Context context, View containerView, int resource, int itemRes) {
+        super(context, resource);
+        this.containerView = containerView;
+        this.resource = resource;
+        this.itemRes = itemRes;
+    }
+
+    private static class ViewHolder {
+
+        ImageView icon;
+        TextView title;
+        TextView value;
+        ImageView indicator;
+        ImageView content_img;
+
+        public ViewHolder(View view) {
+            this.icon = (ImageView) view.findViewById(R.id.icon);
+            this.title = (TextView) view.findViewById(R.id.title);
+            this.value = (TextView) view.findViewById(R.id.value);
+            this.indicator = (ImageView) view.findViewById(R.id.indicator);
+            this.content_img =  (ImageView) view.findViewById(R.id.content_img);
+        }
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Pair pair = getItem(position);
-        return new ListRowView(getContext(), pair, this.showIndicator, this.enable);
+//        return new ListRowView(getContext(), pair, this.showIndicator, this.enable);
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = View.inflate(getContext(), itemRes, null);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        if (pair.icon > 0) {
+            holder.icon.setImageDrawable(getContext().getResources().getDrawable(pair.icon));
+            holder.icon.setVisibility(View.VISIBLE);
+        } else {
+            holder.icon.setVisibility(View.GONE);
+        }
+
+        holder.title.setText(pair.title);
+        holder.value.setText(pair.value);
+
+
+        // Right image view
+        if (pair.image != null) {
+            holder.content_img.setImageBitmap(pair.image);
+            holder.content_img.setVisibility(View.VISIBLE);
+            BadgeView badge =(BadgeView)holder.content_img.getTag();
+            if (badge == null) {
+                badge = new BadgeView(getContext(), holder.content_img);
+                badge.setBadgeMargin(pixel(3), pixel(3));
+                badge.setBadgeBackgroundColor(Color.parseColor("#A4C639"));
+                holder.content_img.setTag(badge);
+            }
+            if (pair.getBadge() != 0) {
+                badge.setText(pair.getBadge() + "");
+                badge.show(true);
+            }else{
+                badge.hide();
+            }
+        } else {
+            holder.content_img.setVisibility(View.GONE);
+        }
+
+        holder.indicator.setVisibility(pair.indicator ? View.VISIBLE : View.GONE);
+
+
+        return convertView;
     }
 
     /**
      * 绑定视图，设定点击事件
+     *
      * @param onClick click event
      */
     public void bindListView(final Click onClick) {
@@ -302,4 +380,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         this.enable = isEnable;
     }
 
+    private int pixel(int dip) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getContext().getResources().getDisplayMetrics());
+    }
 }
