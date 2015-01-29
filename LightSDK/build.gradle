@@ -19,7 +19,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     /** 分页 */
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 

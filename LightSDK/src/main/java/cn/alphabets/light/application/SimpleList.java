@@ -3,7 +3,6 @@ package cn.alphabets.light.application;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.readystatesoftware.viewbadger.BadgeView;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.network.ContextManager;
@@ -167,7 +164,6 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         private String imageId;         // 图的id
         private boolean enable = true;  // 可编辑
         private boolean indicator;      // 右向剪头
-        private int badge;              //图片角标
 
         public void setEnable(boolean enable) {
             this.enable = enable;
@@ -201,14 +197,6 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
         public void setImageId(String imageId) {
             this.imageId = imageId;
-        }
-
-        public int getBadge() {
-            return badge;
-        }
-
-        public void setBadge(int badge) {
-            this.badge = badge;
         }
 
         public Pair(String title, String value, boolean indicator, int icon, Bitmap image) {
@@ -320,19 +308,6 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         if (pair.image != null) {
             holder.content_img.setImageBitmap(pair.image);
             holder.content_img.setVisibility(View.VISIBLE);
-            BadgeView badge =(BadgeView)holder.content_img.getTag();
-            if (badge == null) {
-                badge = new BadgeView(getContext(), holder.content_img);
-                badge.setBadgeMargin(pixel(3), pixel(3));
-                badge.setBadgeBackgroundColor(Color.parseColor("#A4C639"));
-                holder.content_img.setTag(badge);
-            }
-            if (pair.getBadge() != 0) {
-                badge.setText(pair.getBadge() + "");
-                badge.show(true);
-            }else{
-                badge.hide();
-            }
         } else {
             holder.content_img.setVisibility(View.GONE);
         }
