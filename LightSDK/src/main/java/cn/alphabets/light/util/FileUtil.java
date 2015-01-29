@@ -1,12 +1,15 @@
 package cn.alphabets.light.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+
+import com.android.volley.Request;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,11 +21,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
 
+import cn.alphabets.light.R;
 import cn.alphabets.light.exception.NetworkException;
 import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.network.ContextManager;
 import cn.alphabets.light.network.SessionManager;
+import cn.alphabets.light.network.VolleyManager;
 import cn.alphabets.light.setting.Default;
+import cn.alphabets.light.ui.Dialog;
 
 /**
  * 文件操作
@@ -32,6 +38,7 @@ public class FileUtil {
 
     /**
      * 保存图片文件
+     *
      * @param bitmap 图片
      * @return 图片路径
      * @throws IOException
@@ -48,6 +55,7 @@ public class FileUtil {
 
     /**
      * 图像文件生成Bitmap实例
+     *
      * @param path 图像所在位置
      * @return Bitmap实例
      */
@@ -60,13 +68,15 @@ public class FileUtil {
 
         return null;
     }
+
     public static Bitmap loadBitmap(int resource) {
         return BitmapFactory.decodeResource(ContextManager.getInstance().getResources(), resource);
     }
 
     /**
      * 获取调整大小后的图像
-     * @param path 图像所在位置
+     *
+     * @param path  图像所在位置
      * @param width 图像的宽度
      * @return
      */
@@ -115,6 +125,7 @@ public class FileUtil {
 
     /**
      * 获取临时文件
+     *
      * @return 临时文件路径
      */
     public static File getTemporaryFile() {
@@ -122,7 +133,17 @@ public class FileUtil {
     }
 
     /**
+     * 获取指定后缀的临时文件
+     * @param fileEnding 包好.的后缀名如.txt
+     * @return
+     */
+    public static File getTemporaryFile(String fileEnding) {
+        return new File(getCacheDir(), UUID.randomUUID().toString() + fileEnding);
+    }
+
+    /**
      * 获取临时目录
+     *
      * @return 目录
      */
     public static File getCacheDir() {
@@ -137,12 +158,14 @@ public class FileUtil {
 
     /**
      * 下载文件，因为是同步下载，建议使用AsyncTask
-     * @param url URL
+     *
+     * @param url  URL
      * @param file 下载的文件
      * @throws NetworkException
      */
-    public static void downloadFile(String url, File file) throws NetworkException{
+    public static void downloadFile(String url, File file) throws NetworkException {
         try {
+            url = VolleyManager.getURL(Default.UrlLoadFile + url, Request.Method.GET, null);
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty(Default.CookieName, SessionManager.getCookie());
@@ -154,7 +177,7 @@ public class FileUtil {
             int bufferLength;
 
             FileOutputStream output = new FileOutputStream(file);
-            while ( (bufferLength = input.read(buffer)) > 0 ) {
+            while ((bufferLength = input.read(buffer)) > 0) {
                 output.write(buffer, 0, bufferLength);
             }
             output.close();
@@ -168,6 +191,7 @@ public class FileUtil {
 
     /**
      * 获取拍照所得图片的路径
+     *
      * @param uri
      * @param context
      * @return
@@ -182,13 +206,14 @@ public class FileUtil {
 
     /**
      * 获取图片库路径
-     * @param uri url
+     *
+     * @param uri     url
      * @param context context
      * @return 路径
      */
     public static String getPhotoLibraryPath(Uri uri, Context context) {
 
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
 
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
         cursor.moveToFirst();
@@ -200,6 +225,7 @@ public class FileUtil {
 
     /**
      * 从文件里获取Mime类型
+     *
      * @param file 文件路径
      * @return mime类型
      */
@@ -210,4 +236,215 @@ public class FileUtil {
         return options.outMimeType;
     }
 
+    /**
+     * 根据后缀打开文件
+     * @param context
+     * @param file
+     */
+    public static void openFile(Context context, File file) {
+        if (file.isFile()) {
+            String fileName = file.getName();
+            Intent intent;
+            if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingImage))) {
+                intent = getImageFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingWebText))) {
+                intent = getHtmlFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingPackage))) {
+                intent = getApkFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingAudio))) {
+                intent = getAudioFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingVideo))) {
+                intent = getVideoFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingText))) {
+                intent = getTextFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingPdf))) {
+                intent = getPdfFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingWord))) {
+                intent = getWordFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingExcel))) {
+                intent = getExcelFileIntent(file);
+                context.startActivity(intent);
+            } else if (checkEnding(fileName, context.getResources().getStringArray(R.array.fileEndingPPT))) {
+                intent = getPPTFileIntent(file);
+                context.startActivity(intent);
+            } else {
+                Dialog.toast(R.string.open_file_error);
+            }
+        } else {
+            Dialog.toast(R.string.open_file_error);
+        }
+    }
+
+    /**
+     * 检查要打开的文件的后缀是否在fileedings.xml中
+     *
+     * @param fileEnding
+     * @param fileEndings
+     * @return
+     */
+    private static boolean checkEnding(String fileEnding, String[] fileEndings) {
+        for (String end : fileEndings) {
+            if (fileEnding.endsWith(end)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取用于打开HTML文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getHtmlFileIntent(File file) {
+        Uri uri = Uri.parse(file.toString()).buildUpon().encodedAuthority("com.android.htmlfileprovider").scheme("content").encodedPath(file.toString()).build();
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.setDataAndType(uri, "text/html");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开图片文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getImageFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "image/*");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开PDF文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getPdfFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "application/pdf");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开文本文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getTextFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "text/plain");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开音频文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getAudioFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("oneshot", 0);
+        intent.putExtra("configchange", 0);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "audio/*");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开视频文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getVideoFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("oneshot", 0);
+        intent.putExtra("configchange", 0);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "video/*");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开Word文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getWordFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "application/msword");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开Excel文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getExcelFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "application/vnd.ms-excel");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开PPT文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getPPTFileIntent(File file) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(file);
+        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+        return intent;
+    }
+
+    /**
+     * 获取用于打开apk文件的intent
+     *
+     * @param file
+     * @return
+     */
+    private static Intent getApkFileIntent(File file) {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        return intent;
+    }
 }

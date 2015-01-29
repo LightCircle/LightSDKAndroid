@@ -201,7 +201,7 @@ public class VolleyManager {
      * @param params params
      * @return url
      */
-    private static String getURL(String url, int method, JSONObject params) {
+    public static String getURL(String url, int method, JSONObject params) {
         Uri.Builder builder = new Uri.Builder();
 
         // make server address (Support to specify the full URL)

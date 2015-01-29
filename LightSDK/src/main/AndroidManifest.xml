@@ -38,6 +38,10 @@
             android:name="cn.alphabets.light.ui.PreviewActivity"
             android:label="@string/title_activity_preview" >
         </activity>
+        <activity
+            android:name="cn.alphabets.light.ui.FileActivity"
+            android:label="@string/title_activity_file" >
+        </activity>
 
         <receiver
             android:name="cn.alphabets.light.location.LocationReceiver"
