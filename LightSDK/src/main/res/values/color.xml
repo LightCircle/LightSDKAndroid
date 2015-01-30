@@ -16,4 +16,5 @@
     <color name="viewfinder_mask">#60000000</color>
     <color name="possible_result_points">#00000000</color>
     <color name="list_value_font">#727272</color>
+    <color name="list_item_pressed_bg">#ffe2e2e2</color>
 </resources>
