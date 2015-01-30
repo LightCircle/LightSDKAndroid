@@ -62,6 +62,13 @@ public class FileAdapter extends ArrayAdapter<FileAdapter.FileItem> {
         }
 
         final View view = convertView;
+        final String fileEnding = item.fileName.substring(item.fileName.lastIndexOf("."));
+        int ft_res = getContext().getResources().getIdentifier("ft_" + fileEnding.replace(".", ""), "drawable", getContext().getPackageName());
+        if (ft_res <= 0) {
+            ft_res = R.drawable.ft_default;
+        }
+
+        ((ImageView) convertView.findViewById(R.id.file_type_icon)).setImageDrawable(getContext().getResources().getDrawable(ft_res));
         downloadOrView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +87,7 @@ public class FileAdapter extends ArrayAdapter<FileAdapter.FileItem> {
                         }
                     };
                     if (item.fileName.lastIndexOf(".") > -1) {
-                        String fileEnding = item.fileName.substring(item.fileName.lastIndexOf("."));
+
                         task.execute(item.fileUrl, FileUtil.getTemporaryFile(fileEnding).getAbsolutePath());
                     } else {
                         task.execute(item.fileUrl, FileUtil.getTemporaryFile().getAbsolutePath());
