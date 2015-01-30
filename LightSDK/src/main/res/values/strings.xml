@@ -19,4 +19,5 @@
     <string name="title_activity_preview">PreviewActivity</string>
     <string name="title_activity_error">ErrorActivity</string>
     <string name="title_activity_file">FileActivity</string>
+    <string name="title_activity_datetime">DateTimeActivity</string>
 </resources>
