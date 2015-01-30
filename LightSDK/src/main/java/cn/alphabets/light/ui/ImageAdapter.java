@@ -22,11 +22,16 @@ public class ImageAdapter extends ArrayAdapter<ImageAdapter.ImageItem> {
 
     public static class ImageItem {
         Bitmap image;
+        String imageName;
         String imageUrl;
         public ImageItem(Bitmap image) {
             this.image = image;
         }
         public ImageItem(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+        public ImageItem(String imageName, String imageUrl) {
+            this.imageName = imageName;
             this.imageUrl = imageUrl;
         }
         public boolean isUrl() {

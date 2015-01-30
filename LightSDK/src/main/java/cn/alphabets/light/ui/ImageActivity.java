@@ -1,21 +1,14 @@
 package cn.alphabets.light.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -35,6 +28,7 @@ public class ImageActivity extends ABActivity {
 
     public static final String INTENT_IMAGES    = "images";
     public static final String VALUE            = "value";
+    public static final String VALUE_TITLE      = "value_title";
     public static final String TITLE            = "title";
     public static final String READONLY         = "readonly";
     public static final String SCALED_WIDTH     = "scaled_width";
@@ -46,9 +40,9 @@ public class ImageActivity extends ABActivity {
 
     /** 图像一览 */
     private ImageAdapter mAdapter;
-    private GridView gridView;
+    private GridView mGridView;
 
-    private Menu menu;
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +87,12 @@ public class ImageActivity extends ABActivity {
         mAdapter.addAll(images);
 
         // 点击预览
-        gridView = (GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(mAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView = (GridView) findViewById(R.id.gridView);
+        mGridView.setAdapter(mAdapter);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (menu.findItem(android.R.id.empty) == null || !menu.findItem(android.R.id.empty).isVisible()) {
+                if (mMenu.findItem(android.R.id.empty) == null || !mMenu.findItem(android.R.id.empty).isVisible()) {
                     ArrayList<String> photoUriList = new ArrayList<String>();
                     for (int i = 0; i < mAdapter.getCount(); i++) {
                         ImageAdapter.ImageItem item = mAdapter.getItem(i);
@@ -120,30 +114,30 @@ public class ImageActivity extends ABActivity {
             }
         });
         if (!isReadOnly) {
-            gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            mGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (menu.findItem(android.R.id.edit).isVisible()) {
+                    if (mMenu.findItem(android.R.id.edit).isVisible()) {
                         for (int j = 0; j < mAdapter.getCount(); j++) {
-                            View v = gridView.getChildAt(j);
+                            View v = mGridView.getChildAt(j);
                             CheckBox cb = (CheckBox) v.findViewById(R.id.check);
                             cb.setVisibility(View.VISIBLE);
                         }
-                        MenuItem addItem = menu.findItem(android.R.id.edit);
+                        MenuItem addItem = mMenu.findItem(android.R.id.edit);
                         addItem.setVisible(false);
 
-                        MenuItem removeItem = menu.findItem(android.R.id.empty);
+                        MenuItem removeItem = mMenu.findItem(android.R.id.empty);
                         if (removeItem == null) {
-                            removeItem = menu.add(Menu.NONE, android.R.id.empty, 1, "Delete");
+                            removeItem = mMenu.add(Menu.NONE, android.R.id.empty, 1, "Delete");
                             removeItem.setTitle(getResources().getString(R.string.remove));
                             removeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                         } else {
                             removeItem.setVisible(true);
                         }
 
-                        MenuItem cancelItem = menu.findItem(android.R.id.closeButton);
+                        MenuItem cancelItem = mMenu.findItem(android.R.id.closeButton);
                         if (cancelItem == null) {
-                            cancelItem = menu.add(Menu.NONE, android.R.id.closeButton, 1, "Cancel");
+                            cancelItem = mMenu.add(Menu.NONE, android.R.id.closeButton, 1, "Cancel");
                             cancelItem.setTitle(getResources().getString(R.string.cancel));
                             cancelItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                         } else {
@@ -154,7 +148,7 @@ public class ImageActivity extends ABActivity {
                 }
             });
         } else {
-            gridView.setOnLongClickListener(null);
+            mGridView.setOnLongClickListener(null);
         }
     }
 
@@ -167,7 +161,7 @@ public class ImageActivity extends ABActivity {
             item.setIcon(R.drawable.tool_plus_white);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
-        this.menu = menu;
+        this.mMenu = menu;
 
         return true;
     }
@@ -180,12 +174,15 @@ public class ImageActivity extends ABActivity {
         if (id == android.R.id.home) {
 
             ArrayList<String> images = new ArrayList<>();
+            ArrayList<String> titles = new ArrayList<>();
             for (int i = 0; i < mAdapter.getCount(); i++) {
                 images.add(mAdapter.getItem(i).imageUrl);
+                titles.add(mAdapter.getItem(i).imageName);
             }
 
             Intent data = new Intent();
             data.putStringArrayListExtra(VALUE, images);
+            data.putStringArrayListExtra(VALUE_TITLE, titles);
             setResult(RESULT_OK, data);
 
             onBackPressed();
@@ -202,7 +199,7 @@ public class ImageActivity extends ABActivity {
         if (id == android.R.id.empty) {
             List<ImageAdapter.ImageItem> removeItems = new ArrayList<ImageAdapter.ImageItem>();
             for (int j = 0, count = mAdapter.getCount(); j < count; j++) {
-                View v = gridView.getChildAt(j);
+                View v = mGridView.getChildAt(j);
                 CheckBox checkBox = (CheckBox) v.findViewById(R.id.check);
                 if (checkBox.isChecked()) {
                     removeItems.add(mAdapter.getItem(j));
@@ -214,9 +211,9 @@ public class ImageActivity extends ABActivity {
             }
             mAdapter.notifyDataSetChanged();
 
-            MenuItem addItem = menu.findItem(android.R.id.edit);
+            MenuItem addItem = mMenu.findItem(android.R.id.edit);
             addItem.setVisible(true);
-            MenuItem cancelItem = menu.findItem(android.R.id.closeButton);
+            MenuItem cancelItem = mMenu.findItem(android.R.id.closeButton);
             cancelItem.setVisible(false);
             item.setVisible(false);
         }
@@ -224,7 +221,7 @@ public class ImageActivity extends ABActivity {
         // 取消删除模式
         if (id == android.R.id.closeButton) {
             for (int j = 0, count = mAdapter.getCount(); j < count; j++) {
-                View v = gridView.getChildAt(j);
+                View v = mGridView.getChildAt(j);
                 CheckBox cb = (CheckBox) v.findViewById(R.id.check);
                 if (cb.isChecked()) {
                     cb.setChecked(false);
@@ -232,9 +229,9 @@ public class ImageActivity extends ABActivity {
                 cb.setVisibility(View.GONE);
             }
 
-            MenuItem addItem = menu.findItem(android.R.id.edit);
+            MenuItem addItem = mMenu.findItem(android.R.id.edit);
             addItem.setVisible(true);
-            MenuItem removeItem = menu.findItem(android.R.id.empty);
+            MenuItem removeItem = mMenu.findItem(android.R.id.empty);
             removeItem.setVisible(false);
             item.setVisible(false);
         }
@@ -248,10 +245,11 @@ public class ImageActivity extends ABActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             String photo = Dialog.parsePhoto(requestCode, resultCode, data);
+            final String photoName = new File(photo).getName();
 
             boolean isFromCamera = (data == null);
             int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
-            String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
+            final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
             UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new Success() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -259,7 +257,7 @@ public class ImageActivity extends ABActivity {
                     GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
                     String fileId = files.getData().getItems().get(0).get_id();
 
-                    mAdapter.add(new ImageAdapter.ImageItem(fileId));
+                    mAdapter.add(new ImageAdapter.ImageItem(photoName, fileId));
                     mAdapter.notifyDataSetChanged();
                 }
             });

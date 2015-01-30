@@ -26,9 +26,14 @@ public class FileAdapter extends ArrayAdapter<FileAdapter.FileItem> {
         File file;
         String fileUrl;
         String fileName;
+
         public FileItem(String fileName, String fileUrl) {
             this.fileName = fileName;
             this.fileUrl = fileUrl;
+        }
+        public FileItem(String fileName, String fileUrl, File file) {
+            this(fileName, fileUrl);
+            this.file = file;
         }
     }
 
