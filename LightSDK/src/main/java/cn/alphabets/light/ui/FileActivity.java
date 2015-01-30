@@ -3,20 +3,28 @@ package cn.alphabets.light.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import org.apache.commons.io.FilenameUtils;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.application.ABActivity;
+import cn.alphabets.light.exception.NetworkException;
+import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelFile;
 import cn.alphabets.light.network.Parameter;
@@ -28,12 +36,12 @@ import cn.alphabets.light.util.FileUtil;
  */
 public class FileActivity extends ABActivity {
 
-    public static final String VALUE        = "value";
-    public static final String VALUE_TITLE  = "value_title";
-    public static final String LIST         = "list";
-    public static final String TITLE        = "title";
-    public static final String READONLY     = "readonly";
-    public static final String THEME        = "theme";
+    public static final String VALUE = "value";
+    public static final String VALUE_TITLE = "value_title";
+    public static final String LIST = "list";
+    public static final String TITLE = "title";
+    public static final String READONLY = "readonly";
+    public static final String THEME = "theme";
 
     private Menu mMenu;
     private FileAdapter mAdapter;
@@ -60,7 +68,7 @@ public class FileActivity extends ABActivity {
             setTitle(title);
 
             if (extras.get(LIST) != null) {
-                values.addAll((ArrayList<FileAdapter.FileItem>)extras.get(LIST));
+                values.addAll((ArrayList<FileAdapter.FileItem>) extras.get(LIST));
             }
         }
 
@@ -72,9 +80,32 @@ public class FileActivity extends ABActivity {
         fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                FileAdapter.FileItem item = mAdapter.getItem(i);
+                final FileAdapter.FileItem item = mAdapter.getItem(i);
                 if (item.file != null) {
                     FileUtil.openFile(FileActivity.this, item.file);
+                } else {
+                    final ProgressBar loading = (ProgressBar) view.findViewById(R.id.loading);
+                    final ImageView downloadOrView = (ImageView) view.findViewById(R.id.download_view);
+                    loading.setVisibility(View.VISIBLE);
+                    downloadOrView.setVisibility(View.GONE);
+                    DownloadTask task = new DownloadTask();
+                    task.listener = new FileAdapter.LoadFileListener() {
+                        @Override
+                        public void onResult(File file) {
+                            loading.setVisibility(View.GONE);
+                            downloadOrView.setVisibility(View.VISIBLE);
+                            downloadOrView.setImageDrawable(getResources().getDrawable(R.drawable.icon_view));
+                            item.file = file;
+                            FileUtil.openFile(FileActivity.this, item.file);
+                        }
+                    };
+
+                    final String fileEnding = FilenameUtils.getExtension(item.fileName);
+                    if (!"".equals(fileEnding)) {
+                        task.execute(item.fileUrl, new File(FileUtil.getCacheDir(), item.fileUrl + "." + fileEnding).getAbsolutePath());
+                    } else {
+                        task.execute(item.fileUrl, new File(FileUtil.getCacheDir(), item.fileUrl).getAbsolutePath());
+                    }
                 }
             }
         });
@@ -144,7 +175,7 @@ public class FileActivity extends ABActivity {
             Uri uri = data.getData();
 
             String path = FileUtil.getFileAbsolutePath(this, uri);
-            if (path != null ) {
+            if (path != null) {
                 final File file = new File(path);
                 UPLOAD(Default.UrlSendFile, new Parameter().put(path, file), new Success() {
                     @Override
@@ -158,6 +189,34 @@ public class FileActivity extends ABActivity {
                     }
                 });
             }
+        }
+    }
+
+    /**
+     * 文件下载器
+     */
+    private static class DownloadTask extends AsyncTask<String, Void, Void> {
+
+        public FileAdapter.LoadFileListener listener;
+        private File result;
+
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                this.result = new File(params[1]);
+                if (!this.result.exists()) {
+                    FileUtil.downloadFile(params[0], new File(params[1]));
+                }
+            } catch (NetworkException e) {
+                Logger.e(e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            listener.onResult(this.result);
         }
     }
 }
