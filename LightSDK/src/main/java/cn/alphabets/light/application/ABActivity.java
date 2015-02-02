@@ -27,7 +27,6 @@ import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.ui.Dialog;
 import cn.alphabets.light.ui.MaskFragment;
 import cn.alphabets.light.util.SharedData;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 /**
  * Activity父类
@@ -38,7 +37,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  *
  * Created by lin on 14/12/2.
  */
-public class ABActivity extends SwipeBackActivity {
+public class ABActivity extends Activity {
 
     /** Mask屏 */
     protected MaskFragment mask;
