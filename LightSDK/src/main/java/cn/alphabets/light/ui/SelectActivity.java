@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import org.json.JSONObject;
@@ -114,7 +113,7 @@ public class SelectActivity extends ABActivity {
 
         if (isMultiple) {
             MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Save");
-            item.setIcon(R.drawable.tool_diskette_white);
+            item.setIcon(R.drawable.bar_btn_save);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
 

@@ -13,6 +13,7 @@
 
     <string name="cancel">取消</string>
     <string name="remove">删除</string>
+    <string name="save">保存</string>
     <string name="title_activity_edit">EditActivity</string>
     <string name="title_activity_select">SelectActivity</string>
     <string name="title_activity_image">ImageActivity</string>
