@@ -3,27 +3,30 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
-    android:background="@color/white"
-    android:padding="8dp"
+    android:paddingBottom="6dp"
+    android:paddingTop="6dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
     android:gravity="center">
 
     <TextView
         android:id="@+id/select_item_title"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:textSize="16dp"
         android:layout_weight="1"
-        android:gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        />
 
     <CheckBox
         android:id="@+id/checked"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginLeft="4dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:visibility="gone"/>
+        android:visibility="visible"
+        />
 
 </LinearLayout>

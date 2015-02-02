@@ -6,6 +6,9 @@
     <ListView
         android:id="@+id/select_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1px"
+        android:background="@drawable/row_shape_bg"/>
 
 </LinearLayout>
