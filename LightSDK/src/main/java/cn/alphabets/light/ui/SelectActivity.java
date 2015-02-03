@@ -16,6 +16,7 @@ import java.util.List;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.application.ABActivity;
+import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelCategory;
 import cn.alphabets.light.network.Parameter;
@@ -24,7 +25,7 @@ import cn.alphabets.light.setting.Default;
 /**
  * 选择
  */
-public class SelectActivity extends ABActivity {
+public class SelectActivity extends ABSwipeBackActivity {
 
 
     public static final String VALUE            = "value";

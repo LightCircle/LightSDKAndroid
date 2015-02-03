@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.EditText;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.application.ABActivity;
+import cn.alphabets.light.application.ABSwipeBackActivity;
 
-public class EditActivity extends ABActivity {
+public class EditActivity extends ABSwipeBackActivity {
 
     public static final String VALUE        = "value";
     public static final String TITLE        = "title";
@@ -26,7 +28,7 @@ public class EditActivity extends ABActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
 
         // 设定Theme，需要在setContentView之前调用
         Bundle extras = getIntent().getExtras();
@@ -36,7 +38,7 @@ public class EditActivity extends ABActivity {
                 setTheme(resourceId);
             }
         }
-
+        super.onCreate(savedInstanceState);
         Helper.setShowSoftKeyboard(this);
         Helper.setNoIconBackActionBar(this, "Edit");
         setContentView(R.layout.activity_edit);

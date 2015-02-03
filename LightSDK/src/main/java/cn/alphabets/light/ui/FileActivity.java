@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.application.ABActivity;
+import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.exception.NetworkException;
 import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.model.GsonParser;
@@ -34,7 +35,7 @@ import cn.alphabets.light.util.FileUtil;
 /**
  * Created by sh on 15/1/28.
  */
-public class FileActivity extends ABActivity {
+public class FileActivity extends ABSwipeBackActivity {
 
     public static final String VALUE = "value";
     public static final String VALUE_TITLE = "value_title";

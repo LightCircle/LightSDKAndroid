@@ -11,9 +11,10 @@ import java.util.Calendar;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.application.ABActivity;
+import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.util.DateTimeUtil;
 
-public class DateTimeActivity extends ABActivity {
+public class DateTimeActivity extends ABSwipeBackActivity {
 
     public static final String VALUE          = "value";
     public static final String TITLE          = "title";

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -37,7 +38,6 @@ public class Helper {
      * @param title
      */
     public static void setNoIconBackActionBar(Activity activity, String title) {
-
         activity.setTitle(title);
         activity.getActionBar().setHomeButtonEnabled(true);
         activity.getActionBar().setDisplayHomeAsUpEnabled(true);

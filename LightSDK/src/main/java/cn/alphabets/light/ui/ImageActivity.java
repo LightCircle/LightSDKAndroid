@@ -18,13 +18,14 @@ import java.util.List;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.application.ABActivity;
+import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelFile;
 import cn.alphabets.light.network.Parameter;
 import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.util.FileUtil;
 
-public class ImageActivity extends ABActivity {
+public class ImageActivity extends ABSwipeBackActivity {
 
     public static final String INTENT_IMAGES    = "images";
     public static final String VALUE            = "value";

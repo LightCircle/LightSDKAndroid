@@ -11,10 +11,11 @@ import java.util.List;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.application.ABActivity;
+import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.network.VolleyManager;
 import uk.co.senab.photoview.PhotoView;
 
-public class PreviewActivity extends ABActivity implements ViewPager.OnPageChangeListener {
+public class PreviewActivity extends ABSwipeBackActivity implements ViewPager.OnPageChangeListener {
 
     public static final String IMAGES = "images";
     public static final String INDEX = "index";
