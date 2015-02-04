@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">LightSDKAndroid</string>
+    <!--<string name="app_name">LightSDKAndroid</string>-->
     <string name="scan_text">将二维码放入取景框内</string>
     <string name="network_error">无法访问网络，请检查网络设置！</string>
     <string name="server_error">服务器错误，请稍后重试！</string>
