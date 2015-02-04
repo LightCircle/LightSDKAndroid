@@ -3,6 +3,7 @@ package cn.alphabets.light.ui;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,20 +21,26 @@ import cn.alphabets.light.network.VolleyManager;
  */
 public class ImageAdapter extends ArrayAdapter<ImageAdapter.ImageItem> {
 
+    private int itemSize;
+
     public static class ImageItem {
         Bitmap image;
         String imageName;
         String imageUrl;
+
         public ImageItem(Bitmap image) {
             this.image = image;
         }
+
         public ImageItem(String imageUrl) {
             this.imageUrl = imageUrl;
         }
+
         public ImageItem(String imageName, String imageUrl) {
             this.imageName = imageName;
             this.imageUrl = imageUrl;
         }
+
         public boolean isUrl() {
             return image == null;
         }
@@ -41,6 +48,11 @@ public class ImageAdapter extends ArrayAdapter<ImageAdapter.ImageItem> {
 
     public ImageAdapter(Context context, int resource) {
         super(context, resource);
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        itemSize = size.x / 3;
     }
 
     @Override
@@ -58,13 +70,13 @@ public class ImageAdapter extends ArrayAdapter<ImageAdapter.ImageItem> {
             imageView.setImageBitmap(item.image);
         }
 
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x / 3;
-        int height = width;
-        convertView.setLayoutParams(new ListView.LayoutParams(width, height));
+//        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//        Display display = wm.getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        int width = size.x / 3;
+//        int height = width;
+        convertView.setLayoutParams(new ListView.LayoutParams(itemSize, itemSize));
 
         return convertView;
     }

@@ -129,7 +129,7 @@ public class ImageActivity extends ABSwipeBackActivity {
 
                         MenuItem removeItem = mMenu.findItem(android.R.id.empty);
                         if (removeItem == null) {
-                            removeItem = mMenu.add(Menu.NONE, android.R.id.empty, 1, "Delete");
+                            removeItem = mMenu.add(Menu.NONE, android.R.id.empty, 1, getResources().getString(R.string.remove));
                             removeItem.setTitle(getResources().getString(R.string.remove));
                             removeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                         } else {
@@ -138,7 +138,7 @@ public class ImageActivity extends ABSwipeBackActivity {
 
                         MenuItem cancelItem = mMenu.findItem(android.R.id.closeButton);
                         if (cancelItem == null) {
-                            cancelItem = mMenu.add(Menu.NONE, android.R.id.closeButton, 1, "Cancel");
+                            cancelItem = mMenu.add(Menu.NONE, android.R.id.closeButton, 1, getResources().getString(R.string.cancel));
                             cancelItem.setTitle(getResources().getString(R.string.cancel));
                             cancelItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                         } else {
