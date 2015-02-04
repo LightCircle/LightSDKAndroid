@@ -64,6 +64,9 @@ public class EditActivity extends ABSwipeBackActivity {
                 edit.setLines(4);
                 edit.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             }
+
+            boolean isReadOnly = extras.getBoolean(READONLY);
+            edit.setEnabled(!isReadOnly);
         }
 
     }
