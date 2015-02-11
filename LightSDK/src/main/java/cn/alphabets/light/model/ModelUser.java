@@ -1,5 +1,6 @@
 package cn.alphabets.light.model;
 
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
@@ -21,6 +22,15 @@ public class ModelUser extends BasicModel {
     private String lang;
     private String timezone;
     private String status;
+    private JsonObject extend;
+
+    public JsonObject getExtend() {
+        return extend;
+    }
+
+    public void setExtend(JsonObject extend) {
+        this.extend = extend;
+    }
 
     public String getId() {
         return id;
@@ -111,10 +121,12 @@ public class ModelUser extends BasicModel {
     }
 
     public static TypeToken getTypeToken() {
-        return new TypeToken<ModelUser>() {};
+        return new TypeToken<ModelUser>() {
+        };
     }
 
     public static TypeToken getListTypeToken() {
-        return new TypeToken<List<ModelUser>>() {};
+        return new TypeToken<List<ModelUser>>() {
+        };
     }
 }
