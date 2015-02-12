@@ -76,7 +76,7 @@ public class ImageAdapter extends ArrayAdapter<ImageAdapter.ImageItem> {
 //        display.getSize(size);
 //        int width = size.x / 3;
 //        int height = width;
-        convertView.setLayoutParams(new ListView.LayoutParams(itemSize, itemSize));
+//        convertView.setLayoutParams(new ListView.LayoutParams(itemSize, itemSize));
 
         return convertView;
     }

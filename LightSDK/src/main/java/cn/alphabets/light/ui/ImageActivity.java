@@ -27,19 +27,21 @@ import cn.alphabets.light.util.FileUtil;
 
 public class ImageActivity extends ABSwipeBackActivity {
 
-    public static final String INTENT_IMAGES    = "images";
-    public static final String VALUE            = "value";
-    public static final String VALUE_TITLE      = "value_title";
-    public static final String TITLE            = "title";
-    public static final String READONLY         = "readonly";
-    public static final String SCALED_WIDTH     = "scaled_width";
-    public static final String THEME            = "theme";
+    public static final String INTENT_IMAGES = "images";
+    public static final String VALUE = "value";
+    public static final String VALUE_TITLE = "value_title";
+    public static final String TITLE = "title";
+    public static final String READONLY = "readonly";
+    public static final String SCALED_WIDTH = "scaled_width";
+    public static final String THEME = "theme";
 
     public static final int PICK_PHOTO = 1;
 
     private int mScaledWidth;
 
-    /** 图像一览 */
+    /**
+     * 图像一览
+     */
     private ImageAdapter mAdapter;
     private GridView mGridView;
 
@@ -84,7 +86,7 @@ public class ImageActivity extends ABSwipeBackActivity {
             isReadOnly = extras.getBoolean(READONLY);
         }
 
-        mAdapter = new ImageAdapter(getApplicationContext(), android.R.layout.simple_list_item_1);
+        mAdapter = new ImageAdapter(getApplicationContext(), R.layout.activity_image_item);
         mAdapter.addAll(images);
 
         // 点击预览
@@ -105,7 +107,7 @@ public class ImageActivity extends ABSwipeBackActivity {
                     intent.putStringArrayListExtra(PreviewActivity.IMAGES, photoUriList);
                     startActivity(intent);
                 } else {
-                    CheckBox cb = (CheckBox)view.findViewById(R.id.check);
+                    CheckBox cb = (CheckBox) view.findViewById(R.id.check);
                     if (cb.isChecked()) {
                         cb.setChecked(false);
                     } else {
