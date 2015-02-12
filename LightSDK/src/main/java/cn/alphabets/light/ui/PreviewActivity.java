@@ -1,10 +1,12 @@
 package cn.alphabets.light.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import cn.alphabets.light.application.ABActivity;
 import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.network.VolleyManager;
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class PreviewActivity extends ABSwipeBackActivity implements ViewPager.OnPageChangeListener {
 
@@ -27,12 +30,11 @@ public class PreviewActivity extends ABSwipeBackActivity implements ViewPager.On
         super.onCreate(savedInstanceState);
         getActionBar().hide();
         setContentView(R.layout.activity_preview);
-
         Bundle extras = getIntent().getExtras();
         int index = extras.getInt(INDEX);
         mPhotoUriList = extras.getStringArrayList(IMAGES);
         if (mPhotoUriList == null) {
-            mPhotoUriList = new ArrayList<String>();
+            mPhotoUriList = new ArrayList<>();
         }
 
         ViewPager pager = (ViewPager) findViewById(R.id.view_pager);
@@ -41,13 +43,8 @@ public class PreviewActivity extends ABSwipeBackActivity implements ViewPager.On
         pager.setCurrentItem(index);
         pager.setOnPageChangeListener(this);
 
-        pager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
     }
+
     @Override
     public void onPageScrolled(int i, float v, int i2) {
     }
@@ -67,6 +64,12 @@ public class PreviewActivity extends ABSwipeBackActivity implements ViewPager.On
         public Object instantiateItem(ViewGroup container, int position) {
             // 使用PhotoView控件来预览图片
             PhotoView photoView = new PhotoView(container.getContext());
+            photoView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+                @Override
+                public void onViewTap(View view, float v, float v2) {
+                    onBackPressed();
+                }
+            });
             VolleyManager.loadImage(mPhotoUriList.get(position), photoView);
             container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 

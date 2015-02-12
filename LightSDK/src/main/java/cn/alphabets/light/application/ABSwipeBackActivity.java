@@ -20,6 +20,7 @@ public class ABSwipeBackActivity extends ABActivity implements SwipeBackActivity
         super.onCreate(savedInstanceState);
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
+        mHelper.getSwipeBackLayout().setEdgeSize(10);
     }
 
     @Override
