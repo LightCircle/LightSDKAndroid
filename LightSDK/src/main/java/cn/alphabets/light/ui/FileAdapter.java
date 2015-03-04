@@ -1,7 +1,6 @@
 package cn.alphabets.light.ui;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,9 +14,6 @@ import java.io.File;
 import java.io.Serializable;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.exception.NetworkException;
-import cn.alphabets.light.log.Logger;
-import cn.alphabets.light.util.FileUtil;
 
 /**
  * Created by sh on 15/1/28.

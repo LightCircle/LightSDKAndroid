@@ -14,7 +14,6 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import cn.alphabets.light.R;
@@ -27,7 +26,6 @@ import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.ui.Dialog;
 import cn.alphabets.light.ui.MaskFragment;
 import cn.alphabets.light.util.SharedData;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 /**
  * Activity父类

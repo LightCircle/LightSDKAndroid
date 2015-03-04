@@ -1,18 +1,15 @@
 package cn.alphabets.light.ui;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.application.ABActivity;
 import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.network.VolleyManager;
 import uk.co.senab.photoview.PhotoView;

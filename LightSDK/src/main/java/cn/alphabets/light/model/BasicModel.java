@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import cn.alphabets.light.setting.Default;
-
 /**
  * Mod的父类，处理共通字段
  * Created by luohao on 14/10/17.

@@ -1,7 +1,6 @@
 package cn.alphabets.light.util;
 
 import android.app.Application;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;

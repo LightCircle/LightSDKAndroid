@@ -12,7 +12,6 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 

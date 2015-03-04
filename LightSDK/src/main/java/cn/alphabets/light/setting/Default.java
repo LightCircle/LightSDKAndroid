@@ -2,8 +2,6 @@ package cn.alphabets.light.setting;
 
 import android.util.Log;
 
-import com.android.volley.DefaultRetryPolicy;
-
 /**
  * 缺省值
  * Created by lin on 14/11/30.

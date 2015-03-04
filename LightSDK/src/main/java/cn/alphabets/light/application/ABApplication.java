@@ -9,7 +9,6 @@ import cn.alphabets.light.log.Logger;
 import cn.alphabets.light.network.VolleyManager;
 import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.store.Eternal;
-import cn.alphabets.light.util.SharedData;
 
 /**
  * Application共同类

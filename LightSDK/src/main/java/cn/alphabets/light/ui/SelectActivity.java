@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.application.ABActivity;
 import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelCategory;

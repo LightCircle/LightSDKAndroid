@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +18,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.application.ABActivity;
 import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.exception.NetworkException;
 import cn.alphabets.light.log.Logger;

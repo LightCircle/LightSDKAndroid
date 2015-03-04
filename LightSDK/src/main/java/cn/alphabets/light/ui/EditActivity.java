@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.EditText;
 
 import cn.alphabets.light.R;
-import cn.alphabets.light.application.ABActivity;
 import cn.alphabets.light.application.ABSwipeBackActivity;
 
 public class EditActivity extends ABSwipeBackActivity {

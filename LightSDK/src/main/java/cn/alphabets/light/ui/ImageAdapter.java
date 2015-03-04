@@ -3,14 +3,12 @@ package cn.alphabets.light.ui;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import cn.alphabets.light.R;
 import cn.alphabets.light.network.VolleyManager;
