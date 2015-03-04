@@ -13,7 +13,7 @@ public class Default {
      */
     public static String Server               = "fastfix.alphabets.cn";
     public static String Port                 = "443";
-    public static String Protocol             = "https";
+    public static String Protocol             = "http";
 
     public static int RequestTimeout          = 15 * 1000;// 超时15秒
     public static int MaxReTries              = 0;        // 重试次数
