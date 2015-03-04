@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -162,6 +163,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
         private String value;           // 值（右）
         private Bitmap image;           // 图（右）
         private String imageId;         // 图的id
+        private int imageHeight;        // 图的高度
         private boolean enable = true;  // 可编辑
         private boolean indicator;      // 右向剪头
 
@@ -176,6 +178,9 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
             setValue(r(valueRes));
         }
 
+        public void setImageHeight(int imageHeight) {
+            this.imageHeight = imageHeight;
+        }
         public String getValue() {
             return this.value;
         }
@@ -306,6 +311,10 @@ public class SimpleList extends ArrayAdapter<SimpleList.Pair> {
 
         // Right image view
         if (pair.image != null) {
+            int height = pair.imageHeight > 0 ? pair.imageHeight : 64;
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(pixel(height), pixel(height));
+            holder.content_img.setLayoutParams(imageParams);
+            holder.content_img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             holder.content_img.setImageBitmap(pair.image);
             holder.content_img.setVisibility(View.VISIBLE);
         } else {
