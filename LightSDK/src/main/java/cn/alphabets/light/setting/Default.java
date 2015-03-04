@@ -11,9 +11,9 @@ public class Default {
     /**
      * 服务器地址
      */
-    public static String Server               = "124.193.141.162";
-    public static String Port                 = "5003";
-    public static String Protocol             = "http";
+    public static String Server               = "fastfix.alphabets.cn";
+    public static String Port                 = "443";
+    public static String Protocol             = "https";
 
     public static int RequestTimeout          = 15 * 1000;// 超时15秒
     public static int MaxReTries              = 0;        // 重试次数
