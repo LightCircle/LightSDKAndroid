@@ -205,7 +205,7 @@ public class VolleyManager {
         Uri.Builder builder = new Uri.Builder();
 
         // make server address (Support to specify the full URL)
-        if (url.toLowerCase().contains(Default.Protocol)) {
+        if (url.toLowerCase().contains("http") || url.toLowerCase().contains("https")) {
             builder.encodedPath(url);
         } else {
             builder.scheme(Default.Protocol).encodedAuthority(getAddress()).appendEncodedPath(url);

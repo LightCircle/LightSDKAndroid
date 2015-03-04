@@ -169,7 +169,11 @@ public class FileUtil {
      */
     public static void downloadFile(String url, File file) throws NetworkException {
         try {
-            url = VolleyManager.getURL(Default.UrlLoadFile + url, Request.Method.GET, null);
+            if (url.toLowerCase().contains("http") || url.toLowerCase().contains("https")) {
+                url = VolleyManager.getURL(url, Request.Method.GET, null);
+            } else {
+                url = VolleyManager.getURL(Default.UrlLoadFile + url, Request.Method.GET, null);
+            }
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty(Default.CookieName, SessionManager.getCookie());
