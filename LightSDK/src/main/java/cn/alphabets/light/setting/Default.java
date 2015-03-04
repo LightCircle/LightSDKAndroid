@@ -12,7 +12,7 @@ public class Default {
      * 服务器地址
      */
     public static String Server               = "fastfix.alphabets.cn";
-    public static String Port                 = "443";
+    public static String Port                 = "80";
     public static String Protocol             = "http";
 
     public static int RequestTimeout          = 15 * 1000;// 超时15秒
