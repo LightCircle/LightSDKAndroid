@@ -51,4 +51,5 @@ dependencies {
     compile 'log4j:log4j:1.2.+'
     compile 'joda-time:joda-time:2.5'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile 'com.loopeer.android.thirdparty:swipe-back-layout:1.0'
 }
