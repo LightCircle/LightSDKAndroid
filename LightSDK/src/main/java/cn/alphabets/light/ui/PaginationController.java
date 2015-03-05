@@ -178,4 +178,8 @@ public class PaginationController {
         this.loader = loader;
     }
 
+    public Loader getLoader() {
+        return loader;
+    }
+
 }
