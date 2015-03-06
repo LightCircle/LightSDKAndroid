@@ -247,22 +247,26 @@ public class ImageActivity extends ABSwipeBackActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             String photo = Dialog.parsePhoto(requestCode, resultCode, data);
-            final String photoName = new File(photo).getName();
+            if (photo == null) {
+                Dialog.toast(getResources().getString(R.string.fetch_photo_error));
+            } else {
+                final String photoName = new File(photo).getName();
 
-            boolean isFromCamera = (data == null);
-            int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
-            final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
-            UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new Success() {
-                @Override
-                public void onResponse(JSONObject response) {
+                boolean isFromCamera = (data == null);
+                int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
+                final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
+                UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new Success() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-                    GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
-                    String fileId = files.getData().getItems().get(0).get_id();
+                        GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
+                        String fileId = files.getData().getItems().get(0).get_id();
 
-                    mAdapter.add(new ImageAdapter.ImageItem(photoName, fileId));
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
+                        mAdapter.add(new ImageAdapter.ImageItem(photoName, fileId));
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
         }
     }
 }

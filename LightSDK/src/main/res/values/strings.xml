@@ -10,6 +10,7 @@
     <string name="open_file_error">无法打开文件！</string>
     <string name="select_file">选择文件</string>
     <string name="select_file_error">需要先安装文件管理器</string>
+    <string name="fetch_photo_error">无法加载该图片！</string>
 
     <string name="cancel">取消</string>
     <string name="remove">删除</string>

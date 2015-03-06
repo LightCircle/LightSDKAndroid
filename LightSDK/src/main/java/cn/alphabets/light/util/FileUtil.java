@@ -1,5 +1,6 @@
 package cn.alphabets.light.util;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
@@ -228,7 +230,53 @@ public class FileUtil {
         String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
         cursor.close();
 
+        if (path == null) {
+            // some devices (OS versions return an URI of com.android instead of com.google.android
+            if (uri.toString().startsWith("content://com.android.gallery3d.provider"))  {
+                // use the com.google provider, not the com.android provider.
+                uri = Uri.parse(uri.toString().replace("com.android.gallery3d","com.google.android.gallery3d"));
+            }
+
+            InputStream is = null;
+            ContentResolver res = context.getContentResolver();
+            try {
+                is = res.openInputStream(uri);
+                if (is.available() > 0) {
+                    File file = FileUtil.getTemporaryFile();
+                    FileUtil.inputStreamToFile(file, is);
+                    path = file.getAbsolutePath();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         return path;
+    }
+
+    public static void inputStreamToFile(File file, InputStream is){
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(file);
+            byte buffer[] = new byte[4*1024];
+
+            int len = 0;
+            while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                os.close();
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
