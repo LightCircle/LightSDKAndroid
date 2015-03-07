@@ -179,8 +179,18 @@ public class VolleyManager {
             Response.Listener<String> listener,
             Response.ErrorListener errorListener) {
 
+        return getMultipartRequest(url, params, listener, null, errorListener);
+    }
+
+    public static AuthMultipartRequest getMultipartRequest(
+            String url,
+            Map<String, Object> params,
+            Response.Listener<String> listener,
+            AuthMultipartRequest.MultipartProgressListener progress,
+            Response.ErrorListener errorListener) {
+
         String uri = getURL(url, Request.Method.POST, null);
-        AuthMultipartRequest request = new AuthMultipartRequest(uri, params, listener, errorListener);
+        AuthMultipartRequest request = new AuthMultipartRequest(uri, params, listener, errorListener, progress);
 
         // 添加到Queue
         getRequestQueue().add(request);

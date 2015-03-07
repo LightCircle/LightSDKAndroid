@@ -44,6 +44,9 @@ public class ABActivity extends Activity {
     /** 是否显示Mask屏，缺省为显示 */
     private boolean isShowWaiting;
 
+    /** 是否显示进度 */
+    private boolean isShowProgress;
+
     /** 网络请求错误处理监听器 */
     private Response.ErrorListener error;
 
@@ -77,7 +80,14 @@ public class ABActivity extends Activity {
     }
 
     public AuthMultipartRequest UPLOAD(String url, Parameter params, final Success listener) {
-        return this.request(url, params.toHash(), listener);
+        return this.request(url, params.toHash(), listener, null);
+    }
+
+    public AuthMultipartRequest UPLOAD(
+            String url, Parameter params,
+            final Success listener,
+            final AuthMultipartRequest.MultipartProgressListener progress) {
+        return this.request(url, params.toHash(), listener, progress);
     }
 
     /**
@@ -86,6 +96,14 @@ public class ABActivity extends Activity {
      */
     public void showWaiting(boolean isShowWaiting) {
         this.isShowWaiting = isShowWaiting;
+    }
+
+    /**
+     * 是否显示Mask的进度
+     * @param isShowProgress
+     */
+    public void showWaitingProgress(boolean isShowProgress) {
+        this.isShowProgress = isShowProgress;
     }
 
     /**
@@ -107,7 +125,7 @@ public class ABActivity extends Activity {
         if (this.mask.isVisible()) {
             return;
         }
-        this.mask.show(getFragmentManager());
+        this.mask.show(getFragmentManager(), this.isShowProgress);
     }
 
     /**
@@ -125,8 +143,13 @@ public class ABActivity extends Activity {
      * @param url url
      * @param params params
      * @param listener listener
+     * @param progress progress
      */
-    private AuthMultipartRequest request(String url, Map<String, Object> params, final Success listener) {
+    private AuthMultipartRequest request(
+            String url,
+            Map<String, Object> params,
+            final Success listener,
+            final AuthMultipartRequest.MultipartProgressListener progress) {
 
         this.showWaiting();
         AuthMultipartRequest request = VolleyManager.getMultipartRequest(url, params, new Response.Listener<String>() {
@@ -135,7 +158,7 @@ public class ABActivity extends Activity {
                 hideWaiting();
                 listener.onResponse(Parameter.parse(response));
             }
-        }, error);
+        }, progress, error);
 
         // 设定tag
         request.setTag(this);
