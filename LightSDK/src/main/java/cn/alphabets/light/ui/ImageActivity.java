@@ -50,7 +50,6 @@ public class ImageActivity extends ABSwipeBackActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         // 设定Theme，需要在setContentView之前调用
         Bundle extras = getIntent().getExtras();
@@ -61,6 +60,7 @@ public class ImageActivity extends ABSwipeBackActivity {
             }
         }
 
+        super.onCreate(savedInstanceState);
         Helper.setNoIconBackActionBar(this, "ImageList");
         setContentView(R.layout.activity_image);
 
