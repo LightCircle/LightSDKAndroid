@@ -234,74 +234,34 @@ public class Dialog {
      */
     public static void takePhoto(final Object context, final int requestCode) {
 
-        Activity activity = context instanceof Fragment ? ((Fragment) context).getActivity() : (Activity) context;
-
-        View popupWindowView = activity.getLayoutInflater().inflate(R.layout.dialog_photo_selector, null);
-        PopupWindow popupWindow = new PopupWindow(popupWindowView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(true);
-        // 加上动画并显示
-        popupWindow.setAnimationStyle(R.style.PopupAnimation);
-        popupWindow.showAtLocation(activity.getWindow().getDecorView().getRootView(), Gravity.BOTTOM, 0, 0);
-
-        // 绑定拍照，从相册中选等按钮的事件
-        initPopupWindow(popupWindowView, popupWindow, activity, requestCode);
-    }
-
-
-    public static void initPopupWindow(View popupWindowView, final PopupWindow popupWindow,
-                                final Object context, final int requestCode) {
-        FrameLayout popupWindowArea = (FrameLayout) popupWindowView.findViewById(R.id.selector_area);
-        TextView takePhoto = (TextView) popupWindowView.findViewById(R.id.take_photo);
-        TextView choosePhoto = (TextView) popupWindowView.findViewById(R.id.choose_photo);
-        TextView cancel = (TextView) popupWindowView.findViewById(R.id.take_photo);
-
-        View.OnClickListener cancelListener = new View.OnClickListener() {
+        Dialog.actionSheet(context, new String[]{"拍照", "从相册中选"}, "取消", new Dialog.Click() {
             @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-            }
-        };
-        // 点击空白区域或者点击取消则将窗口关闭
-        popupWindowArea.setOnClickListener(cancelListener);
-        cancel.setOnClickListener(cancelListener);
+            public void done(int which) {
+                if (which == 0) {
+                    ContentValues values = new ContentValues();
 
-        // 拍照
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    photoUri = ContextManager.getInstance().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, photoUri);
+                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 
-                ContentValues values = new ContentValues();
+                    if (context instanceof Fragment) {
+                        ((Fragment) context).startActivityForResult(intent, requestCode);
+                    }
+                    if (context instanceof  Activity) {
+                        ((Activity) context).startActivityForResult(intent, requestCode);
+                    }
+                } else if (which == 1) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
 
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                photoUri = ContextManager.getInstance().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, photoUri);
-                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-
-                if (context instanceof Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, requestCode);
+                    if (context instanceof  Fragment) {
+                        ((Fragment) context).startActivityForResult(intent, requestCode);
+                    }
+                    if (context instanceof  Activity) {
+                        ((Activity) context).startActivityForResult(intent, requestCode);
+                    }
                 }
-                if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, requestCode);
-                }
-                popupWindow.dismiss();
-            }
-        });
-
-        // 从相册中选
-        choosePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-
-                if (context instanceof  Fragment) {
-                    ((Fragment) context).startActivityForResult(intent, requestCode);
-                }
-                if (context instanceof  Activity) {
-                    ((Activity) context).startActivityForResult(intent, requestCode);
-                }
-                popupWindow.dismiss();
             }
         });
     }
