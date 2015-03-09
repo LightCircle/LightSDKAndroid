@@ -247,16 +247,19 @@ public class FileUtil {
                     path = file.getAbsolutePath();
                 }
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 
         return path;
     }
 
-    public static void inputStreamToFile(File file, InputStream is){
+    /**
+     * 将InputStream写入文件
+     * @param file
+     * @param is
+     */
+    public static void inputStreamToFile(File file, InputStream is) {
         OutputStream os = null;
         try {
             os = new FileOutputStream(file);
@@ -267,15 +270,10 @@ public class FileUtil {
                 os.write(buffer, 0, len);
             }
             os.flush();
+            os.close();
+            is.close();
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                os.close();
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException("File operation failed.");
         }
     }
 
