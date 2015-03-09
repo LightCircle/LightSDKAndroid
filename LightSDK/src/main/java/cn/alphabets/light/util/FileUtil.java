@@ -241,9 +241,9 @@ public class FileUtil {
             ContentResolver res = context.getContentResolver();
             try {
                 is = res.openInputStream(uri);
-                if (is.available() > 0) {
-                    File file = FileUtil.getTemporaryFile();
-                    FileUtil.inputStreamToFile(file, is);
+                File file = FileUtil.getTemporaryFile();
+                FileUtil.inputStreamToFile(file, is);
+                if (file.length() > 0) {
                     path = file.getAbsolutePath();
                 }
             } catch (FileNotFoundException e) {

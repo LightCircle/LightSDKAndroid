@@ -50,17 +50,20 @@ public class EditActivity extends ABSwipeBackActivity {
             edit.setText(defaults == null ? "" : defaults);
 
             int inputType = extras.getInt(INPUT_TYPE);
-            edit.setInputType(inputType);
+            // 如果没有设置或者设置为0，则改成文本类型
+            if (inputType == 0) {
+                edit.setInputType(InputType.TYPE_CLASS_TEXT);
+            } else {
+                edit.setInputType(inputType);
+            }
 
             String lineType = extras.getString(LINE_TYPE);
             if (SINGLE_LINE.equalsIgnoreCase(lineType)) {
                 edit.setLines(1);
-                if (inputType == 0) {
-                    edit.setInputType(InputType.TYPE_CLASS_TEXT);
-                }
+                edit.setSingleLine(true);
             } else {
                 edit.setLines(4);
-                edit.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                edit.setSingleLine(false);
             }
 
             boolean isReadOnly = extras.getBoolean(READONLY);
@@ -77,7 +80,7 @@ public class EditActivity extends ABSwipeBackActivity {
         if (!isReadOnly) {
 
             MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, R.string.save);
-            item.setIcon(R.drawable.bar_btn_save);
+            item.setIcon(R.drawable.tool_diskette_white);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
 

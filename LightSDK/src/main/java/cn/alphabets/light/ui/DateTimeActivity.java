@@ -81,7 +81,7 @@ public class DateTimeActivity extends ABSwipeBackActivity {
         if (!isReadOnly) {
 
             MenuItem item = menu.add(Menu.NONE, android.R.id.edit, 1, "Save");
-            item.setIcon(R.drawable.bar_btn_save);
+            item.setIcon(R.drawable.tool_diskette_white);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
 
