@@ -249,29 +249,32 @@ public class ImageActivity extends ABSwipeBackActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             String photo = Dialog.parsePhoto(requestCode, resultCode, data);
+            if (photo == null) {
+                Dialog.toast(getResources().getString(R.string.fetch_photo_error));
+            } else {
+                boolean isFromCamera = (data == null);
+                int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
+                final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
 
-            boolean isFromCamera = (data == null);
-            int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
-            final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
+                showWaitingProgress(true);
+                UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new ABActivity.Success() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-            showWaitingProgress(true);
-            UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new ABActivity.Success() {
-                @Override
-                public void onResponse(JSONObject response) {
+                        GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
+                        ImageAdapter.ImageItem item = new ImageAdapter.ImageItem(FileUtil.loadBitmap(bitmap));
+                        item.imageUrl = files.getData().getItems().get(0).get_id();
 
-                    GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
-                    ImageAdapter.ImageItem item = new ImageAdapter.ImageItem(FileUtil.loadBitmap(bitmap));
-                    item.imageUrl = files.getData().getItems().get(0).get_id();
-
-                    mAdapter.add(item);
-                    mAdapter.notifyDataSetChanged();
-                }
-            }, new AuthMultipartRequest.MultipartProgressListener() {
-                @Override
-                public void onProgress(long transfered, final int progress) {
-                    mask.updateProgress(progress);
-                }
-            });
+                        mAdapter.add(item);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, new AuthMultipartRequest.MultipartProgressListener() {
+                    @Override
+                    public void onProgress(long transfered, final int progress) {
+                        mask.updateProgress(progress);
+                    }
+                });
+            }
         }
 
     }
