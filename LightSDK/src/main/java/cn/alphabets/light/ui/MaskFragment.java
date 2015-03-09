@@ -2,14 +2,17 @@ package cn.alphabets.light.ui;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 /**
  * Mask
@@ -20,6 +23,8 @@ public class MaskFragment extends DialogFragment {
     public static final String TAG = "LOADING_MASK";
 
     private boolean isAdded = false;
+    private boolean isProgress = false;
+    private TextView mProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,19 +41,43 @@ public class MaskFragment extends DialogFragment {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         LinearLayout layout = new LinearLayout(getActivity());
-        ProgressBar progress = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyle);
-
+        layout.setOrientation(LinearLayout.VERTICAL);
         layout.setLayoutParams(params);
-        layout.addView(progress);
+
+        ProgressBar cycle = new ProgressBar(getActivity(), null, android.R.attr.progressBarStyle);
+        layout.addView(cycle);
+
+        // 显示进度
+        if (isProgress) {
+            mProgress = new TextView(getActivity());
+            mProgress.setGravity(Gravity.CENTER_HORIZONTAL);
+            mProgress.setTextColor(Color.LTGRAY);
+            layout.addView(mProgress);
+        }
 
         return layout;
     }
 
+    public void updateProgress(final int progress) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(progress);
+                mProgress.setText(progress + "%");
+            }
+        });
+    }
+
     public void show(FragmentManager manager) {
+        this.show(manager, false);
+    }
+
+    public void show(FragmentManager manager, boolean progress) {
         if (isAdded) {
             return;
         }
 
+        isProgress = progress;
         isAdded = true;
         this.show(manager, TAG);
     }

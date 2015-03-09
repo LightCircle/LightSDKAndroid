@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.alphabets.light.R;
+import cn.alphabets.light.application.ABActivity;
 import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelFile;
+import cn.alphabets.light.network.AuthMultipartRequest;
 import cn.alphabets.light.network.Parameter;
 import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.util.FileUtil;
@@ -247,26 +249,30 @@ public class ImageActivity extends ABSwipeBackActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             String photo = Dialog.parsePhoto(requestCode, resultCode, data);
-            if (photo == null) {
-                Dialog.toast(getResources().getString(R.string.fetch_photo_error));
-            } else {
-                final String photoName = new File(photo).getName();
 
-                boolean isFromCamera = (data == null);
-                int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
-                final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
-                UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new Success() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+            boolean isFromCamera = (data == null);
+            int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
+            final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
 
-                        GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
-                        String fileId = files.getData().getItems().get(0).get_id();
+            showWaitingProgress(true);
+            UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new ABActivity.Success() {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                        mAdapter.add(new ImageAdapter.ImageItem(photoName, fileId));
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
+                    GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
+                    ImageAdapter.ImageItem item = new ImageAdapter.ImageItem(FileUtil.loadBitmap(bitmap));
+                    item.imageUrl = files.getData().getItems().get(0).get_id();
+
+                    mAdapter.add(item);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }, new AuthMultipartRequest.MultipartProgressListener() {
+                @Override
+                public void onProgress(long transfered, final int progress) {
+                    mask.updateProgress(progress);
+                }
+            });
         }
+
     }
 }

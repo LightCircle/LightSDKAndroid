@@ -11,7 +11,9 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +34,12 @@ public class AuthMultipartRequest extends Request<String> {
     private static final String MULTIPART_BODY_NAME = "files";
 
     private final Response.Listener<String> mListener;
+    private MultipartProgressListener mProgressListener;
     private HttpEntity httpEntitiy;
+
+    public static interface MultipartProgressListener {
+        void onProgress(long transfered, int progress);
+    }
 
     /**
      * 文件上传构造函数
@@ -46,10 +53,20 @@ public class AuthMultipartRequest extends Request<String> {
             Map<String, Object> params,
             Response.Listener<String> listener,
             Response.ErrorListener errorListener) {
+        this(url, params, listener, errorListener, null);
+    }
+
+    public AuthMultipartRequest(
+            String url,
+            Map<String, Object> params,
+            Response.Listener<String> listener,
+            Response.ErrorListener errorListener,
+            MultipartProgressListener progressListener) {
 
         super(Method.POST, url, errorListener);
 
         mListener = listener;
+        mProgressListener = progressListener;
         buildMultipartEntity(params);
     }
 
@@ -92,7 +109,7 @@ public class AuthMultipartRequest extends Request<String> {
     public byte[] getBody() throws AuthFailureError {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
-            httpEntitiy.writeTo(bos);
+            httpEntitiy.writeTo(new CountingOutputStream(bos, httpEntitiy.getContentLength(), mProgressListener));
         } catch (IOException e) {
             Logger.e(e);
             throw new RuntimeException("IOException writing to ByteArrayOutputStream");
@@ -116,5 +133,44 @@ public class AuthMultipartRequest extends Request<String> {
             }
         }
         return header;
+    }
+
+    /**
+     * 已经上传的内容大小计量器
+     */
+    public static class CountingOutputStream extends FilterOutputStream {
+        private final MultipartProgressListener progListener;
+        private long transferred;
+        private long fileLength;
+
+        public CountingOutputStream(
+                final OutputStream out,
+                long fileLength,
+                final MultipartProgressListener listener) {
+
+            super(out);
+            this.fileLength = fileLength;
+            this.progListener = listener;
+            this.transferred = 0;
+        }
+
+        public void write(byte[] b, int off, int len) throws IOException {
+            out.write(b, off, len);
+            if (progListener != null) {
+                this.transferred += len;
+                int prog = (int) (transferred * 100 / fileLength);
+                this.progListener.onProgress(this.transferred, prog);
+            }
+        }
+
+        public void write(int b) throws IOException {
+            out.write(b);
+            if (progListener != null) {
+                this.transferred++;
+                int prog = (int) (transferred * 100 / fileLength);
+                this.progListener.onProgress(this.transferred, prog);
+            }
+        }
+
     }
 }
