@@ -135,7 +135,7 @@ public class Dialog {
         dialog.show();
     }
 
-    private static int pixel(Activity activity, int dip){
+    public static int pixel(Activity activity, int dip){
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
                 , dip
                 , activity.getResources().getDisplayMetrics());
