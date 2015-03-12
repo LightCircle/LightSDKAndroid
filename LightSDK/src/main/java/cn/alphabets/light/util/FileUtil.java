@@ -246,7 +246,9 @@ public class FileUtil {
                 if (file.length() > 0) {
                     path = file.getAbsolutePath();
                 }
-            } catch (Exception e) {}
+            } catch (FileNotFoundException e) {
+                // do nothing
+            }
         }
 
         return path;

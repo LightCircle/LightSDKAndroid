@@ -1,5 +1,6 @@
 package cn.alphabets.light.ui;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.graphics.Color;
@@ -59,10 +60,13 @@ public class MaskFragment extends DialogFragment {
     }
 
     public void updateProgress(final int progress) {
-        getActivity().runOnUiThread(new Runnable() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                System.out.println(progress);
                 mProgress.setText(progress + "%");
             }
         });

@@ -21,7 +21,6 @@ import cn.alphabets.light.application.ABActivity;
 import cn.alphabets.light.application.ABSwipeBackActivity;
 import cn.alphabets.light.model.GsonParser;
 import cn.alphabets.light.model.ModelFile;
-import cn.alphabets.light.network.AuthMultipartRequest;
 import cn.alphabets.light.network.Parameter;
 import cn.alphabets.light.setting.Default;
 import cn.alphabets.light.util.FileUtil;
@@ -50,7 +49,6 @@ public class ImageActivity extends ABSwipeBackActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         // 设定Theme，需要在setContentView之前调用
         Bundle extras = getIntent().getExtras();
@@ -61,6 +59,7 @@ public class ImageActivity extends ABSwipeBackActivity {
             }
         }
 
+        super.onCreate(savedInstanceState);
         Helper.setNoIconBackActionBar(this, "ImageList");
         setContentView(R.layout.activity_image);
 
@@ -97,7 +96,7 @@ public class ImageActivity extends ABSwipeBackActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mMenu.findItem(android.R.id.empty) == null || !mMenu.findItem(android.R.id.empty).isVisible()) {
-                    ArrayList<String> photoUriList = new ArrayList<String>();
+                    ArrayList<String> photoUriList = new ArrayList<>();
                     for (int i = 0; i < mAdapter.getCount(); i++) {
                         ImageAdapter.ImageItem item = mAdapter.getItem(i);
                         photoUriList.add(item.imageUrl);
@@ -201,7 +200,7 @@ public class ImageActivity extends ABSwipeBackActivity {
 
         // 删除
         if (id == android.R.id.empty) {
-            List<ImageAdapter.ImageItem> removeItems = new ArrayList<ImageAdapter.ImageItem>();
+            List<ImageAdapter.ImageItem> removeItems = new ArrayList<>();
             for (int j = 0, count = mAdapter.getCount(); j < count; j++) {
                 View v = mGridView.getChildAt(j);
                 CheckBox checkBox = (CheckBox) v.findViewById(R.id.check);
@@ -256,7 +255,6 @@ public class ImageActivity extends ABSwipeBackActivity {
                 int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
                 final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
 
-                showWaitingProgress(true);
                 UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new ABActivity.Success() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -267,11 +265,6 @@ public class ImageActivity extends ABSwipeBackActivity {
 
                         mAdapter.add(item);
                         mAdapter.notifyDataSetChanged();
-                    }
-                }, new AuthMultipartRequest.MultipartProgressListener() {
-                    @Override
-                    public void onProgress(long transfered, final int progress) {
-                        mask.updateProgress(progress);
                     }
                 });
             }
