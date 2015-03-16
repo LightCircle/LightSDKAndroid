@@ -222,6 +222,26 @@ public class GsonParser<T> {
         return getOptionsCategory(ModelCategory.getTypeToken());
     }
 
+    public Map<String, ModelFile> getOptionsFile(TypeToken token) {
+        Map<String, ModelFile> result = new HashMap<>();
+        try {
+            JSONObject files = this.getOptions().getJSONObject("file");
+
+            Iterator<String> keys = files.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                JSONObject file = files.getJSONObject(key);
+                result.put(key, (ModelFile) ModelFile.parse(file, token));
+            }
+        } catch (JSONException e) {
+        }
+
+        return result;
+    }
+    public Map<String, ModelFile> getOptionsFile() {
+        return getOptionsFile(ModelFile.getTypeToken());
+    }
+
     public T getDetail() {
         return detail;
     }
