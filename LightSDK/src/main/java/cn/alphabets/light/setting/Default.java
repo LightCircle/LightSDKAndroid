@@ -16,6 +16,7 @@ public class Default {
     public static String Protocol             = "http";
 
     public static int RequestTimeout          = 15 * 1000;// 超时15秒
+    public static int FileRequestTimeout      = 300 * 1000;// 超时5分钟
     public static int MaxReTries              = 0;        // 重试次数
     public static int BackOffMultiplier       = 0;
 

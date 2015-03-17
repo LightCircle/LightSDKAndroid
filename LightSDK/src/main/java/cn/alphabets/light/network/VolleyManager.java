@@ -197,7 +197,7 @@ public class VolleyManager {
 
         // 设定超时
         request.setRetryPolicy(new DefaultRetryPolicy(
-                Default.RequestTimeout,
+                Default.FileRequestTimeout,
                 Default.MaxReTries,
                 Default.BackOffMultiplier));
 
