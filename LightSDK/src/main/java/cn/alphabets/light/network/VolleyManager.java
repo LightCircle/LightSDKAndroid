@@ -135,6 +135,40 @@ public class VolleyManager {
     }
 
     /**
+     * 加载不需要认证的图片，比如公开的网络图片
+     * @param fileUrl
+     * @param success
+     */
+    public static void loadPublicImage(String fileUrl, final AuthImageLoader.Success success) {
+
+        final ImageView view = new ImageView(ContextManager.getInstance());
+        final int errorImageResId = android.R.drawable.stat_notify_error;
+        final int defaultImageResId = android.R.drawable.progress_indeterminate_horizontal;
+
+        ImageLoader.ImageListener listener = new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (errorImageResId != 0) {
+                    view.setImageResource(errorImageResId);
+                }
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                if (response.getBitmap() != null) {
+                    view.setImageBitmap(response.getBitmap());
+                } else if (defaultImageResId != 0) {
+                    view.setImageResource(defaultImageResId);
+                }
+
+                success.onResponse(response.getBitmap());
+            }
+        };
+
+        getImageLoader().get(fileUrl, listener);
+    }
+
+    /**
      * Gets the JSON Request Instance
      * @param method Request.Method
      * @param url url

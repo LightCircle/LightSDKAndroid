@@ -253,6 +253,7 @@ public class ImageActivity extends ABSwipeBackActivity {
             } else {
                 boolean isFromCamera = (data == null);
                 int scaledWidth = mScaledWidth > 0 ? mScaledWidth : Default.ScaledWidth;
+                final String fileName = new File(photo).getName();
                 final String bitmap = FileUtil.scaledBitmap(photo, scaledWidth, isFromCamera);
 
                 UPLOAD(Default.UrlSendFile, new Parameter().put(bitmap, new File(bitmap)), new ABActivity.Success() {
@@ -260,8 +261,8 @@ public class ImageActivity extends ABSwipeBackActivity {
                     public void onResponse(JSONObject response) {
 
                         GsonParser<ModelFile> files = GsonParser.fromJson(response, ModelFile.getListTypeToken());
-                        ImageAdapter.ImageItem item = new ImageAdapter.ImageItem(FileUtil.loadBitmap(bitmap));
-                        item.imageUrl = files.getData().getItems().get(0).get_id();
+                        String url = files.getData().getItems().get(0).get_id();
+                        ImageAdapter.ImageItem item = new ImageAdapter.ImageItem(fileName, url, FileUtil.loadBitmap(bitmap));
 
                         mAdapter.add(item);
                         mAdapter.notifyDataSetChanged();

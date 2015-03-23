@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import java.io.File;
+
 import cn.alphabets.light.R;
 import cn.alphabets.light.network.VolleyManager;
 
@@ -37,6 +39,12 @@ public class ImageAdapter extends ArrayAdapter<ImageAdapter.ImageItem> {
         public ImageItem(String imageName, String imageUrl) {
             this.imageName = imageName;
             this.imageUrl = imageUrl;
+        }
+
+        public ImageItem(String imageName, String imageUrl, Bitmap image) {
+            this.imageName = imageName;
+            this.imageUrl = imageUrl;
+            this.image = image;
         }
 
         public boolean isUrl() {
