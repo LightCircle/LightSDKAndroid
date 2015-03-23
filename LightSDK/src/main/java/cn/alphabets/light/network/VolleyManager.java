@@ -218,7 +218,7 @@ public class VolleyManager {
         if (url.toLowerCase().contains("http") || url.toLowerCase().contains("https")) {
             builder.encodedPath(url);
         } else {
-            builder.scheme(Default.Protocol).encodedAuthority(getAddress()).appendEncodedPath(url);
+            builder.scheme(Default.Protocol()).encodedAuthority(getAddress()).appendEncodedPath(url);
         }
 
         // add csrf token
@@ -252,6 +252,6 @@ public class VolleyManager {
 
         }
 
-        return Default.Server + ":" + Default.Port;
+        return Default.Server() + ":" + Default.Port();
     }
 }

@@ -163,6 +163,22 @@ public class FileUtil {
     }
 
     /**
+     * 获取工作目录
+     * 用户可通过清除数据，来清除这里的内容。
+     * 如果内容被清除，则程序不能正常运行时，不应该放在改目录下
+     * @return
+     */
+    public static File getWorkDir() {
+
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED) && !Environment.isExternalStorageRemovable()) {
+            return ContextManager.getInstance().getExternalFilesDir(null);
+        }
+
+        return ContextManager.getInstance().getFilesDir();
+    }
+
+    /**
      * 下载文件，因为是同步下载，建议使用AsyncTask
      *
      * @param url  URL
