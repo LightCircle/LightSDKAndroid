@@ -12,7 +12,7 @@ import cn.alphabets.light.setting.Default;
 public final class Logger {
 
     private static final int CALLER_COUNT = 3;
-    private static int logLevel = Default.LogLevel;
+    private static int logLevel = Default.LogLevel();
 
     private Logger() {
     }
