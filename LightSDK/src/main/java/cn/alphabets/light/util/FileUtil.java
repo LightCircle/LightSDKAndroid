@@ -156,7 +156,10 @@ public class FileUtil {
 
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED) && !Environment.isExternalStorageRemovable()) {
-            return ContextManager.getInstance().getExternalCacheDir();
+            File dir = ContextManager.getInstance().getExternalCacheDir();
+            if (dir != null) {
+                return dir;
+            }
         }
 
         return ContextManager.getInstance().getCacheDir();
